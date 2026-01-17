@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .logo-container {
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff0080 50%, #00ff88 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 40px rgba(255, 107, 0, 0.5);
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ff6b00, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b00, #ff0080);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: #333;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .upload-section, .video-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .upload-area {
+            border: 2px dashed #ff6b00;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: rgba(255, 107, 0, 0.1);
+            border-color: #ff0080;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #000;
+        }
+
+        .video-info {
+            padding: 15px;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #00ff88, #0080ff);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .download-btn:hover {
+            opacity: 0.9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .user-info {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b00, #00ff88);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container" id="logo" onclick="handleLogoClick()">
+                <div class="logo">ik</div>
+            </div>
+            <h1>Key Video</h1>
+        </header>
+
+        <div id="authSection" class="auth-section">
+            <p style="margin-bottom: 20px; font-size: 18px;">Sign in to upload and access videos</p>
+            <button class="btn btn-primary" onclick="signIn()">Sign in with Google</button>
+        </div>
+
+        <div id="userSection" class="hidden">
+            <div class="user-info">
+                <p>Welcome, <span id="userName"></span></p>
+                <p style="font-size: 14px; color: #aaa;"><span id="userEmail"></span></p>
+                <button class="btn btn-secondary" onclick="signOut()">Sign Out</button>
+            </div>
+
+            <div id="uploadSection" class="upload-section hidden">
+                <h2 style="margin-bottom: 20px;">Upload Video</h2>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <p style="font-size: 18px; margin-bottom: 10px;">📹 Click to upload video</p>
+                    <p style="color: #aaa;">Supported formats: MP4, WebM, MOV</p>
+                </div>
+                <input type="file" id="fileInput" accept="video/*" onchange="handleFileSelect(event)">
+                <div id="uploadProgress" class="progress hidden">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="video-section">
+                <h2 style="margin-bottom: 20px;">Videos</h2>
+                <div class="video-grid" id="videoGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let logoClickCount = 0;
+        let logoClickTimer = null;
+        let downloadEnabled = false;
+        let currentUser = null;
+        const ADMIN_EMAIL = 'grensrena@gmail.com';
+
+        // Simulated video storage
+        let videos = [];
+
+        function handleLogoClick() {
+            logoClickCount++;
+            
+            clearTimeout(logoClickTimer);
+            
+            if (logoClickCount === 4) {
+                downloadEnabled = true;
+                alert('Download mode activated! You can now download and view videos.');
+                renderVideos();
+                logoClickCount = 0;
+            } else {
+                logoClickTimer = setTimeout(() => {
+                    logoClickCount = 0;
+                }, 2000);
+            }
+        }
+
+        function signIn() {
+            // Simulate Google Sign-In
+            const email = prompt('Enter email:');
+            const password = prompt('Enter password:');
+            
+            if (email === ADMIN_EMAIL && password === 'kim') {
+                currentUser = {
+                    email: email,
+                    name: email.split('@')[0]
+                };
+                showUserSection();
+            } else {
+                // Allow other users to sign in but only for viewing
+                if (email && password) {
+                    currentUser = {
+                        email: email,
+                        name: email.split('@')[0]
+                    };
+                    showUserSection();
+                } else {
+                    alert('Invalid credentials');
+                }
+            }
+        }
+
+        function signOut() {
+            currentUser = null;
+            downloadEnabled = false;
+            logoClickCount = 0;
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('userSection').classList.add('hidden');
+        }
+
+        function showUserSection() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('userSection').classList.remove('hidden');
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userEmail').textContent = currentUser.email;
+            
+            // Show upload section only for admin
+            if (currentUser.email === ADMIN_EMAIL) {
+                document.getElementById('uploadSection').classList.remove('hidden');
+            }
+            
+            loadVideos();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('video/')) {
+                alert('Please select a video file');
+                return;
+            }
+
+            uploadVideo(file);
+        }
+
+        function uploadVideo(file) {
+            const progressContainer = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('progressBar');
+            
+            progressContainer.classList.remove('hidden');
+            
+            // Simulate upload progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        saveVideo(file);
+                        progressContainer.classList.add('hidden');
+                        progressBar.style.width = '0%';
+                        document.getElementById('fileInput').value = '';
+                    }, 500);
+                }
+            }, 200);
+        }
+
+        function saveVideo(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const video = {
+                    id: Date.now(),
+                    name: file.name,
+                    url: e.target.result,
+                    uploadDate: new Date().toLocaleDateString()
+                };
+                
+                videos.push(video);
+                localStorage.setItem('keyVideos', JSON.stringify(videos));
+                renderVideos();
+                alert('Video uploaded successfully!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadVideos() {
+            const stored = localStorage.getItem('keyVideos');
+            if (stored) {
+                videos = JSON.parse(stored);
+            }
+            renderVideos();
+        }
+
+        function renderVideos() {
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = '';
+
+            if (videos.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: #aaa; grid-column: 1/-1;">No videos uploaded yet</p>';
+                return;
+            }
+
+            videos.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                
+                card.innerHTML = `
+                    <video controls ${!downloadEnabled ? 'controlslist="nodownload"' : ''}>
+                        <source src="${video.url}" type="video/mp4">
+                    </video>
+                    <div class="video-info">
+                        <div class="video-title">${video.name}</div>
+                        <p style="font-size: 12px; color: #aaa; margin-bottom: 10px;">Uploaded: ${video.uploadDate}</p>
+                        ${downloadEnabled ? `<button class="download-btn" onclick="downloadVideo(${video.id})">Download</button>` : ''}
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function downloadVideo(videoId) {
+            const video = videos.find(v => v.id === videoId);
+            if (video) {
+                const a = document.createElement('a');
+                a.href = video.url;
+                a.download = video.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+    </script>
+</body>
+</html>
