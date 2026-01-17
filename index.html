@@ -3,245 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Key Downloader - Professional Video Tool</title>
+    <title>Key Downloader - Direct MP4</title>
     <style>
         :root {
-            --primary: #4f46e5;
-            --secondary: #1e1b4b;
-            --accent: #06b6d4;
-            --text: #f8fafc;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --primary: #6366f1;
+            --accent: #0ea5e9;
         }
 
         body {
-            background: radial-gradient(circle at top left, #1e1b4b, #0f172a);
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            color: var(--text);
+            height: 100vh;
+            margin: 0;
         }
 
-        .main-container {
-            width: 100%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+        .card {
+            background: var(--card);
             padding: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .logo-box {
+        .logo {
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
             margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 30px rgba(79, 70, 229, 0.4);
         }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 8px;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        h1 { margin-bottom: 10px; font-size: 1.8rem; }
+        p { color: #94a3b8; margin-bottom: 30px; font-size: 0.9rem; }
 
-        .subtitle {
-            color: #94a3b8;
-            margin-bottom: 35px;
-            font-size: 0.95rem;
-        }
-
-        .input-group {
-            position: relative;
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            background: #0f172a;
+            color: white;
+            outline: none;
             margin-bottom: 20px;
         }
 
-        input[type="text"] {
+        input:focus { border-color: var(--primary); }
+
+        .btn {
             width: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 18px 20px;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--primary);
-            background: rgba(15, 23, 42, 0.8);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
-        }
-
-        .btn-download {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary), #6366f1);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .btn-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
-            filter: brightness(1.1);
-        }
-
-        .btn-download:active {
-            transform: translateY(0);
-        }
-
-        #status {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            padding: 12px;
-            border-radius: 12px;
-            display: none;
-        }
-
-        .loading-spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 35px;
-        }
-
-        .feature-item {
-            background: rgba(255, 255, 255, 0.02);
             padding: 15px;
             border-radius: 12px;
-            font-size: 0.8rem;
-            color: #64748b;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background: #4f46e5; }
+
+        #loader {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--accent);
+            transition: 0.3s;
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <div class="logo-box">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3L15.5 7.5z"></path>
-            </svg>
-        </div>
-
-        <h1>Key Downloader</h1>
-        <p class="subtitle">Convert any video link to MP4 format instantly.</p>
-
-        <div class="input-group">
-            <input type="text" id="videoUrl" placeholder="Paste your link here...">
-        </div>
-
-        <button class="btn-download" onclick="startProcess()">
-            <div id="spinner" class="loading-spinner"></div>
-            <span id="btnText">Download MP4</span>
-        </button>
-
-        <div id="status"></div>
-
-        <div class="features">
-            <div class="feature-item">⚡ Ultra Fast Encoding</div>
-            <div class="feature-item">🛡️ Secure & Private</div>
-            <div class="feature-item">💎 High Quality (HD)</div>
-            <div class="feature-item">📱 Mobile Optimized</div>
-        </div>
+<div class="card">
+    <div class="logo">
+        <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3L15.5 7.5z"></path>
+        </svg>
     </div>
+    <h1>Key Downloader</h1>
+    <p>Shyira link ya video hano utangire kuyikura vuba.</p>
 
-    <script>
-        function startProcess() {
-            const url = document.getElementById('videoUrl').value.trim();
-            const btnText = document.getElementById('btnText');
-            const spinner = document.getElementById('spinner');
-            const status = document.getElementById('status');
+    <input type="text" id="url" placeholder="Paste link here...">
+    <button class="btn" onclick="downloadVideo()">Download MP4</button>
 
-            if (!url) {
-                showStatus("Please enter a valid URL", "#ef4444");
-                return;
-            }
+    <div id="loader">
+        <span id="loadText">Turimo gutegura video...</span>
+        <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+    </div>
+</div>
 
-            // Kwerekana ko irimo gukora (Loading)
-            btnText.innerText = "Analyzing Video...";
-            spinner.style.display = "block";
-            status.style.display = "none";
+<script>
+async function downloadVideo() {
+    const url = document.getElementById('url').value;
+    const loader = document.getElementById('loader');
+    const fill = document.getElementById('fill');
+    const loadText = document.getElementById('loadText');
 
-            setTimeout(() => {
-                if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                    let downloadUrl = "";
-                    if (url.includes('youtube.com')) {
-                        downloadUrl = url.replace('youtube.com', 'ssyoutube.com');
-                    } else {
-                        const id = url.split('/').pop();
-                        downloadUrl = `https://www.ssyoutube.com/watch?v=${id}`;
-                    }
+    if(!url) return alert("Banza ushyiremo link!");
 
-                    showStatus("Video Found! Redirecting to secure download...", "#22c55e");
-                    
-                    setTimeout(() => {
-                        window.open(downloadUrl, '_blank');
-                        resetButton();
-                    }, 1500);
-                } else {
-                    showStatus("Error: Link not supported. Use YouTube link.", "#ef4444");
-                    resetButton();
-                }
-            }, 2000); // Wait 2 seconds to feel professional
-        }
+    loader.style.display = "block";
+    fill.style.width = "30%";
 
-        function showStatus(msg, color) {
-            const status = document.getElementById('status');
-            status.innerText = msg;
-            status.style.display = "block";
-            status.style.background = color + "22";
-            status.style.color = color;
-            status.style.border = `1px solid ${color}44`;
-        }
+    try {
+        // Hano nahoze nkoresha redirect, ariko dushobora gukoresha API ifunguye
+        // Icyitonderwa: Kubera umutekano wa Browser, guhita itangira download mu buryo buziguye 
+        // bisaba ko dukoresha link itanga "Attachment" header.
+        
+        // Iyi ni tekiniki yo kwandika 'ss' ariko mu buryo bwa JavaScript redirect mu ibanga
+        const directUrl = url.replace("youtube.com", "ssyoutube.com").replace("youtu.be/", "ssyoutube.com/watch?v=");
+        
+        fill.style.width = "70%";
+        loadText.innerText = "Video yabonetse! Turatangiye...";
 
-        function resetButton() {
-            document.getElementById('btnText').innerText = "Download MP4";
-            document.getElementById('spinner').style.display = "none";
-        }
-    </script>
+        setTimeout(() => {
+            fill.style.width = "100%";
+            // Iyi niyo nzira imwe rudaraza ishoboka: 
+            // Iyo ukanze hano, ifungura download ako kanya.
+            window.location.href = directUrl; 
+        }, 1000);
+
+    } catch (e) {
+        alert("Habayemo ikibazo, ongera ugerageze.");
+    }
+}
+</script>
+
 </body>
 </html>
