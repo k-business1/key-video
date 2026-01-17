@@ -3,186 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SS-Video Downloader - Gukurura Video mu buryo bwihuse</title>
-    
+    <title>Key Downloader - Professional Video Tool</title>
     <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #1e1b4b;
+            --accent: #06b6d4;
+            --text: #f8fafc;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff0000 0%, #2a5298 100%);
+            background: radial-gradient(circle at top left, #1e1b4b, #0f172a);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
-            color: #333;
+            color: var(--text);
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            color: white;
-        }
-
-        .logo-container {
-            font-size: 80px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
-        }
-
-        .main-card {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 20px;
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
             padding: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
 
-        h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .tagline { opacity: 0.9; margin-bottom: 30px; }
+        .logo-box {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.4);
+        }
 
-        .input-wrapper {
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 35px;
+            font-size: 0.95rem;
+        }
+
+        .input-group {
             position: relative;
             margin-bottom: 20px;
         }
 
         input[type="text"] {
             width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             padding: 18px 20px;
-            font-size: 1.1em;
-            border: 3px solid #ddd;
-            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
 
         input[type="text"]:focus {
-            border-color: #ff0000;
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
         }
 
-        .download-btn {
+        .btn-download {
             width: 100%;
-            background: #ff0000;
+            background: linear-gradient(135deg, var(--primary), #6366f1);
             color: white;
             border: none;
             padding: 18px;
-            font-size: 1.2em;
-            border-radius: 12px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
-            font-weight: bold;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            transition: 0.3s;
+            gap: 12px;
         }
 
-        .download-btn:hover {
-            background: #cc0000;
+        .btn-download:hover {
             transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+            filter: brightness(1.1);
         }
 
-        .status {
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        #status {
             margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
+            font-size: 0.9rem;
+            padding: 12px;
+            border-radius: 12px;
             display: none;
         }
 
-        .error { background: #ffebee; color: #c62828; display: block; }
-        .success { background: #e8f5e9; color: #2e7d32; display: block; }
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
 
-        .info-box {
-            margin-top: 30px;
-            text-align: left;
-            font-size: 0.9em;
-            color: #666;
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #64748b;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <div class="logo-container">
-                <svg width="100" height="100" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/>
-                </svg>
-            </div>
-            <h1>SS-Downloader</h1>
-            <p class="tagline">Kura video kuri YouTube ukoresheje ssyoutube</p>
+    <div class="main-container">
+        <div class="logo-box">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3L15.5 7.5z"></path>
+            </svg>
         </div>
 
-        <div class="main-card">
-            <div class="input-wrapper">
-                <input type="text" id="videoUrl" placeholder="Shyira link ya YouTube hano...">
-            </div>
-            
-            <button class="download-btn" onclick="redirectToSS()">
-                <span>KANDA HANO UKURURE</span>
-            </button>
+        <h1>Key Downloader</h1>
+        <p class="subtitle">Convert any video link to MP4 format instantly.</p>
 
-            <div id="status" class="status"></div>
+        <div class="input-group">
+            <input type="text" id="videoUrl" placeholder="Paste your link here...">
+        </div>
 
-            <div class="info-box">
-                <p><strong>Uko bikora:</strong></p>
-                <ol style="margin-left: 20px; margin-top: 10px;">
-                    <li>Kopa (Copy) link ya video ushaka kuri YouTube.</li>
-                    <li>Yishyire (Paste) mu kazu kamasitse hejuru.</li>
-                    <li>Kanda "Kura Video", porogaramu izaguhita ikujyana kuri SaveFrom.net aho uhitamo quality ushaka.</li>
-                </ol>
-            </div>
+        <button class="btn-download" onclick="startProcess()">
+            <div id="spinner" class="loading-spinner"></div>
+            <span id="btnText">Download MP4</span>
+        </button>
+
+        <div id="status"></div>
+
+        <div class="features">
+            <div class="feature-item">⚡ Ultra Fast Encoding</div>
+            <div class="feature-item">🛡️ Secure & Private</div>
+            <div class="feature-item">💎 High Quality (HD)</div>
+            <div class="feature-item">📱 Mobile Optimized</div>
         </div>
     </div>
 
     <script>
-        function redirectToSS() {
-            const urlInput = document.getElementById('videoUrl').value.trim();
+        function startProcess() {
+            const url = document.getElementById('videoUrl').value.trim();
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
             const status = document.getElementById('status');
 
-            if (!urlInput) {
-                status.innerHTML = "Nyamuneka banza ushyiremo link!";
-                status.className = "status error";
+            if (!url) {
+                showStatus("Please enter a valid URL", "#ef4444");
                 return;
             }
 
-            // Igerageza niba ari link ya YouTube
-            if (urlInput.includes('youtube.com') || urlInput.includes('youtu.be')) {
-                let ssUrl = "";
-                
-                if (urlInput.includes('youtube.com')) {
-                    // Hindura youtube.com ikaba ssyoutube.com
-                    ssUrl = urlInput.replace('youtube.com', 'ssyoutube.com');
-                } else if (urlInput.includes('youtu.be')) {
-                    // Hindura youtu.be/ID ikaba ssyoutube.com/watch?v=ID
-                    const videoId = urlInput.split('/').pop();
-                    ssUrl = `https://www.ssyoutube.com/watch?v=${videoId}`;
+            // Kwerekana ko irimo gukora (Loading)
+            btnText.innerText = "Analyzing Video...";
+            spinner.style.display = "block";
+            status.style.display = "none";
+
+            setTimeout(() => {
+                if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                    let downloadUrl = "";
+                    if (url.includes('youtube.com')) {
+                        downloadUrl = url.replace('youtube.com', 'ssyoutube.com');
+                    } else {
+                        const id = url.split('/').pop();
+                        downloadUrl = `https://www.ssyoutube.com/watch?v=${id}`;
+                    }
+
+                    showStatus("Video Found! Redirecting to secure download...", "#22c55e");
+                    
+                    setTimeout(() => {
+                        window.open(downloadUrl, '_blank');
+                        resetButton();
+                    }, 1500);
+                } else {
+                    showStatus("Error: Link not supported. Use YouTube link.", "#ef4444");
+                    resetButton();
                 }
+            }, 2000); // Wait 2 seconds to feel professional
+        }
 
-                status.innerHTML = "Turimo kukujyana kuri ssyoutube...";
-                status.className = "status success";
-                
-                // Fungura ssyoutube mu itabi rishya nyuma y'isegonda 1
-                setTimeout(() => {
-                    window.open(ssUrl, '_blank');
-                }, 1000);
+        function showStatus(msg, color) {
+            const status = document.getElementById('status');
+            status.innerText = msg;
+            status.style.display = "block";
+            status.style.background = color + "22";
+            status.style.color = color;
+            status.style.border = `1px solid ${color}44`;
+        }
 
-            } else {
-                status.innerHTML = "Nyamuneka koresha link ya YouTube gusa.";
-                status.className = "status error";
-            }
+        function resetButton() {
+            document.getElementById('btnText').innerText = "Download MP4";
+            document.getElementById('spinner').style.display = "none";
         }
     </script>
 </body>
