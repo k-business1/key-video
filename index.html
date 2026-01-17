@@ -45,7 +45,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
@@ -179,28 +179,6 @@
             transform: translateY(0);
         }
 
-        .info-box {
-            background: #f0f4ff;
-            border-left: 5px solid #667eea;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-
-        .info-box h3 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .info-box ul {
-            margin-left: 20px;
-            color: #666;
-        }
-
-        .info-box li {
-            margin: 8px 0;
-        }
-
         .status {
             padding: 20px;
             border-radius: 15px;
@@ -264,6 +242,122 @@
             100% { transform: rotate(360deg); }
         }
 
+        .download-frame {
+            display: none;
+            margin: 30px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .download-frame iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        .quick-actions {
+            display: none;
+            margin: 20px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .quick-actions h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 25px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .video-info-card {
+            display: none;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .info-value {
+            color: #666;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .format-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .format-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .format-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .format-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
         .footer {
             text-align: center;
             color: white;
@@ -271,29 +365,40 @@
             opacity: 0.8;
         }
 
-        .quality-options {
-            display: none;
-            margin: 20px 0;
+        .tutorial-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
             padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
         }
 
-        .quality-btn {
-            background: white;
-            border: 2px solid #667eea;
-            color: #667eea;
-            padding: 12px 25px;
-            margin: 5px;
-            border-radius: 10px;
+        .tutorial-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .tutorial-box ol {
+            margin-left: 20px;
+            color: #856404;
+            line-height: 1.8;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1em;
+            margin: 5px;
+            font-size: 0.95em;
             transition: all 0.3s;
         }
 
-        .quality-btn:hover {
-            background: #667eea;
-            color: white;
+        .copy-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -304,29 +409,15 @@
         <div class="header">
             <div class="logo">🔑</div>
             <h1>Key Downloader</h1>
-            <p class="tagline">Free Video Downloader - Fast & Easy</p>
+            <p class="tagline">YouTube Video Downloader - Simple & Fast</p>
         </div>
 
         <div class="main-card">
             <div class="input-section">
-                <h2 style="margin-bottom: 20px; color: #333;">Enter Video URL</h2>
+                <h2 style="margin-bottom: 20px; color: #333;">Enter YouTube Video URL</h2>
                 <div class="input-wrapper">
-                    <input type="text" id="videoUrl" placeholder="Paste YouTube, Vimeo, or video URL here...">
+                    <input type="text" id="videoUrl" placeholder="Paste YouTube URL here (e.g., https://www.youtube.com/watch?v=...)">
                     <button class="paste-btn" onclick="pasteUrl()">📋 Paste</button>
-                </div>
-                
-                <div style="margin: 20px 0;">
-                    <label style="display: block; margin-bottom: 10px; color: #333; font-weight: bold;">
-                        📁 Save Location (Optional):
-                    </label>
-                    <div class="input-wrapper">
-                        <input type="text" id="savePath" placeholder="e.g., C:\Users\YourName\Videos or /home/user/videos">
-                        <button class="paste-btn" onclick="selectFolder()" style="right: 120px;">📂 Browse</button>
-                        <button class="paste-btn" onclick="useDefaultPath()">Default</button>
-                    </div>
-                    <small style="color: #666; display: block; margin-top: 8px;">
-                        💡 Leave empty to use your browser's default download folder
-                    </small>
                 </div>
 
                 <button class="download-btn" onclick="processDownload()">⬇️ Download Video</button>
@@ -339,35 +430,89 @@
                 <p style="margin-top: 15px; color: #666;">Processing your request...</p>
             </div>
 
-            <div class="quality-options" id="qualityOptions">
-                <h3 style="margin-bottom: 15px; color: #333;">Select Quality:</h3>
-                <button class="quality-btn" onclick="selectQuality('1080p')">🎬 1080p HD</button>
-                <button class="quality-btn" onclick="selectQuality('720p')">📺 720p HD</button>
-                <button class="quality-btn" onclick="selectQuality('480p')">📱 480p</button>
-                <button class="quality-btn" onclick="selectQuality('360p')">💾 360p (Small)</button>
+            <div class="quick-actions" id="quickActions">
+                <h3>🚀 Quick Download Options</h3>
+                <div class="action-btns">
+                    <button class="action-btn" onclick="openSSYouTube()">
+                        🎬 Open ssyoutube.com
+                    </button>
+                    <button class="action-btn" onclick="openY2mate()">
+                        📥 Open y2mate.com
+                    </button>
+                    <button class="action-btn" onclick="openSaveFrom()">
+                        💾 Open savefrom.net
+                    </button>
+                </div>
             </div>
 
-            <div class="info-box">
-                <h3>ℹ️ How to Use Key Downloader</h3>
-                <ul>
-                    <li>Copy the video URL from YouTube, Vimeo, or other platforms</li>
-                    <li>Paste it in the field above</li>
-                    <li>Click "Download Video"</li>
-                    <li>Follow the instructions to download your video</li>
-                </ul>
-                <p style="margin-top: 15px; color: #e74c3c; font-weight: bold;">
-                    ⚠️ Note: This tool provides instructions to download videos. Please respect copyright laws and only download videos you have permission to use.
-                </p>
+            <div class="video-info-card" id="videoInfo">
+                <h3 style="margin-bottom: 15px; color: #333;">📹 Video Information</h3>
+                <div class="info-item">
+                    <span class="info-label">Original URL:</span>
+                    <span class="info-value" id="originalUrl">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Modified URL (ssyoutube):</span>
+                    <span class="info-value" id="modifiedUrl">-</span>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button class="copy-btn" onclick="copyOriginal()">📋 Copy Original URL</button>
+                    <button class="copy-btn" onclick="copyModified()">📋 Copy Modified URL</button>
+                    <button class="copy-btn" onclick="copyVideoId()" style="background: #17a2b8;">🆔 Copy Video ID</button>
+                </div>
             </div>
+
+            <div class="tutorial-box">
+                <h4>💡 How to Download YouTube Videos:</h4>
+                <ol>
+                    <li><strong>Method 1 - ssyoutube.com (Easiest):</strong>
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>Add "ss" before "youtube.com" in your URL</li>
+                            <li>Example: youtube.com → <strong>ssyoutube.com</strong></li>
+                            <li>Click "Open ssyoutube.com" button above</li>
+                        </ul>
+                    </li>
+                    <li><strong>Method 2 - Third-Party Sites:</strong>
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>Use y2mate.com, savefrom.net, or yt1s.com</li>
+                            <li>Paste your YouTube URL there</li>
+                            <li>Select quality and download</li>
+                        </ul>
+                    </li>
+                    <li><strong>Method 3 - Browser Extensions:</strong>
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>Install "Video Downloader Professional"</li>
+                            <li>Or "SaveFrom.net Helper"</li>
+                            <li>Download directly from YouTube page</li>
+                        </ul>
+                    </li>
+                    <li><strong>Method 4 - Desktop Software:</strong>
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>4K Video Downloader (Free)</li>
+                            <li>youtube-dl (Command line)</li>
+                            <li>VLC Media Player (Open Network Stream)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="download-frame" id="downloadFrame">
+                <iframe id="downloaderIframe"></iframe>
+            </div>
+
+
         </div>
 
         <div class="footer">
-            <p>© 2026 Key Downloader | Free Video Download Tool</p>
-            <p style="font-size: 0.9em; margin-top: 10px;">Made with ❤️ for easy downloads</p>
+            <p>© 2026 Key Downloader | YouTube Video Download Helper</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Made with ❤️ for easy video downloads</p>
         </div>
     </div>
 
     <script>
+        let currentUrl = '';
+        let currentVideoId = '';
+
         // Create floating particles
         function createParticles() {
             const particles = document.getElementById('particles');
@@ -386,65 +531,31 @@
 
         createParticles();
 
-        let selectedDirectory = null;
-
         async function pasteUrl() {
             try {
                 const text = await navigator.clipboard.readText();
                 document.getElementById('videoUrl').value = text;
-                showStatus('URL pasted successfully! 📋', 'success');
+                showStatus('✅ URL pasted successfully!', 'success');
             } catch (err) {
                 showStatus('Please paste the URL manually', 'info');
             }
         }
 
-        async function selectFolder() {
-            try {
-                if ('showDirectoryPicker' in window) {
-                    selectedDirectory = await window.showDirectoryPicker();
-                    document.getElementById('savePath').value = selectedDirectory.name;
-                    showStatus('📁 Folder selected: ' + selectedDirectory.name, 'success');
-                } else {
-                    showStatus('⚠️ Folder selection not supported in this browser. Please enter path manually.', 'info');
-                }
-            } catch (err) {
-                if (err.name !== 'AbortError') {
-                    showStatus('Folder selection cancelled', 'info');
-                }
-            }
-        }
-
-        function useDefaultPath() {
-            const os = navigator.platform;
-            let defaultPath = '';
-            
-            if (os.includes('Win')) {
-                defaultPath = 'C:\\Users\\' + (navigator.userAgent.match(/Windows NT ([0-9.]+)/) ? 'YourName' : 'User') + '\\Downloads';
-            } else if (os.includes('Mac')) {
-                defaultPath = '/Users/YourName/Downloads';
-            } else if (os.includes('Linux')) {
-                defaultPath = '/home/user/Downloads';
-            } else {
-                defaultPath = 'Downloads';
-            }
-            
-            document.getElementById('savePath').value = defaultPath;
-            showStatus('Default download path set! 💾', 'success');
-        }
-
         function processDownload() {
             const url = document.getElementById('videoUrl').value.trim();
-            const savePath = document.getElementById('savePath').value.trim();
             
             if (!url) {
-                showStatus('❌ Please enter a video URL', 'error');
+                showStatus('❌ Please enter a YouTube URL', 'error');
                 return;
             }
 
-            if (!isValidUrl(url)) {
-                showStatus('❌ Please enter a valid URL', 'error');
+            if (!isYouTubeUrl(url)) {
+                showStatus('❌ Please enter a valid YouTube URL', 'error');
                 return;
             }
+
+            currentUrl = url;
+            currentVideoId = extractYouTubeId(url);
 
             // Show loading
             document.getElementById('loading').style.display = 'block';
@@ -453,76 +564,63 @@
             // Simulate processing
             setTimeout(() => {
                 document.getElementById('loading').style.display = 'none';
-                
-                if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                    provideYouTubeInstructions(url, savePath);
-                } else {
-                    provideGeneralInstructions(url, savePath);
-                }
-            }, 1500);
+                showDownloadOptions();
+            }, 1000);
         }
 
-        function provideYouTubeInstructions(url, savePath) {
-            const videoId = extractYouTubeId(url);
-            const pathInfo = savePath ? `<p style="background: #e7f3ff; padding: 15px; border-radius: 10px; margin-bottom: 15px;"><strong>📂 Your selected save location:</strong><br><code style="background: white; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 5px;">${savePath}</code></p>` : '';
+        function showDownloadOptions() {
+            const modifiedUrl = currentUrl.replace('youtube.com', 'ssyoutube.com').replace('youtu.be', 'ssyoutu.be');
             
-            const instructions = `
-                ${pathInfo}
-                <h3 style="margin-bottom: 15px;">📹 Download Instructions for YouTube Video</h3>
-                <p style="margin-bottom: 15px;">To download this video, you can use one of these methods:</p>
-                <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li><strong>Using Third-Party Websites:</strong><br>
-                        Visit sites like:<br>
-                        • y2mate.com<br>
-                        • savefrom.net<br>
-                        • yt1s.com<br>
-                        Paste your URL and follow their download process.
-                    </li>
-                    <li style="margin-top: 10px;"><strong>Browser Extensions:</strong><br>
-                        Install extensions like "Video Downloader Professional" or "SaveFrom.net Helper"
-                    </li>
-                    <li style="margin-top: 10px;"><strong>Desktop Software (Recommended for custom paths):</strong><br>
-                        • <strong>4K Video Downloader</strong> - Allows custom save locations<br>
-                        • <strong>youtube-dl</strong> - Command line: <code style="background: #f0f0f0; padding: 2px 6px; border-radius: 3px;">youtube-dl -o "${savePath || 'Downloads'}/%(title)s.%(ext)s" ${url}</code><br>
-                        • <strong>VLC Media Player</strong> - Open Network Stream and save
-                    </li>
-                </ol>
-                <p style="margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 10px; border-left: 4px solid #ffc107;">
-                    <strong>💡 Quick Tip:</strong> Add "ss" before "youtube" in the URL (e.g., ssyoutube.com/...) to access download options
-                </p>
-                <button onclick="copyModifiedUrl('${url}')" style="margin-top: 15px; padding: 12px 30px; background: #28a745; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1em;">
-                    📋 Copy Modified URL
-                </button>
-                ${savePath ? `<button onclick="copyCommand('${url}', '${savePath}')" style="margin-top: 15px; margin-left: 10px; padding: 12px 30px; background: #17a2b8; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1em;">
-                    💻 Copy youtube-dl Command
-                </button>` : ''}
-            `;
+            // Update video info
+            document.getElementById('originalUrl').textContent = currentUrl;
+            document.getElementById('modifiedUrl').textContent = modifiedUrl;
             
-            showStatus(instructions, 'info');
+            // Show elements
+            document.getElementById('quickActions').style.display = 'block';
+            document.getElementById('videoInfo').style.display = 'block';
+            
+            showStatus('✅ Ready to download! Choose a method below.', 'success');
         }
 
-        function provideGeneralInstructions(url, savePath) {
-            const pathInfo = savePath ? `<p style="background: #e7f3ff; padding: 15px; border-radius: 10px; margin-bottom: 15px;"><strong>📂 Your selected save location:</strong><br><code style="background: white; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 5px;">${savePath}</code></p>` : '';
-            
-            const instructions = `
-                ${pathInfo}
-                <h3 style="margin-bottom: 15px;">🎥 Download Instructions</h3>
-                <p style="margin-bottom: 15px;">To download this video, try these methods:</p>
-                <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li><strong>Right-click on the video</strong> and select "Save video as..." 
-                        ${savePath ? `<br>Then navigate to: <code style="background: #f0f0f0; padding: 2px 6px; border-radius: 3px;">${savePath}</code>` : ''}
-                    </li>
-                    <li style="margin-top: 10px;"><strong>Use browser tools:</strong> Open Developer Tools (F12), go to Network tab, play the video, and find the video file to download</li>
-                    <li style="margin-top: 10px;"><strong>Online downloaders:</strong> Visit sites like savefrom.net or en.savefrom.net and paste your URL</li>
-                    <li style="margin-top: 10px;"><strong>Browser extensions:</strong> Install video downloader extensions for your browser</li>
-                    ${savePath ? `<li style="margin-top: 10px;"><strong>wget command:</strong><br><code style="background: #f0f0f0; padding: 5px 10px; border-radius: 3px; display: block; margin-top: 5px;">wget -O "${savePath}/video.mp4" "${url}"</code></li>` : ''}
-                </ol>
-                <button onclick="window.open('${url}', '_blank')" style="margin-top: 15px; padding: 12px 30px; background: #007bff; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1em;">
-                    🔗 Open Video URL
-                </button>
-            `;
-            
-            showStatus(instructions, 'info');
+        function openSSYouTube() {
+            const modifiedUrl = currentUrl.replace('youtube.com', 'ssyoutube.com').replace('youtu.be', 'ssyoutu.be');
+            window.open(modifiedUrl, '_blank');
+            showStatus('🎬 Opening ssyoutube.com in new tab...', 'info');
+        }
+
+        function openY2mate() {
+            const encodedUrl = encodeURIComponent(currentUrl);
+            window.open(`https://www.y2mate.com/youtube/${currentVideoId}`, '_blank');
+            showStatus('📥 Opening y2mate.com in new tab...', 'info');
+        }
+
+        function openSaveFrom() {
+            const encodedUrl = encodeURIComponent(currentUrl);
+            window.open(`https://savefrom.net/#url=${encodedUrl}`, '_blank');
+            showStatus('💾 Opening savefrom.net in new tab...', 'info');
+        }
+
+        function copyOriginal() {
+            navigator.clipboard.writeText(currentUrl).then(() => {
+                showStatus('📋 Original URL copied to clipboard!', 'success');
+            });
+        }
+
+        function copyModified() {
+            const modifiedUrl = currentUrl.replace('youtube.com', 'ssyoutube.com').replace('youtu.be', 'ssyoutu.be');
+            navigator.clipboard.writeText(modifiedUrl).then(() => {
+                showStatus('📋 Modified URL copied! Paste it in your browser to download.', 'success');
+            });
+        }
+
+        function copyVideoId() {
+            navigator.clipboard.writeText(currentVideoId).then(() => {
+                showStatus('🆔 Video ID copied: ' + currentVideoId, 'success');
+            });
+        }
+
+        function isYouTubeUrl(url) {
+            return url.includes('youtube.com') || url.includes('youtu.be');
         }
 
         function extractYouTubeId(url) {
@@ -531,41 +629,15 @@
             return (match && match[7].length === 11) ? match[7] : null;
         }
 
-        function copyModifiedUrl(url) {
-            const modified = url.replace('youtube.com', 'ssyoutube.com').replace('youtu.be', 'ssyoutu.be');
-            navigator.clipboard.writeText(modified).then(() => {
-                alert('✅ Modified URL copied! Paste it in your browser to access download options.');
-            });
-        }
-
-        function copyCommand(url, savePath) {
-            const command = `youtube-dl -o "${savePath}/%(title)s.%(ext)s" ${url}`;
-            navigator.clipboard.writeText(command).then(() => {
-                alert('✅ Command copied to clipboard! Paste it in your terminal to download.\n\nNote: You need to have youtube-dl installed first.');
-            });
-        }
-
-        function isValidUrl(string) {
-            try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
-
         function showStatus(message, type) {
             const status = document.getElementById('status');
             status.innerHTML = message;
             status.className = 'status ' + type;
             status.style.display = 'block';
-        }
-
-        function selectQuality(quality) {
-            showStatus(`Selected ${quality} quality. Processing download...`, 'success');
+            
             setTimeout(() => {
-                showStatus('Download ready! Check your downloads folder.', 'success');
-            }, 1000);
+                status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
         }
     </script>
 </body>
