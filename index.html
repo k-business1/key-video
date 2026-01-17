@@ -314,6 +314,21 @@
                     <input type="text" id="videoUrl" placeholder="Paste YouTube, Vimeo, or video URL here...">
                     <button class="paste-btn" onclick="pasteUrl()">📋 Paste</button>
                 </div>
+                
+                <div style="margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 10px; color: #333; font-weight: bold;">
+                        📁 Save Location (Optional):
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="savePath" placeholder="e.g., C:\Users\YourName\Videos or /home/user/videos">
+                        <button class="paste-btn" onclick="selectFolder()" style="right: 120px;">📂 Browse</button>
+                        <button class="paste-btn" onclick="useDefaultPath()">Default</button>
+                    </div>
+                    <small style="color: #666; display: block; margin-top: 8px;">
+                        💡 Leave empty to use your browser's default download folder
+                    </small>
+                </div>
+
                 <button class="download-btn" onclick="processDownload()">⬇️ Download Video</button>
             </div>
 
@@ -371,6 +386,8 @@
 
         createParticles();
 
+        let selectedDirectory = null;
+
         async function pasteUrl() {
             try {
                 const text = await navigator.clipboard.readText();
@@ -381,8 +398,43 @@
             }
         }
 
+        async function selectFolder() {
+            try {
+                if ('showDirectoryPicker' in window) {
+                    selectedDirectory = await window.showDirectoryPicker();
+                    document.getElementById('savePath').value = selectedDirectory.name;
+                    showStatus('📁 Folder selected: ' + selectedDirectory.name, 'success');
+                } else {
+                    showStatus('⚠️ Folder selection not supported in this browser. Please enter path manually.', 'info');
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    showStatus('Folder selection cancelled', 'info');
+                }
+            }
+        }
+
+        function useDefaultPath() {
+            const os = navigator.platform;
+            let defaultPath = '';
+            
+            if (os.includes('Win')) {
+                defaultPath = 'C:\\Users\\' + (navigator.userAgent.match(/Windows NT ([0-9.]+)/) ? 'YourName' : 'User') + '\\Downloads';
+            } else if (os.includes('Mac')) {
+                defaultPath = '/Users/YourName/Downloads';
+            } else if (os.includes('Linux')) {
+                defaultPath = '/home/user/Downloads';
+            } else {
+                defaultPath = 'Downloads';
+            }
+            
+            document.getElementById('savePath').value = defaultPath;
+            showStatus('Default download path set! 💾', 'success');
+        }
+
         function processDownload() {
             const url = document.getElementById('videoUrl').value.trim();
+            const savePath = document.getElementById('savePath').value.trim();
             
             if (!url) {
                 showStatus('❌ Please enter a video URL', 'error');
@@ -403,16 +455,19 @@
                 document.getElementById('loading').style.display = 'none';
                 
                 if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                    provideYouTubeInstructions(url);
+                    provideYouTubeInstructions(url, savePath);
                 } else {
-                    provideGeneralInstructions(url);
+                    provideGeneralInstructions(url, savePath);
                 }
             }, 1500);
         }
 
-        function provideYouTubeInstructions(url) {
+        function provideYouTubeInstructions(url, savePath) {
             const videoId = extractYouTubeId(url);
+            const pathInfo = savePath ? `<p style="background: #e7f3ff; padding: 15px; border-radius: 10px; margin-bottom: 15px;"><strong>📂 Your selected save location:</strong><br><code style="background: white; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 5px;">${savePath}</code></p>` : '';
+            
             const instructions = `
+                ${pathInfo}
                 <h3 style="margin-bottom: 15px;">📹 Download Instructions for YouTube Video</h3>
                 <p style="margin-bottom: 15px;">To download this video, you can use one of these methods:</p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
@@ -426,8 +481,10 @@
                     <li style="margin-top: 10px;"><strong>Browser Extensions:</strong><br>
                         Install extensions like "Video Downloader Professional" or "SaveFrom.net Helper"
                     </li>
-                    <li style="margin-top: 10px;"><strong>Desktop Software:</strong><br>
-                        Use applications like 4K Video Downloader, VLC Media Player, or youtube-dl
+                    <li style="margin-top: 10px;"><strong>Desktop Software (Recommended for custom paths):</strong><br>
+                        • <strong>4K Video Downloader</strong> - Allows custom save locations<br>
+                        • <strong>youtube-dl</strong> - Command line: <code style="background: #f0f0f0; padding: 2px 6px; border-radius: 3px;">youtube-dl -o "${savePath || 'Downloads'}/%(title)s.%(ext)s" ${url}</code><br>
+                        • <strong>VLC Media Player</strong> - Open Network Stream and save
                     </li>
                 </ol>
                 <p style="margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 10px; border-left: 4px solid #ffc107;">
@@ -436,20 +493,29 @@
                 <button onclick="copyModifiedUrl('${url}')" style="margin-top: 15px; padding: 12px 30px; background: #28a745; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1em;">
                     📋 Copy Modified URL
                 </button>
+                ${savePath ? `<button onclick="copyCommand('${url}', '${savePath}')" style="margin-top: 15px; margin-left: 10px; padding: 12px 30px; background: #17a2b8; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1em;">
+                    💻 Copy youtube-dl Command
+                </button>` : ''}
             `;
             
             showStatus(instructions, 'info');
         }
 
-        function provideGeneralInstructions(url) {
+        function provideGeneralInstructions(url, savePath) {
+            const pathInfo = savePath ? `<p style="background: #e7f3ff; padding: 15px; border-radius: 10px; margin-bottom: 15px;"><strong>📂 Your selected save location:</strong><br><code style="background: white; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 5px;">${savePath}</code></p>` : '';
+            
             const instructions = `
+                ${pathInfo}
                 <h3 style="margin-bottom: 15px;">🎥 Download Instructions</h3>
                 <p style="margin-bottom: 15px;">To download this video, try these methods:</p>
                 <ol style="margin-left: 20px; line-height: 1.8;">
-                    <li><strong>Right-click on the video</strong> and select "Save video as..." (if available)</li>
+                    <li><strong>Right-click on the video</strong> and select "Save video as..." 
+                        ${savePath ? `<br>Then navigate to: <code style="background: #f0f0f0; padding: 2px 6px; border-radius: 3px;">${savePath}</code>` : ''}
+                    </li>
                     <li style="margin-top: 10px;"><strong>Use browser tools:</strong> Open Developer Tools (F12), go to Network tab, play the video, and find the video file to download</li>
                     <li style="margin-top: 10px;"><strong>Online downloaders:</strong> Visit sites like savefrom.net or en.savefrom.net and paste your URL</li>
                     <li style="margin-top: 10px;"><strong>Browser extensions:</strong> Install video downloader extensions for your browser</li>
+                    ${savePath ? `<li style="margin-top: 10px;"><strong>wget command:</strong><br><code style="background: #f0f0f0; padding: 5px 10px; border-radius: 3px; display: block; margin-top: 5px;">wget -O "${savePath}/video.mp4" "${url}"</code></li>` : ''}
                 </ol>
                 <button onclick="window.open('${url}', '_blank')" style="margin-top: 15px; padding: 12px 30px; background: #007bff; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1em;">
                     🔗 Open Video URL
@@ -469,6 +535,13 @@
             const modified = url.replace('youtube.com', 'ssyoutube.com').replace('youtu.be', 'ssyoutu.be');
             navigator.clipboard.writeText(modified).then(() => {
                 alert('✅ Modified URL copied! Paste it in your browser to access download options.');
+            });
+        }
+
+        function copyCommand(url, savePath) {
+            const command = `youtube-dl -o "${savePath}/%(title)s.%(ext)s" ${url}`;
+            navigator.clipboard.writeText(command).then(() => {
+                alert('✅ Command copied to clipboard! Paste it in your terminal to download.\n\nNote: You need to have youtube-dl installed first.');
             });
         }
 
