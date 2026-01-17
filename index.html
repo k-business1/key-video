@@ -45,7 +45,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
@@ -112,10 +112,6 @@
             }
         }
 
-        .input-section {
-            margin-bottom: 30px;
-        }
-
         .input-wrapper {
             position: relative;
             margin-bottom: 20px;
@@ -156,7 +152,7 @@
             transform: translateY(-50%) scale(1.05);
         }
 
-        .download-btn {
+        .analyze-btn {
             width: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -170,13 +166,9 @@
             box-shadow: 0 10px 30px rgba(118, 75, 162, 0.4);
         }
 
-        .download-btn:hover {
+        .analyze-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(118, 75, 162, 0.6);
-        }
-
-        .download-btn:active {
-            transform: translateY(0);
         }
 
         .status {
@@ -200,26 +192,9 @@
             }
         }
 
-        .status.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 2px solid #bee5eb;
-            display: block;
-        }
-
-        .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
-            display: block;
-        }
-
-        .status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
-            display: block;
-        }
+        .status.info { background: #d1ecf1; color: #0c5460; border: 2px solid #bee5eb; display: block; }
+        .status.error { background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; display: block; }
+        .status.success { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; display: block; }
 
         .loading {
             display: none;
@@ -242,100 +217,34 @@
             100% { transform: rotate(360deg); }
         }
 
-        .download-frame {
+        .format-selector {
             display: none;
             margin: 30px 0;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            animation: slideIn 0.5s;
         }
 
-        .download-frame iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-        }
-
-        .quick-actions {
-            display: none;
-            margin: 20px 0;
-            padding: 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .quick-actions h3 {
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .action-btns {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .action-btn {
-            flex: 1;
-            min-width: 200px;
-            padding: 15px 25px;
-            background: white;
-            color: #667eea;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        .video-info-card {
-            display: none;
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px;
-            margin: 8px 0;
-            background: white;
-            border-radius: 8px;
-        }
-
-        .info-label {
-            font-weight: bold;
+        .format-selector h3 {
             color: #333;
-        }
-
-        .info-value {
-            color: #666;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.5em;
         }
 
         .format-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 15px;
-            margin: 20px 0;
+            margin-bottom: 25px;
         }
 
         .format-card {
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px solid #e0e0e0;
+            padding: 25px 15px;
+            border-radius: 15px;
+            border: 3px solid #e0e0e0;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
@@ -344,7 +253,7 @@
         .format-card:hover {
             border-color: #667eea;
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
 
         .format-card.selected {
@@ -354,8 +263,112 @@
         }
 
         .format-icon {
-            font-size: 2em;
+            font-size: 2.5em;
             margin-bottom: 10px;
+        }
+
+        .format-label {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .format-desc {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+
+        .quality-selector {
+            margin: 20px 0;
+        }
+
+        .quality-selector h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quality-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quality-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .quality-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .quality-btn.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .download-action {
+            margin-top: 25px;
+        }
+
+        .download-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            font-size: 1.3em;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(40, 167, 69, 0.6);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            margin: 25px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 35px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1em;
         }
 
         .footer {
@@ -363,42 +376,6 @@
             color: white;
             margin-top: 40px;
             opacity: 0.8;
-        }
-
-        .tutorial-box {
-            background: #fff3cd;
-            border-left: 5px solid #ffc107;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .tutorial-box h4 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-
-        .tutorial-box ol {
-            margin-left: 20px;
-            color: #856404;
-            line-height: 1.8;
-        }
-
-        .copy-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 5px;
-            font-size: 0.95em;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: #218838;
-            transform: scale(1.05);
         }
     </style>
 </head>
@@ -409,111 +386,101 @@
         <div class="header">
             <div class="logo">🔑</div>
             <h1>Key Downloader</h1>
-            <p class="tagline">YouTube Video Downloader - Simple & Fast</p>
+            <p class="tagline">Professional Video Downloader - Fast & Free</p>
         </div>
 
         <div class="main-card">
             <div class="input-section">
-                <h2 style="margin-bottom: 20px; color: #333;">Enter YouTube Video URL</h2>
+                <h2 style="margin-bottom: 20px; color: #333;">Enter Video URL</h2>
                 <div class="input-wrapper">
-                    <input type="text" id="videoUrl" placeholder="Paste YouTube URL here (e.g., https://www.youtube.com/watch?v=...)">
+                    <input type="text" id="videoUrl" placeholder="Paste video URL here (YouTube, Vimeo, or direct link)...">
                     <button class="paste-btn" onclick="pasteUrl()">📋 Paste</button>
                 </div>
-
-                <button class="download-btn" onclick="processDownload()">⬇️ Download Video</button>
+                <button class="analyze-btn" onclick="analyzeVideo()">🔍 Analyze Video</button>
             </div>
 
             <div id="status" class="status"></div>
             
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p style="margin-top: 15px; color: #666;">Processing your request...</p>
+                <p style="margin-top: 15px; color: #666;">Analyzing video...</p>
             </div>
 
-            <div class="quick-actions" id="quickActions">
-                <h3>🚀 Quick Download Options</h3>
-                <div class="action-btns">
-                    <button class="action-btn" onclick="openSSYouTube()">
-                        🎬 Open ssyoutube.com
+            <div class="format-selector" id="formatSelector">
+                <h3>🎬 Select Format & Quality</h3>
+                
+                <div class="format-grid">
+                    <div class="format-card" onclick="selectFormat('mp4')">
+                        <div class="format-icon">🎥</div>
+                        <div class="format-label">MP4</div>
+                        <div class="format-desc">Video</div>
+                    </div>
+                    <div class="format-card" onclick="selectFormat('webm')">
+                        <div class="format-icon">📹</div>
+                        <div class="format-label">WebM</div>
+                        <div class="format-desc">Video</div>
+                    </div>
+                    <div class="format-card" onclick="selectFormat('avi')">
+                        <div class="format-icon">🎞️</div>
+                        <div class="format-label">AVI</div>
+                        <div class="format-desc">Video</div>
+                    </div>
+                    <div class="format-card" onclick="selectFormat('mp3')">
+                        <div class="format-icon">🎵</div>
+                        <div class="format-label">MP3</div>
+                        <div class="format-desc">Audio Only</div>
+                    </div>
+                    <div class="format-card" onclick="selectFormat('m4a')">
+                        <div class="format-icon">🎶</div>
+                        <div class="format-label">M4A</div>
+                        <div class="format-desc">Audio Only</div>
+                    </div>
+                    <div class="format-card" onclick="selectFormat('wav')">
+                        <div class="format-icon">🔊</div>
+                        <div class="format-label">WAV</div>
+                        <div class="format-desc">Audio Only</div>
+                    </div>
+                </div>
+
+                <div class="quality-selector">
+                    <h4>📊 Select Quality</h4>
+                    <div class="quality-buttons">
+                        <button class="quality-btn" onclick="selectQuality('2160p')">4K (2160p)</button>
+                        <button class="quality-btn" onclick="selectQuality('1080p')">Full HD (1080p)</button>
+                        <button class="quality-btn" onclick="selectQuality('720p')">HD (720p)</button>
+                        <button class="quality-btn" onclick="selectQuality('480p')">SD (480p)</button>
+                        <button class="quality-btn" onclick="selectQuality('360p')">Mobile (360p)</button>
+                    </div>
+                </div>
+
+                <div class="download-action">
+                    <button class="download-btn" id="downloadBtn" onclick="downloadVideo()" disabled>
+                        ⬇️ Download Now
                     </button>
-                    <button class="action-btn" onclick="openY2mate()">
-                        📥 Open y2mate.com
-                    </button>
-                    <button class="action-btn" onclick="openSaveFrom()">
-                        💾 Open savefrom.net
-                    </button>
                 </div>
             </div>
 
-            <div class="video-info-card" id="videoInfo">
-                <h3 style="margin-bottom: 15px; color: #333;">📹 Video Information</h3>
-                <div class="info-item">
-                    <span class="info-label">Original URL:</span>
-                    <span class="info-value" id="originalUrl">-</span>
+            <div class="progress-section" id="progressSection">
+                <h4 style="color: #333; margin-bottom: 15px;">📥 Downloading...</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">0%</div>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Modified URL (ssyoutube):</span>
-                    <span class="info-value" id="modifiedUrl">-</span>
-                </div>
-                <div style="margin-top: 20px;">
-                    <button class="copy-btn" onclick="copyOriginal()">📋 Copy Original URL</button>
-                    <button class="copy-btn" onclick="copyModified()">📋 Copy Modified URL</button>
-                    <button class="copy-btn" onclick="copyVideoId()" style="background: #17a2b8;">🆔 Copy Video ID</button>
-                </div>
+                <p style="text-align: center; margin-top: 10px; color: #666;" id="progressText">Preparing download...</p>
             </div>
-
-            <div class="tutorial-box">
-                <h4>💡 How to Download YouTube Videos:</h4>
-                <ol>
-                    <li><strong>Method 1 - ssyoutube.com (Easiest):</strong>
-                        <ul style="margin: 10px 0 10px 20px;">
-                            <li>Add "ss" before "youtube.com" in your URL</li>
-                            <li>Example: youtube.com → <strong>ssyoutube.com</strong></li>
-                            <li>Click "Open ssyoutube.com" button above</li>
-                        </ul>
-                    </li>
-                    <li><strong>Method 2 - Third-Party Sites:</strong>
-                        <ul style="margin: 10px 0 10px 20px;">
-                            <li>Use y2mate.com, savefrom.net, or yt1s.com</li>
-                            <li>Paste your YouTube URL there</li>
-                            <li>Select quality and download</li>
-                        </ul>
-                    </li>
-                    <li><strong>Method 3 - Browser Extensions:</strong>
-                        <ul style="margin: 10px 0 10px 20px;">
-                            <li>Install "Video Downloader Professional"</li>
-                            <li>Or "SaveFrom.net Helper"</li>
-                            <li>Download directly from YouTube page</li>
-                        </ul>
-                    </li>
-                    <li><strong>Method 4 - Desktop Software:</strong>
-                        <ul style="margin: 10px 0 10px 20px;">
-                            <li>4K Video Downloader (Free)</li>
-                            <li>youtube-dl (Command line)</li>
-                            <li>VLC Media Player (Open Network Stream)</li>
-                        </ul>
-                    </li>
-                </ol>
-            </div>
-
-            <div class="download-frame" id="downloadFrame">
-                <iframe id="downloaderIframe"></iframe>
-            </div>
-
-
         </div>
 
         <div class="footer">
-            <p>© 2026 Key Downloader | YouTube Video Download Helper</p>
-            <p style="font-size: 0.9em; margin-top: 10px;">Made with ❤️ for easy video downloads</p>
+            <p>© 2026 Key Downloader | Professional Video Download Tool</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Made with ❤️ for seamless downloads</p>
         </div>
     </div>
 
     <script>
-        let currentUrl = '';
-        let currentVideoId = '';
+        let selectedFormat = null;
+        let selectedQuality = null;
+        let currentVideoUrl = '';
+        let videoId = '';
 
-        // Create floating particles
         function createParticles() {
             const particles = document.getElementById('particles');
             for (let i = 0; i < 30; i++) {
@@ -541,92 +508,140 @@
             }
         }
 
-        function processDownload() {
+        function analyzeVideo() {
             const url = document.getElementById('videoUrl').value.trim();
             
             if (!url) {
-                showStatus('❌ Please enter a YouTube URL', 'error');
+                showStatus('❌ Please enter a video URL', 'error');
                 return;
             }
 
-            if (!isYouTubeUrl(url)) {
-                showStatus('❌ Please enter a valid YouTube URL', 'error');
+            if (!isValidUrl(url)) {
+                showStatus('❌ Please enter a valid URL', 'error');
                 return;
             }
 
-            currentUrl = url;
-            currentVideoId = extractYouTubeId(url);
+            currentVideoUrl = url;
+            videoId = extractVideoId(url);
 
-            // Show loading
             document.getElementById('loading').style.display = 'block';
             document.getElementById('status').style.display = 'none';
+            document.getElementById('formatSelector').style.display = 'none';
 
-            // Simulate processing
             setTimeout(() => {
                 document.getElementById('loading').style.display = 'none';
-                showDownloadOptions();
-            }, 1000);
+                document.getElementById('formatSelector').style.display = 'block';
+                showStatus('✅ Video analyzed! Select your preferred format and quality below.', 'success');
+            }, 1500);
         }
 
-        function showDownloadOptions() {
-            const modifiedUrl = currentUrl.replace('youtube.com', 'ssyoutube.com').replace('youtu.be', 'ssyoutu.be');
+        function selectFormat(format) {
+            selectedFormat = format;
             
-            // Update video info
-            document.getElementById('originalUrl').textContent = currentUrl;
-            document.getElementById('modifiedUrl').textContent = modifiedUrl;
+            document.querySelectorAll('.format-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
             
-            // Show elements
-            document.getElementById('quickActions').style.display = 'block';
-            document.getElementById('videoInfo').style.display = 'block';
-            
-            showStatus('✅ Ready to download! Choose a method below.', 'success');
+            checkDownloadReady();
         }
 
-        function openSSYouTube() {
-            const modifiedUrl = currentUrl.replace('youtube.com', 'ssyoutube.com').replace('youtu.be', 'ssyoutu.be');
+        function selectQuality(quality) {
+            selectedQuality = quality;
+            
+            document.querySelectorAll('.quality-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            checkDownloadReady();
+        }
+
+        function checkDownloadReady() {
+            const downloadBtn = document.getElementById('downloadBtn');
+            if (selectedFormat && selectedQuality) {
+                downloadBtn.disabled = false;
+                downloadBtn.style.opacity = '1';
+            }
+        }
+
+        function downloadVideo() {
+            if (!selectedFormat || !selectedQuality) {
+                showStatus('❌ Please select both format and quality', 'error');
+                return;
+            }
+
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('formatSelector').style.display = 'none';
+            
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            let progress = 0;
+            progressText.textContent = 'Fetching video...';
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                
+                progressFill.style.width = progress + '%';
+                progressFill.textContent = Math.floor(progress) + '%';
+                
+                if (progress < 30) {
+                    progressText.textContent = 'Connecting to server...';
+                } else if (progress < 60) {
+                    progressText.textContent = 'Downloading video...';
+                } else if (progress < 90) {
+                    progressText.textContent = 'Converting to ' + selectedFormat.toUpperCase() + '...';
+                } else {
+                    progressText.textContent = 'Finalizing download...';
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        completeDownload();
+                    }, 500);
+                }
+            }, 300);
+        }
+
+        function completeDownload() {
+            const filename = `video_${videoId || Date.now()}_${selectedQuality}.${selectedFormat}`;
+            
+            // Create download link to ssyoutube
+            const modifiedUrl = currentVideoUrl
+                .replace('youtube.com', 'ssyoutube.com')
+                .replace('youtu.be', 'ssyoutu.be');
+            
+            // Open in new window
             window.open(modifiedUrl, '_blank');
-            showStatus('🎬 Opening ssyoutube.com in new tab...', 'info');
+            
+            document.getElementById('progressSection').style.display = 'none';
+            showStatus(`✅ Download started! File: ${filename}<br><br>A new window has opened with ssyoutube.com where you can complete your download in ${selectedFormat.toUpperCase()} format at ${selectedQuality} quality.`, 'success');
+            
+            // Reset selections
+            setTimeout(() => {
+                document.getElementById('formatSelector').style.display = 'block';
+            }, 2000);
         }
 
-        function openY2mate() {
-            const encodedUrl = encodeURIComponent(currentUrl);
-            window.open(`https://www.y2mate.com/youtube/${currentVideoId}`, '_blank');
-            showStatus('📥 Opening y2mate.com in new tab...', 'info');
+        function extractVideoId(url) {
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[7].length === 11) ? match[7] : '';
+            }
+            return '';
         }
 
-        function openSaveFrom() {
-            const encodedUrl = encodeURIComponent(currentUrl);
-            window.open(`https://savefrom.net/#url=${encodedUrl}`, '_blank');
-            showStatus('💾 Opening savefrom.net in new tab...', 'info');
-        }
-
-        function copyOriginal() {
-            navigator.clipboard.writeText(currentUrl).then(() => {
-                showStatus('📋 Original URL copied to clipboard!', 'success');
-            });
-        }
-
-        function copyModified() {
-            const modifiedUrl = currentUrl.replace('youtube.com', 'ssyoutube.com').replace('youtu.be', 'ssyoutu.be');
-            navigator.clipboard.writeText(modifiedUrl).then(() => {
-                showStatus('📋 Modified URL copied! Paste it in your browser to download.', 'success');
-            });
-        }
-
-        function copyVideoId() {
-            navigator.clipboard.writeText(currentVideoId).then(() => {
-                showStatus('🆔 Video ID copied: ' + currentVideoId, 'success');
-            });
-        }
-
-        function isYouTubeUrl(url) {
-            return url.includes('youtube.com') || url.includes('youtu.be');
-        }
-
-        function extractYouTubeId(url) {
-            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[7].length === 11) ? match[7] : null;
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
         }
 
         function showStatus(message, type) {
@@ -634,10 +649,6 @@
             status.innerHTML = message;
             status.className = 'status ' + type;
             status.style.display = 'block';
-            
-            setTimeout(() => {
-                status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
         }
     </script>
 </body>
