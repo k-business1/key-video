@@ -417,4 +417,57 @@
         }
     </script>
 </body>
+</html><!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <title>IK Logo Neon</title>
+    <style>
+        body {
+            background-color: #000; /* Igihe cyose neon ikora neza ku mwijima */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Uburyo bwo guha logo yawe urumuri (Glow effect) */
+        .logo-container {
+            filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.6)) 
+                    drop-shadow(0 0 20px rgba(0, 255, 0, 0.4));
+        }
+
+        svg {
+            width: 150px; /* Uhindure hano niba ushaka ko iba nini cyangwa nto */
+            height: auto;
+        }
+
+        .neon-path {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            /* Guhuza amabara ya Rainbow kuri stroke */
+            stroke: url(#rainbowGradient);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="rainbowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#ff0000;stop-opacity:1" />    <stop offset="20%" style="stop-color:#ff9900;stop-opacity:1" />   <stop offset="40%" style="stop-color:#ffff00;stop-opacity:1" />   <stop offset="60%" style="stop-color:#33ff00;stop-opacity:1" />   <stop offset="80%" style="stop-color:#0066ff;stop-opacity:1" />   <stop offset="100%" style="stop-color:#9900ff;stop-opacity:1" />  </linearGradient>
+            </defs>
+
+            <circle cx="40" cy="25" r="5" fill="url(#rainbowGradient)" />
+            <path class="neon-path" d="M40 45 L40 90" />
+
+            <path class="neon-path" d="M65 45 L65 90 M65 68 L85 45 M65 68 L85 90" />
+        </svg>
+    </div>
+
+</body>
 </html>
