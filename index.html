@@ -1,1176 +1,540 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, MoreVertical, Download, Home, Settings, LogOut, Plus, Upload, Trash2, BarChart3, TrendingUp, Users, Eye, Image } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MH Media Library</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide-react@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-const MediaLibraryApp = () => {
-  const [favorites, setFavorites] = useState([]);
-  const [downloads, setDownloads] = useState([]);
-  const [activeSection, setActiveSection] = useState('home');
-  const [userProfile, setUserProfile] = useState({
-    username: 'username',
-    posts: 44,
-    followers: 138,
-    stats: 29
-  });
-  const [showUpload, setShowUpload] = useState(false);
-  const [appLogo, setAppLogo] = useState(null);
-  const [appName, setAppName] = useState('MH');
-  const [showSettings, setShowSettings] = useState(false);
-  const [tempLogo, setTempLogo] = useState(null);
-  const [tempName, setTempName] = useState('');
-  const [showProfileEdit, setShowProfileEdit] = useState(false);
-  const [tempProfile, setTempProfile] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [loginData, setLoginData] = useState({ username: '', password: '' });
-  const [securitySettings, setSecuritySettings] = useState({
-    password: '',
-    email: '',
-    twoFactor: false
-  });
-  const [showSecurityEdit, setShowSecurityEdit] = useState(false);
-  const [tempSecurity, setTempSecurity] = useState({});
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+        const { 
+            Heart, MoreVertical, Download, Home, Settings, LogOut, 
+            Plus, Upload, Trash2, BarChart3, TrendingUp, Users, 
+            Eye, Image, X, MapPin, Edit3 
+        } = lucideReact;
 
-  // Load data from storage on mount
-  useEffect(() => {
-    loadFromStorage();
-  }, []);
-
-  const loadFromStorage = async () => {
-    try {
-      const favResult = await window.storage.get('media-favorites');
-      if (favResult) {
-        setFavorites(JSON.parse(favResult.value));
-      }
-
-      const dlResult = await window.storage.get('media-downloads');
-      if (dlResult) {
-        setDownloads(JSON.parse(dlResult.value));
-      }
-
-      const profileResult = await window.storage.get('user-profile');
-      if (profileResult) {
-        setUserProfile(JSON.parse(profileResult.value));
-      }
-
-      const logoResult = await window.storage.get('app-logo');
-      if (logoResult) {
-        setAppLogo(logoResult.value);
-      }
-
-      const nameResult = await window.storage.get('app-name');
-      if (nameResult) {
-        setAppName(nameResult.value);
-      }
-
-      const securityResult = await window.storage.get('security-settings');
-      if (securityResult) {
-        setSecuritySettings(JSON.parse(securityResult.value));
-      }
-
-      const loginResult = await window.storage.get('is-logged-in');
-      if (loginResult) {
-        setIsLoggedIn(loginResult.value === 'true');
-      }
-    } catch (error) {
-      console.log('Loading initial data');
-    }
-  };
-
-  const saveToStorage = async (key, data) => {
-    try {
-      await window.storage.set(key, JSON.stringify(data));
-    } catch (error) {
-      console.error('Storage error:', error);
-    }
-  };
-
-  const saveSettings = async () => {
-    try {
-      if (tempLogo) {
-        await window.storage.set('app-logo', tempLogo);
-        setAppLogo(tempLogo);
-      }
-      if (tempName) {
-        await window.storage.set('app-name', tempName);
-        setAppName(tempName);
-      }
-      setShowSettings(false);
-      setTempLogo(null);
-      setTempName('');
-    } catch (error) {
-      console.error('Settings save error:', error);
-    }
-  };
-
-  const saveProfileSettings = async () => {
-    try {
-      const updatedProfile = { ...userProfile, ...tempProfile };
-      await window.storage.set('user-profile', JSON.stringify(updatedProfile));
-      setUserProfile(updatedProfile);
-      setShowProfileEdit(false);
-      setTempProfile({});
-    } catch (error) {
-      console.error('Profile save error:', error);
-    }
-  };
-
-  const handleProfileImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setTempProfile({ ...tempProfile, avatar: event.target.result });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleLogin = async () => {
-    try {
-      const secResult = await window.storage.get('security-settings');
-      if (secResult) {
-        const sec = JSON.parse(secResult.value);
-        if (loginData.username === userProfile.username && loginData.password === sec.password) {
-          setIsLoggedIn(true);
-          await window.storage.set('is-logged-in', 'true');
-          setLoginData({ username: '', password: '' });
-        } else {
-          alert('Invalid credentials');
-        }
-      } else {
-        // First time login - no password set
-        setIsLoggedIn(true);
-        await window.storage.set('is-logged-in', 'true');
-        setLoginData({ username: '', password: '' });
-      }
-    } catch (error) {
-      setIsLoggedIn(true);
-      await window.storage.set('is-logged-in', 'true');
-    }
-  };
-
-  const handleLogout = async () => {
-    setIsLoggedIn(false);
-    await window.storage.set('is-logged-in', 'false');
-    setActiveSection('home');
-  };
-
-  const saveSecuritySettings = async () => {
-    try {
-      const updatedSecurity = { ...securitySettings, ...tempSecurity };
-      await window.storage.set('security-settings', JSON.stringify(updatedSecurity));
-      setSecuritySettings(updatedSecurity);
-      setShowSecurityEdit(false);
-      setTempSecurity({});
-    } catch (error) {
-      console.error('Security save error:', error);
-    }
-  };
-
-  const handleLogoUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setTempLogo(event.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const toggleFavorite = (item) => {
-    const newFavorites = favorites.some(f => f.id === item.id)
-      ? favorites.filter(f => f.id !== item.id)
-      : [...favorites, item];
-    
-    setFavorites(newFavorites);
-    saveToStorage('media-favorites', newFavorites);
-  };
-
-  const addToDownloads = (item) => {
-    if (!downloads.some(d => d.id === item.id)) {
-      const newDownloads = [...downloads, item];
-      setDownloads(newDownloads);
-      saveToStorage('media-downloads', newDownloads);
-      
-      // Update profile stats
-      const updatedProfile = { ...userProfile, posts: userProfile.posts + 1 };
-      setUserProfile(updatedProfile);
-      saveToStorage('user-profile', updatedProfile);
-    }
-  };
-
-  const removeFromDownloads = (id) => {
-    const newDownloads = downloads.filter(d => d.id !== id);
-    setDownloads(newDownloads);
-    saveToStorage('media-downloads', newDownloads);
-  };
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const newItem = {
-          id: Date.now(),
-          title: file.name.replace(/\.[^/.]+$/, ""),
-          duration: '0:00',
-          views: Math.floor(Math.random() * 1000) + ' views',
-          thumbnail: event.target.result,
-          type: file.type.startsWith('image') ? 'image' : 'video'
-        };
-        addToDownloads(newItem);
-        setShowUpload(false);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Calculate dashboard stats
-  const getTotalViews = () => {
-    return downloads.reduce((acc, item) => {
-      const views = parseInt(item.views.replace(/[^0-9]/g, '')) || 0;
-      return acc + views;
-    }, 0);
-  };
-
-  const MediaCard = ({ item, showHeart = true, showDelete = false }) => (
-    <div className="relative rounded-xl overflow-hidden group cursor-pointer">
-      <div className="aspect-video bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 flex items-center justify-center text-white font-bold">
-        {item.thumbnail ? (
-          <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
-        ) : (
-          item.title.substring(0, 2).toUpperCase()
-        )}
-      </div>
-      <div className="absolute top-2 right-2 flex gap-2">
-        {showHeart && (
-          <button
-            onClick={() => toggleFavorite(item)}
-            className={`p-2 rounded-full backdrop-blur-sm ${
-              favorites.some(f => f.id === item.id)
-                ? 'bg-pink-500 text-white'
-                : 'bg-black/40 text-white hover:bg-pink-500'
-            } transition-colors`}
-          >
-            <Heart size={16} fill={favorites.some(f => f.id === item.id) ? 'currentColor' : 'none'} />
-          </button>
-        )}
-        {showDelete && (
-          <button
-            onClick={() => removeFromDownloads(item.id)}
-            className="p-2 rounded-full backdrop-blur-sm bg-black/40 text-white hover:bg-red-500 transition-colors"
-          >
-            <Trash2 size={16} />
-          </button>
-        )}
-      </div>
-      <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-        {item.duration}
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
-        <div className="text-white font-medium text-sm">{item.title}</div>
-        <div className="text-white/70 text-xs">{item.views}</div>
-      </div>
-    </div>
-  );
-
-  const StatCard = ({ icon: Icon, label, value, trend, color }) => (
-    <div className="bg-black/40 backdrop-blur-md rounded-xl p-6 border border-white/10">
-      <div className="flex items-start justify-between mb-4">
-        <div className={`p-3 rounded-lg bg-gradient-to-br ${color}`}>
-          <Icon size={24} className="text-white" />
-        </div>
-        {trend && (
-          <div className="flex items-center gap-1 text-green-400 text-sm">
-            <TrendingUp size={16} />
-            <span>{trend}</span>
-          </div>
-        )}
-      </div>
-      <div className="text-3xl font-bold mb-1">{value}</div>
-      <div className="text-white/60 text-sm">{label}</div>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      {/* Login Screen */}
-      {!isLoggedIn && (
-        <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center z-50">
-          <div className="bg-black/40 backdrop-blur-md rounded-2xl p-8 max-w-md w-full mx-4 border border-white/10">
-            <div className="text-center mb-8">
-              <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 rounded-xl flex items-center justify-center text-3xl font-bold mx-auto mb-4 overflow-hidden">
-                {appLogo ? (
-                  <img src={appLogo} alt="Logo" className="w-full h-full object-cover" />
-                ) : (
-                  appName
-                )}
-              </div>
-              <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
-              <p className="text-white/60">Login to access your media library</p>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Username</label>
-                <input
-                  type="text"
-                  value={loginData.username}
-                  onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
-                  placeholder="Enter username"
-                  className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Password</label>
-                <input
-                  type="password"
-                  value={loginData.password}
-                  onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                  placeholder="Enter password"
-                  className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                />
-              </div>
-
-              <button
-                onClick={handleLogin}
-                className="w-full px-4 py-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg hover:opacity-90 transition-opacity font-medium"
-              >
-                Login
-              </button>
-
-              <p className="text-center text-white/60 text-sm mt-4">
-                {securitySettings.password ? 'Enter your credentials to continue' : 'No password set - Click login to enter'}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Main App - Only show when logged in */}
-      {isLoggedIn && (
-        <>
-      {/* Sidebar */}
-      <div className="fixed left-0 top-0 h-full w-48 bg-black/40 backdrop-blur-md p-4 flex flex-col z-10">
-        <div className="mb-8">
-          <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl font-bold overflow-hidden">
-            {appLogo ? (
-              <img src={appLogo} alt="Logo" className="w-full h-full object-cover" />
-            ) : (
-              appName
-            )}
-          </div>
-        </div>
-        
-        <nav className="flex-1 space-y-2">
-          <button
-            onClick={() => setActiveSection('home')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-              activeSection === 'home' ? 'bg-white/10' : 'hover:bg-white/5'
-            }`}
-          >
-            <Home size={20} />
-            <span>Home</span>
-          </button>
-
-          <button
-            onClick={() => setActiveSection('dashboard')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-              activeSection === 'dashboard' ? 'bg-white/10' : 'hover:bg-white/5'
-            }`}
-          >
-            <BarChart3 size={20} />
-            <span>Dashboard</span>
-          </button>
-
-          <button
-            onClick={() => setActiveSection('user-dashboard')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-              activeSection === 'user-dashboard' ? 'bg-white/10' : 'hover:bg-white/5'
-            }`}
-          >
-            <Users size={20} />
-            <span>User Profile</span>
-          </button>
-          
-          <button
-            onClick={() => setActiveSection('favorites')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-              activeSection === 'favorites' ? 'bg-white/10' : 'hover:bg-white/5'
-            }`}
-          >
-            <Heart size={20} />
-            <span>My Favorites</span>
-          </button>
-          
-          <button
-            onClick={() => setActiveSection('downloads')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-              activeSection === 'downloads' ? 'bg-white/10' : 'hover:bg-white/5'
-            }`}
-          >
-            <Download size={20} />
-            <span>Downloads</span>
-          </button>
-          
-          <button
-            onClick={() => {
-              setActiveSection('settings');
-              setShowSettings(true);
-              setTempName(appName);
-            }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-              activeSection === 'settings' ? 'bg-white/10' : 'hover:bg-white/5'
-            }`}
-          >
-            <Settings size={20} />
-            <span>Settings</span>
-          </button>
-        </nav>
-        
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-        >
-          <LogOut size={20} />
-          <span>Logout</span>
-        </button>
-      </div>
-
-      {/* Main Content */}
-      <div className="ml-48 p-8">
-        {/* Dashboard Section */}
-        {activeSection === 'dashboard' && (
-          <div>
-            <h1 className="text-3xl font-bold mb-6">Analytics Dashboard</h1>
+        const MediaLibraryApp = () => {
+            // --- State ---
+            const [favorites, setFavorites] = useState([]);
+            const [downloads, setDownloads] = useState([]);
+            const [activeSection, setActiveSection] = useState('home');
+            const [userProfile, setUserProfile] = useState({
+                username: 'CreativeUser',
+                posts: 44,
+                followers: 138,
+                stats: 29,
+                bio: 'Digital artist and media enthusiast.',
+                location: 'San Francisco, CA',
+                avatar: null
+            });
+            const [isLoggedIn, setIsLoggedIn] = useState(false);
+            const [showUpload, setShowUpload] = useState(false);
+            const [showSettings, setShowSettings] = useState(false);
+            const [showProfileEdit, setShowProfileEdit] = useState(false);
             
-            <div className="grid grid-cols-4 gap-4 mb-6">
-              <StatCard
-                icon={Eye}
-                label="Total Views"
-                value={getTotalViews().toLocaleString()}
-                trend="+12%"
-                color="from-blue-500 to-cyan-500"
-              />
-              <StatCard
-                icon={Download}
-                label="Total Media"
-                value={downloads.length}
-                trend="+5"
-                color="from-purple-500 to-pink-500"
-              />
-              <StatCard
-                icon={Heart}
-                label="Favorites"
-                value={favorites.length}
-                color="from-pink-500 to-rose-500"
-              />
-              <StatCard
-                icon={Users}
-                label="Followers"
-                value={userProfile.followers}
-                trend="+8"
-                color="from-orange-500 to-yellow-500"
-              />
-            </div>
+            const [appLogo, setAppLogo] = useState(null);
+            const [appName, setAppName] = useState('MH');
+            const [loginData, setLoginData] = useState({ username: '', password: '' });
+            
+            // Temporary Edit States
+            const [tempName, setTempName] = useState('');
+            const [tempProfile, setTempProfile] = useState({});
 
-            <div className="grid grid-cols-2 gap-6 mb-6">
-              <div className="bg-black/40 backdrop-blur-md rounded-xl p-6 border border-white/10">
-                <h3 className="text-xl font-bold mb-4">Recent Activity</h3>
-                <div className="space-y-3">
-                  {downloads.slice(0, 5).map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-3 p-3 bg-white/5 rounded-lg">
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden">
+            // --- Storage Logic ---
+            useEffect(() => {
+                const loadData = () => {
+                    const favs = localStorage.getItem('media-favorites');
+                    if (favs) setFavorites(JSON.parse(favs));
+                    
+                    const dls = localStorage.getItem('media-downloads');
+                    if (dls) setDownloads(JSON.parse(dls));
+
+                    const profile = localStorage.getItem('user-profile');
+                    if (profile) setUserProfile(JSON.parse(profile));
+
+                    const logo = localStorage.getItem('app-logo');
+                    if (logo) setAppLogo(logo);
+
+                    const name = localStorage.getItem('app-name');
+                    if (name) setAppName(name);
+
+                    const loginStatus = localStorage.getItem('is-logged-in');
+                    if (loginStatus === 'true') setIsLoggedIn(true);
+                };
+                loadData();
+            }, []);
+
+            const saveToStorage = (key, data) => {
+                localStorage.setItem(key, typeof data === 'string' ? data : JSON.stringify(data));
+            };
+
+            // --- Handlers ---
+            const handleLogin = () => {
+                if (loginData.username.length > 2) {
+                    setIsLoggedIn(true);
+                    saveToStorage('is-logged-in', 'true');
+                } else {
+                    alert("Please enter a username (min 3 chars)");
+                }
+            };
+
+            const handleLogout = () => {
+                setIsLoggedIn(false);
+                saveToStorage('is-logged-in', 'false');
+            };
+
+            const toggleFavorite = (item) => {
+                const newFavorites = favorites.some(f => f.id === item.id)
+                    ? favorites.filter(f => f.id !== item.id)
+                    : [...favorites, item];
+                setFavorites(newFavorites);
+                saveToStorage('media-favorites', newFavorites);
+            };
+
+            const addToDownloads = (item) => {
+                if (!downloads.some(d => d.id === item.id)) {
+                    const newDownloads = [item, ...downloads];
+                    setDownloads(newDownloads);
+                    saveToStorage('media-downloads', newDownloads);
+                    
+                    const updatedProfile = { ...userProfile, posts: userProfile.posts + 1 };
+                    setUserProfile(updatedProfile);
+                    saveToStorage('user-profile', updatedProfile);
+                }
+            };
+
+            const removeFromDownloads = (id) => {
+                const newDownloads = downloads.filter(d => d.id !== id);
+                setDownloads(newDownloads);
+                saveToStorage('media-downloads', newDownloads);
+            };
+
+            const handleFileUpload = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const newItem = {
+                            id: Date.now(),
+                            title: file.name.replace(/\.[^/.]+$/, ""),
+                            duration: '0:00',
+                            views: Math.floor(Math.random() * 1000) + ' views',
+                            thumbnail: event.target.result,
+                            type: file.type.startsWith('image') ? 'image' : 'video'
+                        };
+                        addToDownloads(newItem);
+                        setShowUpload(false);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const saveProfileSettings = () => {
+                const updatedProfile = { ...userProfile, ...tempProfile };
+                setUserProfile(updatedProfile);
+                saveToStorage('user-profile', updatedProfile);
+                setShowProfileEdit(false);
+            };
+
+            const totalViews = useMemo(() => {
+                return downloads.reduce((acc, item) => {
+                    const views = parseInt(item.views.replace(/[^0-9]/g, '')) || 0;
+                    return acc + views;
+                }, 0);
+            }, [downloads]);
+
+            // --- Components ---
+            const MediaCard = ({ item, showHeart = true, showDelete = false }) => (
+                <div className="relative rounded-xl overflow-hidden group bg-white/5 border border-white/10 hover:border-white/30 transition-all">
+                    <div className="aspect-video flex items-center justify-center text-white font-bold relative">
                         {item.thumbnail ? (
-                          <img src={item.thumbnail} alt="" className="w-full h-full object-cover" />
+                            <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
                         ) : (
-                          <Image size={20} />
+                            <div className="w-full h-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center uppercase">
+                                {item.title.substring(0, 2)}
+                            </div>
                         )}
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-medium">{item.title}</div>
-                        <div className="text-sm text-white/60">{item.views}</div>
-                      </div>
-                    </div>
-                  ))}
-                  {downloads.length === 0 && (
-                    <div className="text-center py-8 text-white/40">No activity yet</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="bg-black/40 backdrop-blur-md rounded-xl p-6 border border-white/10">
-                <h3 className="text-xl font-bold mb-4">Top Favorites</h3>
-                <div className="space-y-3">
-                  {favorites.slice(0, 5).map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-3 p-3 bg-white/5 rounded-lg">
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center overflow-hidden">
-                        {item.thumbnail ? (
-                          <img src={item.thumbnail} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                          <Heart size={20} />
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-medium">{item.title}</div>
-                        <div className="text-sm text-white/60">{item.views}</div>
-                      </div>
-                    </div>
-                  ))}
-                  {favorites.length === 0 && (
-                    <div className="text-center py-8 text-white/40">No favorites yet</div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* User Dashboard Section */}
-        {activeSection === 'user-dashboard' && (
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-3xl font-bold">User Profile Dashboard</h1>
-              <button
-                onClick={() => {
-                  setShowProfileEdit(true);
-                  setTempProfile({ ...userProfile });
-                }}
-                className="px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
-              >
-                <Settings size={16} />
-                Edit Profile
-              </button>
-            </div>
-
-            {/* User Profile Card */}
-            <div className="bg-black/40 backdrop-blur-md rounded-2xl p-8 mb-6 border border-white/10">
-              <div className="flex items-start gap-6">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 p-1">
-                  <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
-                    {userProfile.avatar ? (
-                      <img src={userProfile.avatar} alt="Avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-3xl font-bold">
-                        {userProfile.username.substring(0, 2).toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold mb-2">{userProfile.username}</h2>
-                  <p className="text-white/60 mb-1">@{userProfile.username}</p>
-                  {userProfile.bio && (
-                    <p className="text-white/80 mb-4">{userProfile.bio}</p>
-                  )}
-                  {userProfile.location && (
-                    <p className="text-white/60 text-sm mb-4">📍 {userProfile.location}</p>
-                  )}
-                  
-                  <div className="flex gap-8">
-                    <div>
-                      <div className="text-2xl font-bold">{userProfile.posts}</div>
-                      <div className="text-sm text-white/60">Posts</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold">{userProfile.followers}</div>
-                      <div className="text-sm text-white/60">Followers</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold">{userProfile.stats}</div>
-                      <div className="text-sm text-white/60">Following</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* User Stats Grid */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-black/40 backdrop-blur-md rounded-xl p-6 border border-white/10">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">
-                    <Download size={24} />
-                  </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold">{downloads.length}</div>
-                    <div className="text-white/60 text-sm">Total Uploads</div>
-                  </div>
-                </div>
-                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: '70%' }}></div>
-                </div>
-              </div>
-
-              <div className="bg-black/40 backdrop-blur-md rounded-xl p-6 border border-white/10">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-lg bg-gradient-to-br from-pink-500 to-rose-500">
-                    <Heart size={24} />
-                  </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold">{favorites.length}</div>
-                    <div className="text-white/60 text-sm">Total Favorites</div>
-                  </div>
-                </div>
-                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-pink-500 to-rose-500" style={{ width: '55%' }}></div>
-                </div>
-              </div>
-
-              <div className="bg-black/40 backdrop-blur-md rounded-xl p-6 border border-white/10">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
-                    <Eye size={24} />
-                  </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold">{getTotalViews()}</div>
-                    <div className="text-white/60 text-sm">Total Views</div>
-                  </div>
-                </div>
-                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500" style={{ width: '85%' }}></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Activity Timeline */}
-            <div className="bg-black/40 backdrop-blur-md rounded-xl p-6 border border-white/10">
-              <h3 className="text-xl font-bold mb-4">Activity Timeline</h3>
-              <div className="space-y-4">
-                {downloads.slice(0, 10).map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
-                    <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden flex-shrink-0">
-                      {item.thumbnail ? (
-                        <img src={item.thumbnail} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <Image size={24} />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium mb-1">{item.title}</div>
-                      <div className="text-sm text-white/60">{item.views} • Uploaded recently</div>
-                    </div>
-                    {favorites.some(f => f.id === item.id) && (
-                      <Heart size={20} className="text-pink-500" fill="currentColor" />
-                    )}
-                  </div>
-                ))}
-                {downloads.length === 0 && (
-                  <div className="text-center py-12 text-white/40">
-                    No activity yet. Start uploading media to see your timeline!
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Profile Header */}
-        {activeSection === 'home' && (
-          <>
-            <div className="bg-black/40 backdrop-blur-md rounded-2xl p-6 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold">Profile Summary</h2>
-                <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                  <MoreVertical size={20} />
-                </button>
-              </div>
-              
-              <div className="flex items-center gap-6">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 p-1">
-                  <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="text-2xl font-bold">{userProfile.username}</div>
-                  <div className="text-white/60">@{userProfile.username}</div>
-                  <div className="flex gap-6 mt-2">
-                    <div className="text-center">
-                      <div className="text-xl font-bold">{userProfile.posts}</div>
-                      <div className="text-sm text-white/60">Posts</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-xl font-bold">{userProfile.followers}</div>
-                      <div className="text-sm text-white/60">Followers</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-xl font-bold">{userProfile.stats}</div>
-                      <div className="text-sm text-white/60">Stats</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Favorites Preview */}
-            <div className="bg-black/40 backdrop-blur-md rounded-2xl p-6 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <Heart className="text-pink-500" fill="currentColor" size={24} />
-                  My Favorites
-                </h2>
-                <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                  <MoreVertical size={20} />
-                </button>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-4">
-                {favorites.length === 0 ? (
-                  <div className="col-span-3 text-center py-12 text-white/40">
-                    No favorites yet. Add items by clicking the heart icon!
-                  </div>
-                ) : (
-                  favorites.slice(0, 6).map(item => (
-                    <MediaCard key={item.id} item={item} showHeart={true} />
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Downloads Preview */}
-            <div className="bg-black/40 backdrop-blur-md rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <Download size={24} />
-                  Downloads
-                </h2>
-                <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                  <MoreVertical size={20} />
-                </button>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-4">
-                {downloads.length === 0 ? (
-                  <div className="col-span-3 text-center py-12 text-white/40">
-                    No downloads yet. Upload files to get started!
-                  </div>
-                ) : (
-                  downloads.slice(0, 6).map(item => (
-                    <MediaCard key={item.id} item={item} showHeart={false} />
-                  ))
-                )}
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Favorites Section */}
-        {activeSection === 'favorites' && (
-          <div className="bg-black/40 backdrop-blur-md rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold flex items-center gap-2">
-                <Heart className="text-pink-500" fill="currentColor" size={24} />
-                My Favorites
-              </h2>
-              <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                <MoreVertical size={20} />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-4">
-              {favorites.length === 0 ? (
-                <div className="col-span-3 text-center py-12 text-white/40">
-                  No favorites yet. Add items by clicking the heart icon!
-                </div>
-              ) : (
-                favorites.map(item => (
-                  <MediaCard key={item.id} item={item} showHeart={true} />
-                ))
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Downloads Section */}
-        {activeSection === 'downloads' && (
-          <div className="bg-black/40 backdrop-blur-md rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold flex items-center gap-2">
-                <Download size={24} />
-                Downloads
-              </h2>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setShowUpload(true)}
-                  className="px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
-                >
-                  <Upload size={16} />
-                  Upload
-                </button>
-                <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                  <MoreVertical size={20} />
-                </button>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-4">
-              {downloads.length === 0 ? (
-                <div className="col-span-3 text-center py-12 text-white/40">
-                  No downloads yet. Upload files to get started!
-                </div>
-              ) : (
-                downloads.map(item => (
-                  <MediaCard key={item.id} item={item} showHeart={false} showDelete={true} />
-                ))
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Settings Modal */}
-      {showSettings && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-900 rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <h3 className="text-2xl font-bold mb-6">Settings</h3>
-            
-            <div className="grid grid-cols-2 gap-6">
-              {/* App Settings */}
-              <div className="col-span-2">
-                <h4 className="text-lg font-semibold mb-4 text-pink-400">App Settings</h4>
-              </div>
-
-              <div className="col-span-2">
-                <label className="block text-sm font-medium mb-2">App Logo</label>
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl font-bold overflow-hidden">
-                    {(tempLogo || appLogo) ? (
-                      <img src={tempLogo || appLogo} alt="Logo" className="w-full h-full object-cover" />
-                    ) : (
-                      appName
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleLogoUpload}
-                      className="hidden"
-                      id="logo-upload"
-                    />
-                    <label
-                      htmlFor="logo-upload"
-                      className="block w-full py-3 px-4 bg-white/10 rounded-lg text-center cursor-pointer hover:bg-white/20 transition-colors"
-                    >
-                      Choose Logo
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-span-2">
-                <label className="block text-sm font-medium mb-2">App Name</label>
-                <input
-                  type="text"
-                  value={tempName}
-                  onChange={(e) => setTempName(e.target.value)}
-                  placeholder="Enter app name"
-                  className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-              </div>
-
-              {/* Security Settings */}
-              <div className="col-span-2 mt-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-lg font-semibold text-pink-400">Security Settings</h4>
-                  <button
-                    onClick={() => {
-                      setShowSecurityEdit(true);
-                      setTempSecurity({ ...securitySettings });
-                    }}
-                    className="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-sm"
-                  >
-                    Edit Security
-                  </button>
-                </div>
-                
-                <div className="space-y-3 p-4 bg-white/5 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Password Protection</div>
-                      <div className="text-sm text-white/60">
-                        {securitySettings.password ? '••••••••' : 'Not set'}
-                      </div>
-                    </div>
-                    <div className={`px-3 py-1 rounded-full text-xs ${
-                      securitySettings.password ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-                    }`}>
-                      {securitySettings.password ? 'Enabled' : 'Disabled'}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Email Address</div>
-                      <div className="text-sm text-white/60">
-                        {securitySettings.email || 'Not set'}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Two-Factor Authentication</div>
-                      <div className="text-sm text-white/60">
-                        Extra security layer
-                      </div>
-                    </div>
-                    <div className={`px-3 py-1 rounded-full text-xs ${
-                      securitySettings.twoFactor ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-                    }`}>
-                      {securitySettings.twoFactor ? 'Enabled' : 'Disabled'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => {
-                  setShowSettings(false);
-                  setTempLogo(null);
-                  setTempName('');
-                }}
-                className="flex-1 px-4 py-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={saveSettings}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg hover:opacity-90 transition-opacity"
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Security Edit Modal */}
-      {showSecurityEdit && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[60]">
-          <div className="bg-slate-900 rounded-2xl p-8 max-w-md w-full mx-4">
-            <h3 className="text-2xl font-bold mb-6">Security Settings</h3>
-            
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">New Password</label>
-                <input
-                  type="password"
-                  value={tempSecurity.password || ''}
-                  onChange={(e) => setTempSecurity({ ...tempSecurity, password: e.target.value })}
-                  placeholder="Enter new password"
-                  className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-                <p className="text-xs text-white/40 mt-1">Leave empty to keep current password</p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Email Address</label>
-                <input
-                  type="email"
-                  value={tempSecurity.email !== undefined ? tempSecurity.email : securitySettings.email}
-                  onChange={(e) => setTempSecurity({ ...tempSecurity, email: e.target.value })}
-                  placeholder="your.email@example.com"
-                  className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-              </div>
-
-              <div>
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={tempSecurity.twoFactor !== undefined ? tempSecurity.twoFactor : securitySettings.twoFactor}
-                    onChange={(e) => setTempSecurity({ ...tempSecurity, twoFactor: e.target.checked })}
-                    className="w-5 h-5 rounded bg-white/10 border-2 border-white/20 checked:bg-pink-500 checked:border-pink-500"
-                  />
-                  <div>
-                    <div className="font-medium">Enable Two-Factor Authentication</div>
-                    <div className="text-sm text-white/60">Add extra security to your account</div>
-                  </div>
-                </label>
-              </div>
-            </div>
-            
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => {
-                  setShowSecurityEdit(false);
-                  setTempSecurity({});
-                }}
-                className="flex-1 px-4 py-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={saveSecuritySettings}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg hover:opacity-90 transition-opacity"
-              >
-                Save Security
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Profile Edit Modal */}
-      {showProfileEdit && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-900 rounded-2xl p-8 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <h3 className="text-2xl font-bold mb-6">Edit Profile</h3>
-            
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">Profile Picture</label>
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 p-1">
-                    <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
-                      {(tempProfile.avatar || userProfile.avatar) ? (
-                        <img src={tempProfile.avatar || userProfile.avatar} alt="Avatar" className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-xl font-bold">
-                          {(tempProfile.username || userProfile.username).substring(0, 2).toUpperCase()}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button className="p-3 bg-white/20 backdrop-blur-md rounded-full hover:bg-white/40">
+                                <Plus size={24} />
+                            </button>
                         </div>
-                      )}
                     </div>
-                  </div>
-                  <div className="flex-1">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleProfileImageUpload}
-                      className="hidden"
-                      id="avatar-upload"
-                    />
-                    <label
-                      htmlFor="avatar-upload"
-                      className="block w-full py-3 px-4 bg-white/10 rounded-lg text-center cursor-pointer hover:bg-white/20 transition-colors"
-                    >
-                      Choose Photo
-                    </label>
-                  </div>
+                    <div className="absolute top-2 right-2 flex gap-2">
+                        {showHeart && (
+                            <button
+                                onClick={(e) => { e.stopPropagation(); toggleFavorite(item); }}
+                                className={`p-2 rounded-full backdrop-blur-md ${
+                                    favorites.some(f => f.id === item.id) ? 'bg-pink-500 text-white' : 'bg-black/40 text-white hover:bg-pink-500'
+                                } transition-colors`}
+                            >
+                                <Heart size={14} fill={favorites.some(f => f.id === item.id) ? 'currentColor' : 'none'} />
+                            </button>
+                        )}
+                        {showDelete && (
+                            <button
+                                onClick={(e) => { e.stopPropagation(); removeFromDownloads(item.id); }}
+                                className="p-2 rounded-full backdrop-blur-md bg-black/40 text-white hover:bg-red-500 transition-colors"
+                            >
+                                <Trash2 size={14} />
+                            </button>
+                        )}
+                    </div>
+                    <div className="p-3">
+                        <div className="text-white font-medium text-sm truncate">{item.title}</div>
+                        <div className="text-white/50 text-xs mt-1 flex justify-between">
+                            <span>{item.views}</span>
+                            <span>{item.duration}</span>
+                        </div>
+                    </div>
                 </div>
-              </div>
+            );
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Username</label>
-                <input
-                  type="text"
-                  value={tempProfile.username !== undefined ? tempProfile.username : userProfile.username}
-                  onChange={(e) => setTempProfile({ ...tempProfile, username: e.target.value })}
-                  placeholder="Enter username"
-                  className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Bio</label>
-                <textarea
-                  value={tempProfile.bio !== undefined ? tempProfile.bio : (userProfile.bio || '')}
-                  onChange={(e) => setTempProfile({ ...tempProfile, bio: e.target.value })}
-                  placeholder="Tell us about yourself..."
-                  rows="3"
-                  className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Location</label>
-                <input
-                  type="text"
-                  value={tempProfile.location !== undefined ? tempProfile.location : (userProfile.location || '')}
-                  onChange={(e) => setTempProfile({ ...tempProfile, location: e.target.value })}
-                  placeholder="City, Country"
-                  className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Followers</label>
-                  <input
-                    type="number"
-                    value={tempProfile.followers !== undefined ? tempProfile.followers : userProfile.followers}
-                    onChange={(e) => setTempProfile({ ...tempProfile, followers: parseInt(e.target.value) || 0 })}
-                    className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  />
+            const StatCard = ({ icon: Icon, label, value, trend, color }) => (
+                <div className="bg-black/40 backdrop-blur-md rounded-xl p-5 border border-white/10">
+                    <div className="flex items-start justify-between mb-3">
+                        <div className={`p-2.5 rounded-lg bg-gradient-to-br ${color}`}>
+                            <Icon size={20} className="text-white" />
+                        </div>
+                        {trend && (
+                            <div className="flex items-center gap-1 text-green-400 text-xs font-medium">
+                                <TrendingUp size={14} />
+                                <span>{trend}</span>
+                            </div>
+                        )}
+                    </div>
+                    <div className="text-2xl font-bold mb-0.5">{value}</div>
+                    <div className="text-white/50 text-xs uppercase tracking-wider font-semibold">{label}</div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Following</label>
-                  <input
-                    type="number"
-                    value={tempProfile.stats !== undefined ? tempProfile.stats : userProfile.stats}
-                    onChange={(e) => setTempProfile({ ...tempProfile, stats: parseInt(e.target.value) || 0 })}
-                    className="w-full px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  />
+            );
+
+            if (!isLoggedIn) {
+                return (
+                    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+                        <div className="bg-white/5 backdrop-blur-2xl rounded-3xl p-10 max-w-md w-full border border-white/10 shadow-2xl">
+                            <div className="text-center mb-10">
+                                <div className="w-20 h-20 bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center text-3xl font-black mx-auto mb-6 shadow-lg shadow-purple-500/20">
+                                    {appLogo ? <img src={appLogo} className="w-full h-full object-cover rounded-2xl" /> : appName}
+                                </div>
+                                <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome Back</h2>
+                                <p className="text-white/40">Enter your details to access your studio</p>
+                            </div>
+                            <div className="space-y-5">
+                                <input
+                                    className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-white transition-all"
+                                    placeholder="Username"
+                                    onChange={(e) => setLoginData({...loginData, username: e.target.value})}
+                                />
+                                <input
+                                    type="password"
+                                    className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-white transition-all"
+                                    placeholder="Password"
+                                />
+                                <button
+                                    onClick={handleLogin}
+                                    className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-white hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-purple-600/20"
+                                >
+                                    Sign In
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-[#0a0a0c] text-slate-200 flex">
+                    {/* Sidebar */}
+                    <aside className="w-64 bg-black/20 border-r border-white/5 p-6 flex flex-col fixed h-full z-20">
+                        <div className="flex items-center gap-3 mb-10 px-2">
+                            <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center font-black text-white overflow-hidden shadow-lg">
+                                {appLogo ? <img src={appLogo} className="w-full h-full object-cover" /> : appName}
+                            </div>
+                            <span className="text-xl font-bold tracking-tight text-white">{appName} Studio</span>
+                        </div>
+                        
+                        <nav className="flex-1 space-y-1">
+                            {[
+                                { id: 'home', icon: Home, label: 'Home' },
+                                { id: 'dashboard', icon: BarChart3, label: 'Analytics' },
+                                { id: 'user-dashboard', icon: Users, label: 'Profile' },
+                                { id: 'favorites', icon: Heart, label: 'Favorites' },
+                                { id: 'downloads', icon: Download, label: 'Library' },
+                            ].map(item => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => setActiveSection(item.id)}
+                                    className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all ${
+                                        activeSection === item.id ? 'bg-white/10 text-white shadow-inner' : 'text-slate-400 hover:bg-white/5'
+                                    }`}
+                                >
+                                    <item.icon size={20} />
+                                    <span className="font-medium">{item.label}</span>
+                                </button>
+                            ))}
+                        </nav>
+
+                        <div className="mt-auto pt-6 border-t border-white/5 space-y-1">
+                            <button 
+                                onClick={() => setShowSettings(true)}
+                                className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-white/5 transition-all"
+                            >
+                                <Settings size={20} />
+                                <span className="font-medium">Settings</span>
+                            </button>
+                            <button 
+                                onClick={handleLogout}
+                                className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-red-400 hover:bg-red-400/10 transition-all"
+                            >
+                                <LogOut size={20} />
+                                <span className="font-medium">Logout</span>
+                            </button>
+                        </div>
+                    </aside>
+
+                    {/* Main Content */}
+                    <main className="ml-64 flex-1 p-10 bg-gradient-to-br from-slate-900 via-[#0a0a0c] to-slate-950">
+                        {/* Header */}
+                        <header className="flex justify-between items-center mb-10">
+                            <div>
+                                <h1 className="text-3xl font-bold text-white capitalize">{activeSection.replace('-', ' ')}</h1>
+                                <p className="text-slate-400 mt-1 italic">Welcome back, {userProfile.username}</p>
+                            </div>
+                            <button 
+                                onClick={() => setShowUpload(true)}
+                                className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-slate-200 transition-all shadow-xl shadow-white/5"
+                            >
+                                <Plus size={20} />
+                                <span>Upload Media</span>
+                            </button>
+                        </header>
+
+                        {/* Sections Mapping */}
+                        {activeSection === 'home' && (
+                            <div className="space-y-10">
+                                {/* Profile Quick View */}
+                                <div className="bg-gradient-to-r from-purple-900/40 to-pink-900/40 border border-white/10 rounded-3xl p-8 flex items-center gap-8 backdrop-blur-sm">
+                                    <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-pink-500 to-yellow-500">
+                                        <div className="w-full h-full rounded-full bg-slate-900 overflow-hidden">
+                                            {userProfile.avatar ? <img src={userProfile.avatar} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-white uppercase">{userProfile.username[0]}</div>}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 className="text-3xl font-bold text-white">{userProfile.username}</h2>
+                                        <div className="flex gap-6 mt-4">
+                                            <div className="text-center">
+                                                <div className="text-xl font-bold">{userProfile.posts}</div>
+                                                <div className="text-xs text-slate-400 uppercase tracking-tighter">Posts</div>
+                                            </div>
+                                            <div className="text-center border-x border-white/10 px-6">
+                                                <div className="text-xl font-bold">{userProfile.followers}</div>
+                                                <div className="text-xs text-slate-400 uppercase tracking-tighter">Followers</div>
+                                            </div>
+                                            <div className="text-center">
+                                                <div className="text-xl font-bold">{userProfile.stats}</div>
+                                                <div className="text-xs text-slate-400 uppercase tracking-tighter">Stats</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Recent Uploads */}
+                                <section>
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h3 className="text-xl font-bold text-white">Recent Media</h3>
+                                        <button onClick={() => setActiveSection('downloads')} className="text-sm text-purple-400 hover:text-purple-300">View All Library</button>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {downloads.length > 0 ? downloads.slice(0, 3).map(item => <MediaCard key={item.id} item={item} />) : <div className="col-span-full py-20 text-center border-2 border-dashed border-white/5 rounded-3xl text-slate-500">No media uploaded yet</div>}
+                                    </div>
+                                </section>
+                            </div>
+                        )}
+
+                        {activeSection === 'dashboard' && (
+                            <div className="space-y-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <StatCard icon={Eye} label="Total Views" value={totalViews.toLocaleString()} trend="+12.4%" color="from-blue-500 to-cyan-500" />
+                                    <StatCard icon={Download} label="Total Media" value={downloads.length} trend="+5" color="from-purple-500 to-pink-500" />
+                                    <StatCard icon={Heart} label="Favorites" value={favorites.length} color="from-pink-500 to-rose-500" />
+                                    <StatCard icon={Users} label="Reach" value={userProfile.followers} trend="+8%" color="from-orange-500 to-yellow-500" />
+                                </div>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div className="bg-white/5 rounded-3xl p-8 border border-white/10">
+                                        <h3 className="text-xl font-bold mb-6">Recent Activity Timeline</h3>
+                                        <div className="space-y-6">
+                                            {downloads.slice(0, 5).map((item, idx) => (
+                                                <div key={idx} className="flex items-center gap-4 group">
+                                                    <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
+                                                        <img src={item.thumbnail} className="w-full h-full object-cover" />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-semibold text-white">{item.title}</p>
+                                                        <p className="text-xs text-slate-500">Uploaded 2 hours ago</p>
+                                                    </div>
+                                                    <span className="text-xs font-mono text-slate-600">ID:{item.id.toString().slice(-4)}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="bg-white/5 rounded-3xl p-8 border border-white/10 flex flex-col items-center justify-center text-center">
+                                        <div className="w-24 h-24 rounded-full border-4 border-purple-500 border-t-transparent animate-spin mb-6"></div>
+                                        <p className="text-slate-400">Syncing live data from cloud servers...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeSection === 'user-dashboard' && (
+                            <div className="max-w-4xl space-y-8">
+                                <div className="bg-white/5 rounded-3xl p-10 border border-white/10 flex flex-col md:flex-row items-center gap-10">
+                                    <div className="relative group">
+                                        <div className="w-40 h-40 rounded-full p-1 bg-gradient-to-br from-purple-500 to-pink-500">
+                                            <div className="w-full h-full rounded-full bg-slate-900 overflow-hidden">
+                                                {userProfile.avatar ? <img src={userProfile.avatar} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-6xl font-black text-white">{userProfile.username[0]}</div>}
+                                            </div>
+                                        </div>
+                                        <button onClick={() => setShowProfileEdit(true)} className="absolute bottom-2 right-2 p-3 bg-white text-black rounded-full shadow-xl hover:scale-110 transition-transform">
+                                            <Edit3 size={18} />
+                                        </button>
+                                    </div>
+                                    <div className="flex-1 text-center md:text-left">
+                                        <h2 className="text-4xl font-bold text-white mb-2">{userProfile.username}</h2>
+                                        <p className="text-purple-400 font-medium mb-4 flex items-center justify-center md:justify-start gap-2">
+                                            <MapPin size={16} /> {userProfile.location}
+                                        </p>
+                                        <p className="text-slate-400 leading-relaxed max-w-lg mx-auto md:mx-0">{userProfile.bio}</p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-3 gap-6">
+                                    <div className="bg-white/5 p-6 rounded-2xl border border-white/10 text-center">
+                                        <p className="text-3xl font-bold text-white">{downloads.length}</p>
+                                        <p className="text-xs text-slate-500 uppercase mt-1">Files Uploaded</p>
+                                    </div>
+                                    <div className="bg-white/5 p-6 rounded-2xl border border-white/10 text-center">
+                                        <p className="text-3xl font-bold text-white">82%</p>
+                                        <p className="text-xs text-slate-500 uppercase mt-1">Profile Score</p>
+                                    </div>
+                                    <div className="bg-white/5 p-6 rounded-2xl border border-white/10 text-center">
+                                        <p className="text-3xl font-bold text-white">Pro</p>
+                                        <p className="text-xs text-slate-500 uppercase mt-1">Membership</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeSection === 'favorites' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {favorites.map(item => <MediaCard key={item.id} item={item} />)}
+                                {favorites.length === 0 && <div className="col-span-full py-40 text-center text-slate-500 border-2 border-dashed border-white/5 rounded-3xl">No favorites added yet.</div>}
+                            </div>
+                        )}
+
+                        {activeSection === 'downloads' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {downloads.map(item => <MediaCard key={item.id} item={item} showDelete={true} />)}
+                                {downloads.length === 0 && <div className="col-span-full py-40 text-center text-slate-500 border-2 border-dashed border-white/5 rounded-3xl">Library is empty. Upload your first file.</div>}
+                            </div>
+                        )}
+                    </main>
+
+                    {/* Modals */}
+                    {showUpload && (
+                        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                            <div className="bg-slate-900 border border-white/10 w-full max-w-md rounded-3xl p-8 shadow-2xl">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="text-2xl font-bold text-white">Upload Media</h3>
+                                    <button onClick={() => setShowUpload(false)} className="text-slate-500 hover:text-white"><X /></button>
+                                </div>
+                                <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 transition-colors group">
+                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <div className="p-4 bg-white/5 rounded-full mb-4 group-hover:scale-110 transition-transform">
+                                            <Upload className="text-purple-500" size={32} />
+                                        </div>
+                                        <p className="mb-2 text-sm text-slate-400 font-medium">Click to upload or drag and drop</p>
+                                        <p className="text-xs text-slate-600 uppercase">PNG, JPG or MP4 (Max 100MB)</p>
+                                    </div>
+                                    <input type="file" className="hidden" accept="image/*,video/*" onChange={handleFileUpload} />
+                                </label>
+                            </div>
+                        </div>
+                    )}
+
+                    {showProfileEdit && (
+                        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                            <div className="bg-slate-900 border border-white/10 w-full max-w-md rounded-3xl p-8">
+                                <h3 className="text-2xl font-bold text-white mb-6">Edit Profile</h3>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="text-xs font-bold text-slate-500 uppercase ml-1">Username</label>
+                                        <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mt-1 outline-none focus:ring-2 focus:ring-purple-500" defaultValue={userProfile.username} onChange={(e) => setTempProfile({...tempProfile, username: e.target.value})} />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-slate-500 uppercase ml-1">Bio</label>
+                                        <textarea className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mt-1 outline-none h-24 focus:ring-2 focus:ring-purple-500" defaultValue={userProfile.bio} onChange={(e) => setTempProfile({...tempProfile, bio: e.target.value})} />
+                                    </div>
+                                    <div className="flex gap-4 mt-8">
+                                        <button onClick={() => setShowProfileEdit(false)} className="flex-1 py-3 text-slate-400 hover:bg-white/5 rounded-xl transition-colors">Cancel</button>
+                                        <button onClick={saveProfileSettings} className="flex-1 py-3 bg-purple-600 text-white rounded-xl font-bold shadow-lg shadow-purple-600/20">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {showSettings && (
+                        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                            <div className="bg-slate-900 border border-white/10 w-full max-w-md rounded-3xl p-8">
+                                <h3 className="text-2xl font-bold text-white mb-6">Application Settings</h3>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="text-xs font-bold text-slate-500 uppercase ml-1">Studio Name</label>
+                                        <input 
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mt-1 outline-none" 
+                                            value={tempName || appName} 
+                                            onChange={(e) => setTempName(e.target.value)} 
+                                        />
+                                    </div>
+                                    <button 
+                                        onClick={() => {
+                                            if (tempName) {
+                                                setAppName(tempName);
+                                                saveToStorage('app-name', tempName);
+                                            }
+                                            setShowSettings(false);
+                                        }}
+                                        className="w-full py-4 bg-white text-black rounded-xl font-bold mt-4"
+                                    >
+                                        Update Workspace
+                                    </button>
+                                    <button onClick={() => setShowSettings(false)} className="w-full py-3 text-slate-500 font-medium">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
-              </div>
-            </div>
-            
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => {
-                  setShowProfileEdit(false);
-                  setTempProfile({});
-                }}
-                className="flex-1 px-4 py-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={saveProfileSettings}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg hover:opacity-90 transition-opacity"
-              >
-                Save Profile
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+            );
+        };
 
-      {/* Upload Modal */}
-      {showUpload && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-900 rounded-2xl p-8 max-w-md w-full mx-4">
-            <h3 className="text-2xl font-bold mb-4">Upload Media</h3>
-            <p className="text-white/60 mb-6">Choose an image or video to upload to your library</p>
-            
-            <input
-              type="file"
-              accept="image/*,video/*"
-              onChange={handleFileUpload}
-              className="hidden"
-              id="file-upload"
-            />
-            
-            <label
-              htmlFor="file-upload"
-              className="block w-full py-12 border-2 border-dashed border-white/20 rounded-xl text-center cursor-pointer hover:border-pink-500 transition-colors"
-            >
-              <Upload size={48} className="mx-auto mb-4 text-white/40" />
-              <div className="text-white/60">Click to select file</div>
-            </label>
-            
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => setShowUpload(false)}
-                className="flex-1 px-4 py-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default MediaLibraryApp;
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<MediaLibraryApp />);
+    </script>
+</body>
+</html>
