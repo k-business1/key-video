@@ -10,18 +10,17 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #0b0f1a;
+    background: #0b0f1a;
     color: white;
 }
 
-/* ================= HEADER (FIXED) ================= */
+/* ================= HEADER ================= */
 header {
-    position: fixed; /* ntizimuka */
+    position: fixed;
     top: 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 15px 40px;
     background: rgba(0,0,0,0.8);
     z-index: 1000;
@@ -33,55 +32,60 @@ header h1 {
 
 nav a {
     margin: 0 10px;
-    text-decoration: none;
     color: white;
+    text-decoration: none;
 }
 
-/* ================= HERO ================= */
-.hero {
+/* ================= SLIDESHOW ================= */
+.slideshow {
     height: 100vh;
-
-    /* Koresha image nyayo (iyi ni demo) */
-    background: url("https://images.unsplash.com/photo-1517649763962-0c623066013b") no-repeat center/cover;
-
-    display: flex;
-    align-items: center;
-    padding: 60px;
-    margin-top: 70px; /* kugirango header idapfuka content */
+    position: relative;
+    margin-top: 70px;
+    overflow: hidden;
 }
 
+/* buri slide */
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: none;
+}
+
+/* slide igaragara */
+.active {
+    display: block;
+}
+
+/* overlay */
 .overlay {
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
     background: rgba(0,0,0,0.6);
     padding: 30px;
     border-radius: 10px;
 }
 
-.hero h2 {
-    font-size: 50px;
+.overlay h2 {
+    font-size: 45px;
     color: #facc15;
 }
 
-/* ================= BUTTON ================= */
 .btn {
     background: #9be23c;
-    padding: 12px 20px;
+    padding: 10px 20px;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
 }
 
-/* ================= TABLE SECTION ================= */
+/* ================= TABLE ================= */
 .section {
     padding: 40px;
 }
 
-.table-container {
-    background: #1f2937;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-/* ================= TABLE STYLE ================= */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -105,15 +109,13 @@ tr:nth-child(odd) {
     background: #111827;
 }
 
-/* ================= PAGINATION ================= */
 .pagination {
-    margin-top: 20px;
     text-align: center;
+    margin-top: 20px;
 }
 
 .pagination button {
-    padding: 10px 15px;
-    margin: 5px;
+    padding: 10px;
     background: #facc15;
     border: none;
     cursor: pointer;
@@ -134,100 +136,126 @@ tr:nth-child(odd) {
     </nav>
 </header>
 
-<!-- ================= HERO ================= -->
-<div class="hero">
-    <div class="overlay">
-        <h2>BET & WIN BIG!</h2>
-        <p>Best odds on all sports</p>
+<!-- ================= SLIDESHOW ================= -->
+<div class="slideshow">
 
-        <!-- 🔥 BUTTON NSHYA -->
-        <button class="btn">BETTER SURE</button>
+    <!-- 🔥 SLIDE 1 (Messi style image) -->
+    <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1546519638-68e109498ffc');">
+        <div class="overlay">
+            <h2>BET LIKE A CHAMPION</h2>
+            <p>Win big with KEYX SCORE</p>
+            <button class="btn">BETTER SURE</button>
+        </div>
     </div>
+
+    <!-- 🔥 SLIDE 2 -->
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2');">
+        <div class="overlay">
+            <h2>LIVE MATCHES</h2>
+            <p>Real time betting action</p>
+        </div>
+    </div>
+
+    <!-- 🔥 SLIDE 3 -->
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1521412644187-c49fa049e84d');">
+        <div class="overlay">
+            <h2>BEST ODDS</h2>
+            <p>High returns guaranteed</p>
+        </div>
+    </div>
+
 </div>
 
 <!-- ================= TABLE PAGE 1 ================= -->
 <div class="section" id="page1">
-    <h2>Live Matches - Page 1</h2>
+    <h2>Live Matches</h2>
 
-    <div class="table-container">
-        <table>
-            <tr>
-                <th>Match</th>
-                <th>1</th>
-                <th>X</th>
-                <th>2</th>
-            </tr>
+    <table>
+        <tr>
+            <th>Match</th>
+            <th>1</th>
+            <th>X</th>
+            <th>2</th>
+        </tr>
 
-            <tr>
-                <td>Arsenal vs Chelsea</td>
-                <td>2.10</td>
-                <td>3.20</td>
-                <td>2.80</td>
-            </tr>
+        <tr>
+            <td>Arsenal vs Chelsea</td>
+            <td>2.10</td>
+            <td>3.20</td>
+            <td>2.80</td>
+        </tr>
 
-            <tr>
-                <td>Man United vs Liverpool</td>
-                <td>2.50</td>
-                <td>3.00</td>
-                <td>2.60</td>
-            </tr>
-        </table>
-    </div>
+        <tr>
+            <td>Man United vs Liverpool</td>
+            <td>2.50</td>
+            <td>3.00</td>
+            <td>2.60</td>
+        </tr>
+    </table>
 
     <div class="pagination">
         <button onclick="nextPage()">Next ▶</button>
     </div>
 </div>
 
-<!-- ================= TABLE PAGE 2 ================= -->
+<!-- ================= PAGE 2 ================= -->
 <div class="section" id="page2" style="display:none;">
-    <h2>Live Matches - Page 2</h2>
+    <h2>More Matches</h2>
 
-    <div class="table-container">
-        <table>
-            <tr>
-                <th>Match</th>
-                <th>1</th>
-                <th>X</th>
-                <th>2</th>
-            </tr>
+    <table>
+        <tr>
+            <th>Match</th>
+            <th>1</th>
+            <th>X</th>
+            <th>2</th>
+        </tr>
 
-            <tr>
-                <td>Barcelona vs Real Madrid</td>
-                <td>2.30</td>
-                <td>3.10</td>
-                <td>2.90</td>
-            </tr>
+        <tr>
+            <td>Barcelona vs Real Madrid</td>
+            <td>2.30</td>
+            <td>3.10</td>
+            <td>2.90</td>
+        </tr>
 
-            <tr>
-                <td>PSG vs Bayern</td>
-                <td>2.40</td>
-                <td>3.30</td>
-                <td>2.70</td>
-            </tr>
-        </table>
-    </div>
+        <tr>
+            <td>PSG vs Bayern</td>
+            <td>2.40</td>
+            <td>3.30</td>
+            <td>2.70</td>
+        </tr>
+    </table>
 
     <div class="pagination">
         <button onclick="prevPage()">◀ Back</button>
     </div>
 </div>
 
-<!-- ================= JAVASCRIPT ================= -->
+<!-- ================= SCRIPT ================= -->
 <script>
 
-/* 👉 Ibi bituma umuntu ajya kuri next page */
+/* 👉 SLIDESHOW AUTO */
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlides() {
+    slides.forEach(s => s.classList.remove("active"));
+    index++;
+    if (index >= slides.length) index = 0;
+    slides[index].classList.add("active");
+}
+
+setInterval(showSlides, 3000); // ihinduka buri 3 seconds
+
+/* 👉 NEXT PAGE */
 function nextPage() {
     document.getElementById("page1").style.display = "none";
     document.getElementById("page2").style.display = "block";
-    window.scrollTo(0,0); // isubiza hejuru
 }
 
-/* 👉 Subira inyuma */
+/* 👉 BACK */
 function prevPage() {
     document.getElementById("page2").style.display = "none";
     document.getElementById("page1").style.display = "block";
-    window.scrollTo(0,0);
 }
 
 </script>
