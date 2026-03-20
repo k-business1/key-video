@@ -36,50 +36,81 @@ nav a {
     text-decoration: none;
 }
 
-/* ================= SLIDESHOW ================= */
-.slideshow {
-    height: 100vh;
-    position: relative;
-    margin-top: 70px;
-    overflow: hidden;
-}
+/* ================= CSS YOSE HANO ================= */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
 
-/* buri slide */
-.slide {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    display: none;
-}
+        .slideshow {
+            height: 100vh;
+            position: relative;
+            margin-top: 70px;
+            overflow: hidden;
+        }
 
-/* slide igaragara */
-.active {
-    display: block;
-}
+        /* buri slide */
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: none; /* Izindi ziba zihishe */
+        }
 
-/* overlay */
-.overlay {
-    position: absolute;
-    bottom: 50px;
-    left: 50px;
-    background: rgba(0,0,0,0.6);
-    padding: 30px;
-    border-radius: 10px;
-}
+        /* Ifoto ya Messi nshizeho ya link */
+        .football-slide {
+            background-image: url('https://www.shutterstock.com/image-generated/epic-storytelling-illustration-lionel-messi-defeating-2675604519');
+        }
 
-.overlay h2 {
-    font-size: 45px;
-    color: #facc15;
-}
+        /* slide igaragara */
+        .active {
+            display: block;
+        }
 
-.btn {
-    background: #9be23c;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-}
+        /* overlay */
+        .overlay {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            background: rgba(0,0,0,0.6);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .overlay h2 {
+            font-size: 45px;
+            color: #facc15;
+            margin: 0 0 15px 0;
+        }
+
+        .btn {
+            background: #9be23c;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background: #86c632;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slideshow">
+        
+        <div class="slide football-slide active">
+            <div class="overlay">
+                <h2>Lionel Messi</h2>
+                <button class="btn">REBA BYINSHI</button>
+            </div>
+        </div>
+
+        </div>
 
 /* ================= TABLE ================= */
 .section {
