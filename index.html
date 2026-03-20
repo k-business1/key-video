@@ -36,81 +36,81 @@ nav a {
     text-decoration: none;
 }
 
-/* ================= CSS YOSE HANO ================= */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
+/* ================= SLIDESHOW ================= */
+<style>
+/* SLIDESHOW STYLES */
+.slideshow {
+    height: 80vh;
+    position: relative;
+    margin-top: 70px;
+    overflow: hidden;
+}
 
-        .slideshow {
-            height: 100vh;
-            position: relative;
-            margin-top: 70px;
-            overflow: hidden;
-        }
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: none;
+}
 
-        /* buri slide */
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            display: none; /* Izindi ziba zihishe */
-        }
+.slide.active {
+    display: block;
+}
 
-        /* Ifoto ya Messi nshizeho ya link */
-        .football-slide {
-            background-image: url('https://www.shutterstock.com/image-generated/epic-storytelling-illustration-lionel-messi-defeating-2675604519');
-        }
+.overlay {
+    position: absolute;
+    bottom: 50px;
+    left: 40px;
+    background: rgba(0,0,0,0.6);
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+}
+</style>
 
-        /* slide igaragara */
-        .active {
-            display: block;
-        }
+<div class="slideshow">
 
-        /* overlay */
-        .overlay {
-            position: absolute;
-            bottom: 50px;
-            left: 50px;
-            background: rgba(0,0,0,0.6);
-            padding: 30px;
-            border-radius: 10px;
-        }
-
-        .overlay h2 {
-            font-size: 45px;
-            color: #facc15;
-            margin: 0 0 15px 0;
-        }
-
-        .btn {
-            background: #9be23c;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 5px;
-        }
-
-        .btn:hover {
-            background: #86c632;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="slideshow">
-        
-        <div class="slide football-slide active">
-            <div class="overlay">
-                <h2>Lionel Messi</h2>
-                <button class="btn">REBA BYINSHI</button>
-            </div>
+    <!-- SLIDE 1 - football / messi theme -->
+    <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1517649763962-0c623066013b');">
+        <div class="overlay">
+            <h2>Football Betting</h2>
+            <p>Watch and bet like a pro</p>
         </div>
+    </div>
 
+    <!-- SLIDE 2 - football crowd -->
+    <div class="slide" style="background-image: url('https://images.pexels.com/photos/2098413/pexels-photo-2098413.jpeg');">
+        <div class="overlay">
+            <h2>Live Football Matches</h2>
+            <p>Bet with confidence</p>
         </div>
+    </div>
+
+    <!-- SLIDE 3 - cheering crowd -->
+    <div class="slide" style="background-image: url('https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg');">
+        <div class="overlay">
+            <h2>Highest Odds</h2>
+            <p>Maximize your winnings</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let idx = 0;
+
+function showSlides() {
+    slides.forEach(s => s.classList.remove("active"));
+    idx++;
+    if (idx >= slides.length) idx = 0;
+    slides[idx].classList.add("active");
+}
+
+setInterval(showSlides, 4000);
+</script>
 
 /* ================= TABLE ================= */
 .section {
