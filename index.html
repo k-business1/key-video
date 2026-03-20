@@ -5,6 +5,8 @@
 <title>KEYX SCORE</title>
 
 <style>
+
+/* ================= BODY ================= */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -12,12 +14,17 @@ body {
     color: white;
 }
 
+/* ================= HEADER (FIXED) ================= */
 header {
+    position: fixed; /* ntizimuka */
+    top: 0;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
 }
 
 header h1 {
@@ -30,12 +37,17 @@ nav a {
     color: white;
 }
 
+/* ================= HERO ================= */
 .hero {
-    height: 70vh;
-    background: url("https://images.unsplash.com/photo-1517649763962-0c623066013b") no-repeat center center/cover;
+    height: 100vh;
+
+    /* Koresha image nyayo (iyi ni demo) */
+    background: url("https://images.unsplash.com/photo-1517649763962-0c623066013b") no-repeat center/cover;
+
     display: flex;
     align-items: center;
     padding: 60px;
+    margin-top: 70px; /* kugirango header idapfuka content */
 }
 
 .overlay {
@@ -49,16 +61,17 @@ nav a {
     color: #facc15;
 }
 
+/* ================= BUTTON ================= */
 .btn {
-    background: #facc15;
+    background: #9be23c;
     padding: 12px 20px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
 }
 
-/* TABLE SECTION */
-.table-section {
+/* ================= TABLE SECTION ================= */
+.section {
     padding: 40px;
 }
 
@@ -67,11 +80,51 @@ nav a {
     padding: 20px;
     border-radius: 10px;
 }
+
+/* ================= TABLE STYLE ================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+th {
+    background: #111827;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background: #1f2937;
+}
+
+tr:nth-child(odd) {
+    background: #111827;
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    margin: 5px;
+    background: #facc15;
+    border: none;
+    cursor: pointer;
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- ================= HEADER ================= -->
 <header>
     <h1>KEYX SCORE</h1>
     <nav>
@@ -81,123 +134,103 @@ nav a {
     </nav>
 </header>
 
+<!-- ================= HERO ================= -->
 <div class="hero">
     <div class="overlay">
         <h2>BET & WIN BIG!</h2>
         <p>Best odds on all sports</p>
-        <button class="btn">JOIN NOW</button>
+
+        <!-- 🔥 BUTTON NSHYA -->
+        <button class="btn">BETTER SURE</button>
     </div>
 </div>
 
-<!-- ========================= -->
-<table width="100%" style="border-collapse: collapse; text-align: center; color: white;">
-    
-    <tr style="background: #111827;">
-        <th style="padding: 10px;">Match</th>
-        <th>1</th>
-        <th>X</th>
-        <th>2</th>
-    </tr>
-
-    <tr style="background: #1f2937;">
-        <td style="padding: 10px;">Arsenal vs Chelsea</td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">2.10</button></td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">3.20</button></td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">2.80</button></td>
-    </tr>
-
-    <tr style="background: #111827;">
-        <td style="padding: 10px;">Man United vs Liverpool</td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">2.50</button></td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">3.00</button></td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">2.60</button></td>
-    </tr>
-
-    <tr style="background: #1f2937;">
-        <td style="padding: 10px;">Barcelona vs Real Madrid</td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">2.30</button></td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">3.10</button></td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">2.90</button></td>
-    </tr>
-
-    <tr style="background: #111827;">
-        <td style="padding: 10px;">PSG vs Bayern</td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">2.40</button></td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">3.30</button></td>
-        <td><button style="padding:8px 15px; background:#9be23c; border:none;">2.70</button></td>
-    </tr>
-
-</table>
-<!-- ========================= -->
-
-<div class="table-section">
-    <h2>Live Matches</h2>
+<!-- ================= TABLE PAGE 1 ================= -->
+<div class="section" id="page1">
+    <h2>Live Matches - Page 1</h2>
 
     <div class="table-container">
-
-        <!-- 👉 SHYIRAMO TABLE YAWE HANO -->
-        <!-- Example (ushobora kuyisiba ugashyiramo iyawe): -->
-
-        <table border="1" width="100%" style="color:white; text-align:center;">
+        <table>
             <tr>
-                <th>Team A</th>
-                <th>Team B</th>
-                <th>Odds</th>
+                <th>Match</th>
+                <th>1</th>
+                <th>X</th>
+                <th>2</th>
             </tr>
+
             <tr>
-                <td>Arsenal</td>
-                <td>Chelsea</td>
-                <td>2.5</td>
+                <td>Arsenal vs Chelsea</td>
+                <td>2.10</td>
+                <td>3.20</td>
+                <td>2.80</td>
+            </tr>
+
+            <tr>
+                <td>Man United vs Liverpool</td>
+                <td>2.50</td>
+                <td>3.00</td>
+                <td>2.60</td>
             </tr>
         </table>
-<div style="padding:40px; background:#111827; color:white;">
+    </div>
 
-    <!-- ABOUT US -->
-    <h2 style="color:#9be23c;">About Us</h2>
-    <p>
-        KEYX SCORE ni urubuga (website) rwagenewe gutanga amakuru ya sports betting,
-        live matches ndetse n'odds zitandukanye ku mikino ikunzwe cyane ku isi.
-        Uru rubuga rugufasha gukurikirana imikino iri kuba aka kanya (live),
-        kureba odds zayo no gufata ibyemezo byiza mu mikino yawe.
-    </p>
-
-    <p>
-        Iyi website yakozwe na <b>KI M Aristide</b> hagamijwe gufasha abakunda sports 
-        kubona amakuru yihuse kandi yizewe. 
-    </p>
-
-    <p>
-        Contact: <b>grensrena@gmail.com</b>
-    </p>
-
-    <!-- WEBSITE DESCRIPTION -->
-    <h2 style="color:#facc15;">How the Website Works</h2>
-    <p>
-        KEYX SCORE ikora mu buryo bworoshye:
-    </p>
-
-    <ul>
-        <li>✔ Reba imikino iri gukinwa (Live Matches)</li>
-        <li>✔ Hitamo ikipe ushaka (Team selection)</li>
-        <li>✔ Reba odds zitandukanye (1, X, 2)</li>
-        <li>✔ Kanda kuri odds kugirango uhitemo bet yawe</li>
-        <li>✔ Tegura ibyo wahisemo (bet slip)</li>
-    </ul>
-
-    <!-- RULES -->
-    <h2 style="color:#ef4444;">Rules & Terms</h2>
-    <ul>
-        <li>✔ Umukoresha agomba kuba afite imyaka yemewe n'amategeko (18+)</li>
-        <li>✔ Ntukoreshe amafaranga arenze ubushobozi bwawe</li>
-        <li>✔ Ibyemezo byose ufata ni ibyawe (user responsibility)</li>
-        <li>✔ Iyi website itanga amakuru gusa, si betting company nyayo</li>
-        <li>✔ Irinde gukoresha nabi system (no hacking cyangwa manipulation)</li>
-        <li>✔ Kubahiriza amategeko ya internet n'umutekano</li>
-    </ul>
-
-</div>
+    <div class="pagination">
+        <button onclick="nextPage()">Next ▶</button>
     </div>
 </div>
+
+<!-- ================= TABLE PAGE 2 ================= -->
+<div class="section" id="page2" style="display:none;">
+    <h2>Live Matches - Page 2</h2>
+
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>Match</th>
+                <th>1</th>
+                <th>X</th>
+                <th>2</th>
+            </tr>
+
+            <tr>
+                <td>Barcelona vs Real Madrid</td>
+                <td>2.30</td>
+                <td>3.10</td>
+                <td>2.90</td>
+            </tr>
+
+            <tr>
+                <td>PSG vs Bayern</td>
+                <td>2.40</td>
+                <td>3.30</td>
+                <td>2.70</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <button onclick="prevPage()">◀ Back</button>
+    </div>
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+
+/* 👉 Ibi bituma umuntu ajya kuri next page */
+function nextPage() {
+    document.getElementById("page1").style.display = "none";
+    document.getElementById("page2").style.display = "block";
+    window.scrollTo(0,0); // isubiza hejuru
+}
+
+/* 👉 Subira inyuma */
+function prevPage() {
+    document.getElementById("page2").style.display = "none";
+    document.getElementById("page1").style.display = "block";
+    window.scrollTo(0,0);
+}
+
+</script>
 
 </body>
 </html>
