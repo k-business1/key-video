@@ -1,273 +1,122 @@
 <!DOCTYPE html>
-<html lang="rw">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Key Media Studio | Professional Dashboard</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/lucide-react@latest"></script>
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-        
-        :root {
-            --primary: #8b5cf6;
-            --accent: #ec4899;
-        }
+<meta charset="UTF-8">
+<title>KEYX SCORE</title>
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #050507;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0b0f1a;
+    color: white;
+}
 
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(0,0,0,0.7);
+}
 
-        .gradient-border {
-            position: relative;
-        }
-        
-        .gradient-border::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(to bottom right, var(--primary), var(--accent));
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            -webkit-mask-composite: destination-out;
-            pointer-events: none;
-        }
+header h1 {
+    color: #9be23c;
+}
 
-        .custom-scroll::-webkit-scrollbar { width: 5px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-    </style>
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.hero {
+    height: 70vh;
+    background: url("https://images.unsplash.com/photo-1517649763962-0c623066013b") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    padding: 60px;
+}
+
+.overlay {
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.hero h2 {
+    font-size: 50px;
+    color: #facc15;
+}
+
+.btn {
+    background: #facc15;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* TABLE SECTION */
+.table-section {
+    padding: 40px;
+}
+
+.table-container {
+    background: #1f2937;
+    padding: 20px;
+    border-radius: 10px;
+}
+</style>
 </head>
+
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { 
-            LayoutDashboard, Image, Heart, User, 
-            Plus, LogOut, Trash2, MapPin, CheckCircle2, 
-            Upload, X, Search, Bell
-        } = lucideReact;
+<header>
+    <h1>KEYX SCORE</h1>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Sports</a>
+        <a href="#">Live</a>
+    </nav>
+</header>
 
-        const App = () => {
-            // --- States ---
-            const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('km_auth') === 'true');
-            const [activeTab, setActiveTab] = useState('dashboard');
-            const [items, setItems] = useState(() => JSON.parse(localStorage.getItem('km_items')) || []);
-            const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('km_favs')) || []);
-            const [showUpload, setShowUpload] = useState(false);
-            const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('km_user')) || {
-                name: "Key User",
-                bio: "Digital Media Expert",
-                location: "Kigali, Rwanda"
-            });
+<div class="hero">
+    <div class="overlay">
+        <h2>BET & WIN BIG!</h2>
+        <p>Best odds on all sports</p>
+        <button class="btn">JOIN NOW</button>
+    </div>
+</div>
 
-            // --- Persistence ---
-            useEffect(() => {
-                localStorage.setItem('km_items', JSON.stringify(items));
-                localStorage.setItem('km_favs', JSON.stringify(favorites));
-                localStorage.setItem('km_user', JSON.stringify(user));
-                localStorage.setItem('km_auth', isLoggedIn);
-            }, [items, favorites, user, isLoggedIn]);
+<!-- ========================= -->
+<!-- 🟢 AHA NIHO UZASHYIRA TABLE YAWE -->
+<!-- COPY TABLE YAWE UYISHYIRE HANO -->
+<!-- ========================= -->
 
-            // --- Handlers ---
-            const handleUpload = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const newItem = {
-                            id: Date.now(),
-                            url: event.target.result,
-                            name: file.name,
-                            date: new Date().toLocaleDateString(),
-                            type: file.type
-                        };
-                        setItems([newItem, ...items]);
-                        setShowUpload(false);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
+<div class="table-section">
+    <h2>Live Matches</h2>
 
-            const toggleFav = (item) => {
-                setFavorites(prev => 
-                    prev.find(f => f.id === item.id) 
-                    ? prev.filter(f => f.id !== item.id) 
-                    : [...prev, item]
-                );
-            };
+    <div class="table-container">
 
-            const deleteItem = (id) => {
-                setItems(items.filter(i => i.id !== id));
-                setFavorites(favorites.filter(i => i.id !== id));
-            };
+        <!-- 👉 SHYIRAMO TABLE YAWE HANO -->
+        <!-- Example (ushobora kuyisiba ugashyiramo iyawe): -->
 
-            if (!isLoggedIn) {
-                return (
-                    <div className="h-screen flex items-center justify-center p-4">
-                        <div className="glass w-full max-w-md p-10 rounded-[2.5rem] text-center">
-                            <div className="w-16 h-16 bg-violet-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl font-bold">K</div>
-                            <h1 className="text-3xl font-bold mb-2">Key Media Studio</h1>
-                            <p className="text-white/40 mb-8">Injira utangire gucunga ibikorwa byawe</p>
-                            <input type="text" placeholder="Username" className="w-full bg-white/5 border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-violet-500" />
-                            <input type="password" placeholder="Password" className="w-full bg-white/5 border border-white/10 p-4 rounded-xl mb-6 outline-none focus:border-violet-500" />
-                            <button onClick={() => setIsLoggedIn(true)} className="w-full bg-violet-600 py-4 rounded-xl font-bold hover:bg-violet-700 transition-all">Injira</button>
-                        </div>
-                    </div>
-                );
-            }
+        <table border="1" width="100%" style="color:white; text-align:center;">
+            <tr>
+                <th>Team A</th>
+                <th>Team B</th>
+                <th>Odds</th>
+            </tr>
+            <tr>
+                <td>Arsenal</td>
+                <td>Chelsea</td>
+                <td>2.5</td>
+            </tr>
+        </table>
 
-            return (
-                <div className="flex min-h-screen">
-                    {/* Sidebar */}
-                    <aside className="w-64 border-r border-white/5 p-6 flex flex-col fixed h-full bg-[#050507]">
-                        <div className="flex items-center gap-3 mb-12">
-                            <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center font-bold">K</div>
-                            <span className="font-bold text-xl tracking-tight">Key Media</span>
-                        </div>
+    </div>
+</div>
 
-                        <nav className="flex-1 space-y-2">
-                            {[
-                                { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-                                { id: 'library', icon: Image, label: 'Library' },
-                                { id: 'favorites', icon: Heart, label: 'Favorites' },
-                                { id: 'profile', icon: User, label: 'Profile' },
-                            ].map(tab => (
-                                <button 
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all ${activeTab === tab.id ? 'bg-white/5 text-violet-400' : 'text-white/40 hover:text-white'}`}
-                                >
-                                    <tab.icon size={20} />
-                                    <span className="font-medium">{tab.label}</span>
-                                </button>
-                            ))}
-                        </nav>
-
-                        <button onClick={() => setIsLoggedIn(false)} className="flex items-center gap-3 p-4 text-red-500 hover:bg-red-500/5 rounded-xl transition-all">
-                            <LogOut size={20} />
-                            <span className="font-medium">Logout</span>
-                        </button>
-                    </aside>
-
-                    {/* Main Content */}
-                    <main className="ml-64 flex-1 p-10">
-                        <header className="flex justify-between items-center mb-10">
-                            <div>
-                                <h2 className="text-3xl font-bold capitalize">{activeTab}</h2>
-                                <p className="text-white/40">Murakaza neza kuri Key Media Studio Dashboard</p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <button className="p-3 glass rounded-xl text-white/60"><Bell size={20}/></button>
-                                <button onClick={() => setShowUpload(true)} className="bg-white text-black px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:opacity-90">
-                                    <Plus size={20}/> Upload
-                                </button>
-                            </div>
-                        </header>
-
-                        {/* Content Grid */}
-                        {activeTab === 'dashboard' && (
-                            <div className="grid grid-cols-3 gap-6">
-                                <div className="glass p-8 rounded-[2rem]">
-                                    <div className="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-xl flex items-center justify-center mb-4"><Image /></div>
-                                    <p className="text-white/40 font-medium">Ibihangano byose</p>
-                                    <h3 className="text-4xl font-bold mt-1">{items.length}</h3>
-                                </div>
-                                <div className="glass p-8 rounded-[2rem]">
-                                    <div className="w-12 h-12 bg-pink-500/10 text-pink-500 rounded-xl flex items-center justify-center mb-4"><Heart /></div>
-                                    <p className="text-white/40 font-medium">Ibikunzwe</p>
-                                    <h3 className="text-4xl font-bold mt-1">{favorites.length}</h3>
-                                </div>
-                                <div className="glass p-8 rounded-[2rem]">
-                                    <div className="w-12 h-12 bg-green-500/10 text-green-500 rounded-xl flex items-center justify-center mb-4"><CheckCircle2 /></div>
-                                    <p className="text-white/40 font-medium">Verified Status</p>
-                                    <h3 className="text-2xl font-bold mt-2">Active Pro</h3>
-                                </div>
-                            </div>
-                        )}
-
-                        {(activeTab === 'library' || activeTab === 'favorites') && (
-                            <div className="grid grid-cols-4 gap-6">
-                                {(activeTab === 'library' ? items : favorites).map(item => (
-                                    <div key={item.id} className="group relative glass rounded-2xl overflow-hidden border border-white/5 hover:border-violet-500/50 transition-all">
-                                        <div className="aspect-square relative">
-                                            <img src={item.url} className="w-full h-full object-cover" />
-                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                                                <button onClick={() => toggleFav(item)} className={`p-2 rounded-full ${favorites.find(f => f.id === item.id) ? 'bg-pink-500' : 'bg-white/20'}`}>
-                                                    <Heart size={18} />
-                                                </button>
-                                                <button onClick={() => deleteItem(item.id)} className="p-2 bg-red-500 rounded-full">
-                                                    <Trash2 size={18} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className="p-4">
-                                            <p className="font-medium truncate">{item.name}</p>
-                                            <p className="text-xs text-white/40 mt-1">{item.date}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        {activeTab === 'profile' && (
-                            <div className="max-w-2xl">
-                                <div className="glass p-10 rounded-[2.5rem] flex items-center gap-8">
-                                    <div className="w-32 h-32 bg-violet-600 rounded-full flex items-center justify-center text-4xl font-bold border-4 border-white/10">
-                                        {user.name[0]}
-                                    </div>
-                                    <div>
-                                        <h3 className="text-3xl font-bold mb-2">{user.name}</h3>
-                                        <p className="text-white/60 mb-4">{user.bio}</p>
-                                        <div className="flex items-center gap-2 text-white/40 text-sm">
-                                            <MapPin size={16} /> {user.location}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </main>
-
-                    {/* Upload Modal */}
-                    {showUpload && (
-                        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
-                            <div className="glass max-w-lg w-full p-8 rounded-[2.5rem]">
-                                <div className="flex justify-between items-center mb-6">
-                                    <h3 className="text-2xl font-bold">Shyiraho ifishi nshya</h3>
-                                    <button onClick={() => setShowUpload(false)} className="p-2 hover:bg-white/5 rounded-full"><X /></button>
-                                </div>
-                                <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-white/10 rounded-3xl cursor-pointer hover:bg-white/5 transition-all">
-                                    <Upload className="text-violet-500 mb-4" size={40} />
-                                    <p className="font-medium">Kanda hano cyangwa udragire ifoto</p>
-                                    <p className="text-white/30 text-sm mt-2">PNG, JPG cyangwa SVG</p>
-                                    <input type="file" className="hidden" accept="image/*" onChange={handleUpload} />
-                                </label>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
 </body>
 </html>
