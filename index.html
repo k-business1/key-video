@@ -2,1089 +2,132 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KEYX SCORE</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>KEYX AI</title>
 
 <style>
-  :root {
-    --green: #9be23c;
-    --yellow: #facc15;
-    --dark: #0b0f1a;
-    --dark2: #111827;
-    --dark3: #1f2937;
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-  }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Rajdhani', sans-serif;
-    background: var(--dark);
-    color: var(--text);
-    overflow-x: hidden;
-  }
-
-  /* ===== HEADER ===== */
-  header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 40px;
-    background: rgba(11,15,26,0.92);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    border-bottom: 1px solid rgba(155,226,60,0.15);
-  }
-
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--green);
-    letter-spacing: 3px;
-    text-shadow: 0 0 20px rgba(155,226,60,0.4);
-  }
-
-  nav { display: flex; align-items: center; gap: 8px; }
-
-  nav a {
-    padding: 8px 18px;
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 1px;
-    border-radius: 4px;
-    transition: all 0.2s;
-  }
-
-  nav a:hover { color: var(--green); background: rgba(155,226,60,0.08); }
-
-  nav a.active {
-    color: var(--dark);
-    background: var(--green);
-  }
-
-  /* ===== SLIDESHOW ===== */
-  .slideshow {
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1s ease;
-    display: flex;
-    align-items: flex-end;
-    padding: 80px 60px;
-  }
-
-  .slide.active { opacity: 1; }
-
-  .slide::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(11,15,26,0.9) 0%, rgba(11,15,26,0.3) 60%, transparent 100%);
-  }
-
-  .slide-content {
-    position: relative;
-    z-index: 2;
-    max-width: 600px;
-  }
-
-  .slide-tag {
-    display: inline-block;
-    background: var(--green);
-    color: var(--dark);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    padding: 4px 12px;
-    border-radius: 2px;
-    margin-bottom: 16px;
-    text-transform: uppercase;
-  }
-
-  .slide-content h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 64px;
-    line-height: 1;
-    color: white;
-    letter-spacing: 2px;
-    text-shadow: 0 4px 30px rgba(0,0,0,0.5);
-    margin-bottom: 12px;
-  }
-
-  .slide-content p {
-    font-size: 18px;
-    color: rgba(255,255,255,0.75);
-    margin-bottom: 28px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
-
-  .btn-main {
-    display: inline-block;
-    background: var(--green);
-    color: var(--dark);
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 2px;
-    padding: 12px 32px;
-    border: none;
-    cursor: pointer;
-    text-transform: uppercase;
-    border-radius: 3px;
-    transition: all 0.2s;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  }
-
-  .btn-main:hover {
-    background: #b4f04e;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(155,226,60,0.35);
-  }
-
-  /* slide dots */
-  .slide-dots {
-    position: absolute;
-    bottom: 30px;
-    right: 60px;
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .dot.active {
-    background: var(--green);
-    width: 24px;
-    border-radius: 4px;
-  }
-
-  /* ===== LIVE TICKER ===== */
-  .ticker-bar {
-    background: var(--green);
-    padding: 8px 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .ticker-track {
-    display: inline-block;
-    animation: ticker 25s linear infinite;
-  }
-
-  .ticker-track span {
-    display: inline-block;
-    color: var(--dark);
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 1px;
-    padding: 0 40px;
-  }
-
-  .ticker-track span::before {
-    content: '⚽ ';
-  }
-
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  /* ===== SECTION ===== */
-  .section {
-    padding: 60px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    letter-spacing: 2px;
-    color: white;
-  }
-
-  .section-title span {
-    color: var(--green);
-  }
-
-  .live-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(239,68,68,0.15);
-    border: 1px solid rgba(239,68,68,0.4);
-    color: #ef4444;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    padding: 5px 14px;
-    border-radius: 3px;
-    text-transform: uppercase;
-  }
-
-  .live-badge::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    background: #ef4444;
-    border-radius: 50%;
-    animation: pulse 1.2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(1.4); }
-  }
-
-  /* ===== MATCHES TABLE ===== */
-  .matches-grid {
-    display: grid;
-    gap: 8px;
-  }
-
-  .match-card {
-    background: var(--dark2);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 16px 20px;
-    display: grid;
-    grid-template-columns: 1fr auto auto auto;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.2s;
-    cursor: pointer;
-  }
-
-  .match-card:hover {
-    border-color: rgba(155,226,60,0.25);
-    background: var(--dark3);
-    transform: translateX(3px);
-  }
-
-  .match-teams {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .match-league {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    color: var(--green);
-    text-transform: uppercase;
-  }
-
-  .match-name {
-    font-size: 17px;
-    font-weight: 700;
-    color: white;
-    letter-spacing: 0.5px;
-  }
-
-  .match-time {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  .match-score {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 24px;
-    color: var(--yellow);
-    text-align: center;
-    min-width: 60px;
-    letter-spacing: 2px;
-  }
-
-  .match-score.upcoming {
-    font-size: 13px;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .odds-group {
-    display: flex;
-    gap: 6px;
-  }
-
-  .odd-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--dark3);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: white;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    padding: 8px 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    min-width: 54px;
-    transition: all 0.15s;
-    line-height: 1;
-  }
-
-  .odd-btn small {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 1px;
-    margin-bottom: 3px;
-  }
-
-  .odd-btn:hover {
-    background: var(--green);
-    color: var(--dark);
-    border-color: var(--green);
-    transform: scale(1.05);
-  }
-
-  .odd-btn:hover small { color: rgba(11,15,26,0.7); }
-
-  /* ===== TABLE HEADER ===== */
-  .table-header {
-    display: grid;
-    grid-template-columns: 1fr auto auto auto;
-    gap: 12px;
-    padding: 8px 20px;
-    margin-bottom: 6px;
-  }
-
-  .table-header span {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .table-header .odds-labels {
-    display: flex;
-    gap: 6px;
-  }
-
-  .table-header .odds-labels span {
-    min-width: 54px;
-    text-align: center;
-  }
-
-  /* ===== PAGINATION ===== */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 30px;
-  }
-
-  .page-btn {
-    padding: 10px 24px;
-    background: transparent;
-    border: 1px solid rgba(155,226,60,0.4);
-    color: var(--green);
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .page-btn:hover {
-    background: var(--green);
-    color: var(--dark);
-    border-color: var(--green);
-  }
-
-  .page-info {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
-
-  /* ===== STATS STRIP ===== */
-  .stats-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: rgba(255,255,255,0.05);
-    border-top: 1px solid rgba(255,255,255,0.05);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-
-  .stat-item {
-    background: var(--dark2);
-    text-align: center;
-    padding: 24px 16px;
-  }
-
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 42px;
-    color: var(--green);
-    letter-spacing: 2px;
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  /* ===== FILTER TABS ===== */
-  .filter-tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
-
-  .filter-tab {
-    padding: 7px 18px;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.12);
-    color: var(--muted);
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .filter-tab:hover { color: white; border-color: rgba(255,255,255,0.3); }
-
-  .filter-tab.active {
-    background: rgba(155,226,60,0.12);
-    border-color: var(--green);
-    color: var(--green);
-  }
-
-  /* ===== HOME SECTION ===== */
-  #home-section { display: block; }
-  #matches-section { display: none; }
-
-  /* ===== FOOTER ===== */
-  footer {
-    background: var(--dark2);
-    border-top: 1px solid rgba(255,255,255,0.05);
-    text-align: center;
-    padding: 30px;
-    font-size: 13px;
-    color: var(--muted);
-    letter-spacing: 1px;
-  }
-
-  footer span { color: var(--green); }
-
-  /* ===== BETSLIP FLOAT ===== */
-  .betslip-float {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background: var(--green);
-    color: var(--dark);
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 1px;
-    padding: 12px 22px;
-    border-radius: 50px;
-    cursor: pointer;
-    border: none;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 20px rgba(155,226,60,0.4);
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .betslip-float:hover { transform: scale(1.05); }
-
-  .betslip-float .count {
-    background: var(--dark);
-    color: var(--green);
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-  }
-
-  /* scroll to top */
-  #scrollTop {
-    position: fixed;
-    bottom: 80px;
-    right: 24px;
-    width: 40px;
-    height: 40px;
-    background: rgba(155,226,60,0.15);
-    border: 1px solid rgba(155,226,60,0.4);
-    color: var(--green);
-    font-size: 18px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-    transition: all 0.2s;
-  }
-
-  #scrollTop:hover { background: var(--green); color: var(--dark); }
+body{
+    margin:0;
+    background:#0a0f1f;
+    font-family:Arial;
+    color:white;
+}
+
+.header{
+    background:#11183a;
+    padding:15px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.chat-box{
+    height:70vh;
+    overflow-y:auto;
+    padding:20px;
+}
+
+.user{
+    background:#00cc66;
+    padding:10px;
+    border-radius:10px;
+    margin:10px;
+    text-align:right;
+}
+
+.ai{
+    background:#1e2a5a;
+    padding:10px;
+    border-radius:10px;
+    margin:10px;
+    text-align:left;
+}
+
+.input-box{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#11183a;
+    padding:10px;
+    display:flex;
+}
+
+input{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:5px;
+}
+
+button{
+    padding:10px 20px;
+    background:#00cc66;
+    color:white;
+    border:none;
+    margin-left:5px;
+    border-radius:5px;
+    cursor:pointer;
+}
 
 </style>
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="logo">KEYX SCORE</div>
-  <nav>
-    <a href="#" class="active" onclick="showSection('home')">Home</a>
-    <a href="#" onclick="showSection('matches')">Sports</a>
-    <a href="#" onclick="showSection('matches')">Live</a>
-  </nav>
-</header>
+<div class="header">🤖 KEYX AI</div>
 
-<!-- HOME SECTION -->
-<div id="home-section">
+<div class="chat-box" id="chat"></div>
 
-  <!-- SLIDESHOW -->
-  <div class="slideshow" id="slideshow">
-
-    <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1600');">
-      <div class="slide-content">
-        <div class="slide-tag">⚡ Champions League</div>
-        <h2>BET LIKE A<br>CHAMPION</h2>
-        <p>Win big with KEYX SCORE — best odds guaranteed</p>
-        <button class="btn-main" onclick="showSection('matches')">VIEW MATCHES</button>
-      </div>
-    </div>
-
-    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1600');">
-      <div class="slide-content">
-        <div class="slide-tag">🔴 Live Now</div>
-        <h2>LIVE MATCH<br>BETTING</h2>
-        <p>Real-time odds updated every second</p>
-        <button class="btn-main" onclick="showSection('matches')">BET NOW</button>
-      </div>
-    </div>
-
-    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1521412644187-c49fa049e84d?w=1600');">
-      <div class="slide-content">
-        <div class="slide-tag">🏆 Top Odds</div>
-        <h2>HIGHEST ODDS<br>IN THE GAME</h2>
-        <p>Maximum returns on every match you pick</p>
-        <button class="btn-main" onclick="showSection('matches')">START BETTING</button>
-      </div>
-    </div>
-
-    <div class="slide-dots" id="dots">
-      <div class="dot active" onclick="goSlide(0)"></div>
-      <div class="dot" onclick="goSlide(1)"></div>
-      <div class="dot" onclick="goSlide(2)"></div>
-    </div>
-  </div>
-
-  <!-- STATS STRIP -->
-  <div class="stats-strip">
-    <div class="stat-item">
-      <div class="stat-num">500+</div>
-      <div class="stat-label">Live Matches</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">98%</div>
-      <div class="stat-label">Payout Rate</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">24/7</div>
-      <div class="stat-label">Support</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">50K+</div>
-      <div class="stat-label">Active Users</div>
-    </div>
-  </div>
-
-  <!-- TICKER -->
-  <div class="ticker-bar">
-    <div class="ticker-track">
-      <span>Arsenal 2 - 1 Chelsea</span>
-      <span>Man United 0 - 0 Liverpool</span>
-      <span>Real Madrid 3 - 1 Atletico</span>
-      <span>PSG 2 - 0 Bayern Munich</span>
-      <span>Inter 1 - 1 AC Milan</span>
-      <span>Barcelona 2 - 2 Sevilla</span>
-      <span>Arsenal 2 - 1 Chelsea</span>
-      <span>Man United 0 - 0 Liverpool</span>
-      <span>Real Madrid 3 - 1 Atletico</span>
-      <span>PSG 2 - 0 Bayern Munich</span>
-      <span>Inter 1 - 1 AC Milan</span>
-      <span>Barcelona 2 - 2 Sevilla</span>
-    </div>
-  </div>
-
-  <!-- PREVIEW MATCHES -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">HOT <span>MATCHES</span></div>
-      <div class="live-badge">Live</div>
-    </div>
-
-    <div class="table-header">
-      <span>Match</span>
-      <span style="text-align:center;">Score</span>
-      <div class="odds-labels">
-        <span>1</span><span>X</span><span>2</span>
-      </div>
-    </div>
-
-    <div class="matches-grid">
-      <div class="match-card">
-        <div class="match-teams">
-          <span class="match-league">Premier League</span>
-          <span class="match-name">Arsenal vs Chelsea</span>
-          <span class="match-time">🔴 LIVE — 67'</span>
-        </div>
-        <div class="match-score">2 - 1</div>
-        <div class="odds-group">
-          <button class="odd-btn"><small>1</small>2.10</button>
-          <button class="odd-btn"><small>X</small>3.20</button>
-          <button class="odd-btn"><small>2</small>2.80</button>
-        </div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-teams">
-          <span class="match-league">Premier League</span>
-          <span class="match-name">Man United vs Liverpool</span>
-          <span class="match-time">🔴 LIVE — 45'</span>
-        </div>
-        <div class="match-score">0 - 0</div>
-        <div class="odds-group">
-          <button class="odd-btn"><small>1</small>2.50</button>
-          <button class="odd-btn"><small>X</small>3.00</button>
-          <button class="odd-btn"><small>2</small>2.60</button>
-        </div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-teams">
-          <span class="match-league">La Liga</span>
-          <span class="match-name">Barcelona vs Real Madrid</span>
-          <span class="match-time">⏰ Today 21:00</span>
-        </div>
-        <div class="match-score upcoming">Upcoming</div>
-        <div class="odds-group">
-          <button class="odd-btn"><small>1</small>2.30</button>
-          <button class="odd-btn"><small>X</small>3.10</button>
-          <button class="odd-btn"><small>2</small>2.90</button>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center; margin-top:28px;">
-      <button class="btn-main" onclick="showSection('matches')">VIEW ALL MATCHES →</button>
-    </div>
-  </div>
-
+<div class="input-box">
+<input type="text" id="msg" placeholder="Ask KEYX AI...">
+<button onclick="send()">Send</button>
 </div>
-
-<!-- MATCHES SECTION -->
-<div id="matches-section" style="padding-top:70px;">
-
-  <!-- TICKER -->
-  <div class="ticker-bar">
-    <div class="ticker-track">
-      <span>Arsenal 2 - 1 Chelsea</span>
-      <span>Man United 0 - 0 Liverpool</span>
-      <span>Real Madrid 3 - 1 Atletico</span>
-      <span>PSG 2 - 0 Bayern Munich</span>
-      <span>Inter 1 - 1 AC Milan</span>
-      <span>Barcelona 2 - 2 Sevilla</span>
-      <span>Arsenal 2 - 1 Chelsea</span>
-      <span>Man United 0 - 0 Liverpool</span>
-      <span>Real Madrid 3 - 1 Atletico</span>
-      <span>PSG 2 - 0 Bayern Munich</span>
-      <span>Inter 1 - 1 AC Milan</span>
-      <span>Barcelona 2 - 2 Sevilla</span>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">ALL <span>MATCHES</span></div>
-      <div class="live-badge">Live</div>
-    </div>
-
-    <!-- FILTER TABS -->
-    <div class="filter-tabs">
-      <button class="filter-tab active" onclick="filterTab(this,'all')">All</button>
-      <button class="filter-tab" onclick="filterTab(this,'live')">🔴 Live</button>
-      <button class="filter-tab" onclick="filterTab(this,'epl')">Premier League</button>
-      <button class="filter-tab" onclick="filterTab(this,'laliga')">La Liga</button>
-      <button class="filter-tab" onclick="filterTab(this,'ucl')">Champions League</button>
-      <button class="filter-tab" onclick="filterTab(this,'serie')">Serie A</button>
-    </div>
-
-    <!-- PAGE 1 -->
-    <div id="page1">
-      <div class="table-header">
-        <span>Match</span>
-        <span style="text-align:center;">Score</span>
-        <div class="odds-labels">
-          <span>1</span><span>X</span><span>2</span>
-        </div>
-      </div>
-      <div class="matches-grid">
-
-        <div class="match-card" data-league="epl" data-live="live">
-          <div class="match-teams">
-            <span class="match-league">Premier League</span>
-            <span class="match-name">Arsenal vs Chelsea</span>
-            <span class="match-time">🔴 LIVE — 67'</span>
-          </div>
-          <div class="match-score">2 - 1</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.10</button>
-            <button class="odd-btn"><small>X</small>3.20</button>
-            <button class="odd-btn"><small>2</small>2.80</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="epl" data-live="live">
-          <div class="match-teams">
-            <span class="match-league">Premier League</span>
-            <span class="match-name">Man United vs Liverpool</span>
-            <span class="match-time">🔴 LIVE — 45'</span>
-          </div>
-          <div class="match-score">0 - 0</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.50</button>
-            <button class="odd-btn"><small>X</small>3.00</button>
-            <button class="odd-btn"><small>2</small>2.60</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="epl">
-          <div class="match-teams">
-            <span class="match-league">Premier League</span>
-            <span class="match-name">Tottenham vs Man City</span>
-            <span class="match-time">⏰ Today 19:30</span>
-          </div>
-          <div class="match-score upcoming">Upcoming</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>3.50</button>
-            <button class="odd-btn"><small>X</small>3.40</button>
-            <button class="odd-btn"><small>2</small>1.95</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="laliga">
-          <div class="match-teams">
-            <span class="match-league">La Liga</span>
-            <span class="match-name">Barcelona vs Real Madrid</span>
-            <span class="match-time">⏰ Today 21:00</span>
-          </div>
-          <div class="match-score upcoming">Upcoming</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.30</button>
-            <button class="odd-btn"><small>X</small>3.10</button>
-            <button class="odd-btn"><small>2</small>2.90</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="laliga" data-live="live">
-          <div class="match-teams">
-            <span class="match-league">La Liga</span>
-            <span class="match-name">Atletico Madrid vs Sevilla</span>
-            <span class="match-time">🔴 LIVE — 22'</span>
-          </div>
-          <div class="match-score">1 - 0</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>1.75</button>
-            <button class="odd-btn"><small>X</small>3.60</button>
-            <button class="odd-btn"><small>2</small>4.20</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="ucl" data-live="live">
-          <div class="match-teams">
-            <span class="match-league">Champions League</span>
-            <span class="match-name">PSG vs Bayern Munich</span>
-            <span class="match-time">🔴 LIVE — 78'</span>
-          </div>
-          <div class="match-score">2 - 0</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.40</button>
-            <button class="odd-btn"><small>X</small>3.30</button>
-            <button class="odd-btn"><small>2</small>2.70</button>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="pagination">
-        <button class="page-btn" onclick="goPage(2)">Next Page ▶</button>
-      </div>
-    </div>
-
-    <!-- PAGE 2 -->
-    <div id="page2" style="display:none;">
-      <div class="table-header">
-        <span>Match</span>
-        <span style="text-align:center;">Score</span>
-        <div class="odds-labels">
-          <span>1</span><span>X</span><span>2</span>
-        </div>
-      </div>
-      <div class="matches-grid">
-
-        <div class="match-card" data-league="serie" data-live="live">
-          <div class="match-teams">
-            <span class="match-league">Serie A</span>
-            <span class="match-name">Inter Milan vs AC Milan</span>
-            <span class="match-time">🔴 LIVE — 55'</span>
-          </div>
-          <div class="match-score">1 - 1</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.20</button>
-            <button class="odd-btn"><small>X</small>3.15</button>
-            <button class="odd-btn"><small>2</small>3.00</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="serie">
-          <div class="match-teams">
-            <span class="match-league">Serie A</span>
-            <span class="match-name">Juventus vs Napoli</span>
-            <span class="match-time">⏰ Today 20:45</span>
-          </div>
-          <div class="match-score upcoming">Upcoming</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.65</button>
-            <button class="odd-btn"><small>X</small>3.20</button>
-            <button class="odd-btn"><small>2</small>2.55</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="ucl">
-          <div class="match-teams">
-            <span class="match-league">Champions League</span>
-            <span class="match-name">Dortmund vs Real Madrid</span>
-            <span class="match-time">⏰ Tomorrow 21:00</span>
-          </div>
-          <div class="match-score upcoming">Upcoming</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>3.80</button>
-            <button class="odd-btn"><small>X</small>3.50</button>
-            <button class="odd-btn"><small>2</small>1.90</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="epl">
-          <div class="match-teams">
-            <span class="match-league">Premier League</span>
-            <span class="match-name">Newcastle vs Aston Villa</span>
-            <span class="match-time">⏰ Tomorrow 15:00</span>
-          </div>
-          <div class="match-score upcoming">Upcoming</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.05</button>
-            <button class="odd-btn"><small>X</small>3.40</button>
-            <button class="odd-btn"><small>2</small>3.20</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="laliga">
-          <div class="match-teams">
-            <span class="match-league">La Liga</span>
-            <span class="match-name">Real Betis vs Valencia</span>
-            <span class="match-time">⏰ Tomorrow 18:00</span>
-          </div>
-          <div class="match-score upcoming">Upcoming</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.10</button>
-            <button class="odd-btn"><small>X</small>3.30</button>
-            <button class="odd-btn"><small>2</small>3.10</button>
-          </div>
-        </div>
-
-        <div class="match-card" data-league="serie" data-live="live">
-          <div class="match-teams">
-            <span class="match-league">Serie A</span>
-            <span class="match-name">Roma vs Lazio</span>
-            <span class="match-time">🔴 LIVE — 33'</span>
-          </div>
-          <div class="match-score">0 - 1</div>
-          <div class="odds-group">
-            <button class="odd-btn"><small>1</small>2.80</button>
-            <button class="odd-btn"><small>X</small>3.10</button>
-            <button class="odd-btn"><small>2</small>2.40</button>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="pagination">
-        <button class="page-btn" onclick="goPage(1)">◀ Back</button>
-        <span class="page-info">Page 2</span>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="logo" style="margin-bottom:10px;">KEYX SCORE</div>
-  <p>© 2025 KEYX SCORE — Bet responsibly. 18+ only.</p>
-  <p style="margin-top:6px;">Gambling can be addictive. <span>Play smart.</span></p>
-</footer>
-
-<!-- FLOAT BUTTONS -->
-<button class="betslip-float" id="betslip">
-  🎯 Betslip <span class="count" id="slipCount">0</span>
-</button>
-
-<div id="scrollTop" onclick="scrollToTop()">↑</div>
 
 <script>
-  // ===== SLIDESHOW =====
-  let slides = document.querySelectorAll('.slide');
-  let dots = document.querySelectorAll('.dot');
-  let current = 0;
 
-  function goSlide(n) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = n;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-  }
+const API_KEY = "gen-lang-client-0320536118";
 
-  setInterval(() => {
-    let next = (current + 1) % slides.length;
-    goSlide(next);
-  }, 4000);
+async function send(){
 
-  // ===== NAV SECTIONS =====
-  function showSection(name) {
-    document.getElementById('home-section').style.display = name === 'home' ? 'block' : 'none';
-    document.getElementById('matches-section').style.display = name === 'matches' ? 'block' : 'none';
+let msg = document.getElementById("msg").value;
 
-    document.querySelectorAll('nav a').forEach((a, i) => {
-      a.classList.remove('active');
-      if ((name === 'home' && i === 0) || (name !== 'home' && i > 0)) {
-        a.classList.add('active');
-      }
-    });
+if(!msg) return;
 
-    if (name === 'matches') window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+let chat = document.getElementById("chat");
 
-  // ===== PAGINATION =====
-  function goPage(n) {
-    document.getElementById('page1').style.display = n === 1 ? 'block' : 'none';
-    document.getElementById('page2').style.display = n === 2 ? 'block' : 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+chat.innerHTML += `<div class="user">${msg}</div>`;
 
-  // ===== FILTER TABS =====
-  function filterTab(btn, league) {
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
+document.getElementById("msg").value="";
 
-    document.querySelectorAll('.match-card').forEach(card => {
-      if (league === 'all') {
-        card.style.display = 'grid';
-      } else if (league === 'live') {
-        card.style.display = card.dataset.live === 'live' ? 'grid' : 'none';
-      } else {
-        card.style.display = card.dataset.league === league ? 'grid' : 'none';
-      }
-    });
-  }
+let response = await fetch(
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+API_KEY,
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+contents:[
+{
+parts:[
+{ text: msg }
+]
+}
+]
+})
+});
 
-  // ===== BETSLIP =====
-  let slipCount = 0;
-  document.querySelectorAll('.odd-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      if (this.classList.contains('selected')) {
-        this.classList.remove('selected');
-        this.style.background = '';
-        this.style.color = '';
-        slipCount = Math.max(0, slipCount - 1);
-      } else {
-        this.classList.add('selected');
-        this.style.background = 'var(--yellow)';
-        this.style.color = 'var(--dark)';
-        slipCount++;
-      }
-      document.getElementById('slipCount').textContent = slipCount;
-    });
-  });
+let data = await response.json();
 
-  // ===== SCROLL TO TOP =====
-  window.addEventListener('scroll', () => {
-    document.getElementById('scrollTop').style.display = window.scrollY > 400 ? 'flex' : 'none';
-  });
+let aiText = data.candidates[0].content.parts[0].text;
 
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+chat.innerHTML += `<div class="ai">${aiText}</div>`;
+
+chat.scrollTop = chat.scrollHeight;
+
+}
+
 </script>
+
 </body>
 </html>
