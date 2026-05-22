@@ -1,966 +1,993 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KEYX PREDICTER — AI Football Tips</title>
-<link rel="icon" id="favicon-link" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --green:#9be23c;--green2:#6fcf2a;--yellow:#facc15;
-  --dark:#080c14;--dark2:#0e1420;--dark3:#161e2e;--dark4:#1d2740;
-  --text:#e5e7eb;--muted:#8fa3b8;--red:#ef4444;--blue:#60a5fa;
-  --orange:#f97316;--radius:10px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Rajdhani',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;min-height:100vh}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--dark2)}::-webkit-scrollbar-thumb{background:var(--green2);border-radius:3px}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 20%,rgba(155,226,60,.04),transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(111,207,42,.03),transparent 60%);pointer-events:none;z-index:0}
-
-header{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:0 36px;height:58px;background:rgba(8,12,20,.97);backdrop-filter:blur(16px);z-index:9000;border-bottom:1px solid rgba(155,226,60,.12)}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green);letter-spacing:4px;text-shadow:0 0 20px rgba(155,226,60,.5);display:flex;align-items:center;gap:10px;cursor:pointer}
-.logo img.logo-ico{width:28px;height:28px;border-radius:4px;object-fit:cover;display:none}
-.logo-tag{font-size:9px;font-family:'Space Mono',monospace;font-weight:700;letter-spacing:2px;color:var(--yellow);background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.3);padding:2px 7px;border-radius:3px}
-nav{display:flex;align-items:center;gap:3px}
-nav a{padding:6px 14px;color:var(--muted);text-decoration:none;font-weight:700;font-size:12px;letter-spacing:1.5px;border-radius:4px;transition:all .2s;text-transform:uppercase;cursor:pointer}
-nav a:hover{color:var(--green)}
-nav a.active{color:var(--dark);background:var(--green)}
-.btn-adm{margin-left:8px;padding:6px 13px;background:rgba(155,226,60,.08);border:1px solid rgba(155,226,60,.25);color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:uppercase}
-.btn-adm:hover{background:rgba(155,226,60,.18)}
-
-.ticker-bar{background:var(--green);padding:7px 0;overflow:hidden;white-space:nowrap}
-.ticker-track{display:inline-block;animation:ticker 35s linear infinite}
-.ticker-track span{display:inline-block;color:var(--dark);font-weight:700;font-size:12px;letter-spacing:1.5px;padding:0 38px}
-@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-.hero{height:100vh;position:relative;overflow:hidden;padding-top:58px}
-.slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;display:flex;align-items:flex-end;padding:76px 56px}
-.slide.active{opacity:1}
-.slide::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,12,20,.94),rgba(8,12,20,.42) 55%,rgba(8,12,20,.74))}
-.slide-content{position:relative;z-index:2;max-width:600px}
-.slide-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(155,226,60,.12);border:1px solid rgba(155,226,60,.4);color:var(--green);font-size:11px;font-weight:700;letter-spacing:3px;padding:5px 13px;border-radius:3px;margin-bottom:14px;text-transform:uppercase}
-.slide-content h2{font-family:'Bebas Neue',sans-serif;font-size:74px;line-height:.92;color:#fff;letter-spacing:2px;margin-bottom:14px;text-shadow:0 4px 40px rgba(0,0,0,.5)}
-.slide-content p{font-size:16px;color:rgba(255,255,255,.65);margin-bottom:26px;font-weight:500;line-height:1.5}
-.btn-main{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:var(--dark);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;padding:12px 30px;border:none;cursor:pointer;text-transform:uppercase;border-radius:3px;transition:all .2s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
-.btn-main:hover{background:#b4f04e;transform:translateY(-2px);box-shadow:0 12px 32px rgba(155,226,60,.35)}
-.slide-dots{position:absolute;bottom:26px;right:56px;display:flex;gap:7px;z-index:10}
-.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
-.dot.active{background:var(--green);width:24px;border-radius:4px}
-
-.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.05)}
-.stat-item{background:var(--dark2);text-align:center;padding:22px 14px;transition:background .2s}
-.stat-item:hover{background:var(--dark3)}
-.stat-num{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--green);letter-spacing:2px;line-height:1}
-.stat-label{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:3px}
-
-.page{display:none}.page.active{display:block}
-#page-home{padding-top:0}
-#page-predictions,#page-admin{padding-top:58px}
-.section{padding:52px 36px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
-.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:2px;color:#fff}
-.section-title span{color:var(--green)}
-.acc-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(155,226,60,.1);border:1px solid rgba(155,226,60,.3);color:var(--green);font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 13px;border-radius:3px;text-transform:uppercase}
-
-/* DATE TABS */
-.date-tabs{display:flex;gap:0;margin-bottom:18px;border:1px solid rgba(255,255,255,.1);border-radius:8px;overflow:hidden;width:fit-content;background:var(--dark3)}
-.date-tab{padding:11px 24px;background:transparent;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;cursor:pointer;transition:all .2s;text-transform:uppercase;display:flex;align-items:center;gap:6px}
-.date-tab:not(:last-child){border-right:1px solid rgba(255,255,255,.08)}
-.date-tab.active{background:var(--green);color:var(--dark)}
-.tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:18px;padding:0 5px;border-radius:9px;background:rgba(255,255,255,.15);font-size:10px;font-weight:700}
-.date-tab.active .tab-count{background:rgba(8,12,20,.2)}
-
-/* FILTER TABS */
-.filter-tabs{display:flex;gap:5px;margin-bottom:22px;flex-wrap:wrap}
-.filter-tab{padding:6px 16px;background:transparent;border:1px solid rgba(255,255,255,.08);color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;cursor:pointer;border-radius:3px;transition:all .2s;text-transform:uppercase}
-.filter-tab:hover{color:#fff;border-color:rgba(255,255,255,.25)}
-.filter-tab.active{background:rgba(155,226,60,.12);border-color:var(--green);color:var(--green)}
-
-/* DAY GROUP HEADER */
-.day-section{margin-bottom:32px}
-.day-header{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding:12px 18px;background:rgba(155,226,60,.05);border:1px solid rgba(155,226,60,.15);border-radius:8px;border-left:3px solid var(--green)}
-.day-icon{font-size:22px}
-.day-label{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--green)}
-.day-sub{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
-.day-count{margin-left:auto;font-size:11px;font-weight:700;color:var(--green);background:rgba(155,226,60,.1);border:1px solid rgba(155,226,60,.2);padding:4px 12px;border-radius:12px}
-.tomorrow-day .day-header{background:rgba(249,115,22,.05);border-color:rgba(249,115,22,.2);border-left-color:var(--orange)}
-.tomorrow-day .day-label{color:var(--orange)}
-.tomorrow-day .day-count{color:var(--orange);background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.2)}
-
-/* PREDICTION CARDS */
-.predictions-grid{display:grid;gap:10px}
-.pred-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);overflow:hidden;transition:all .25s;animation:fadeUp .3s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.pred-card:hover{border-color:rgba(155,226,60,.3);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4)}
-.pred-card-header{display:flex;justify-content:space-between;align-items:center;padding:9px 17px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.04)}
-.pred-league{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase}
-.pred-time-info{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px}
-.pred-card-body{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:16px 20px;gap:16px}
-.team-side{display:flex;flex-direction:column;gap:6px}
-.team-side.right{align-items:flex-end;text-align:right}
-.team-logo-wrap{width:44px;height:44px;background:var(--dark3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid rgba(255,255,255,.07)}
-.team-side.right .team-logo-wrap{margin-left:auto}
-.team-name{font-size:15px;font-weight:700;color:#fff}
-.vs-block{text-align:center}
-.vs-label{font-family:'Bebas Neue',sans-serif;font-size:22px;color:rgba(255,255,255,.1);letter-spacing:2px;display:block;margin-bottom:4px}
-.vs-time-badge{font-size:10px;font-weight:700;color:var(--yellow);background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.2);padding:3px 8px;border-radius:3px;display:block;white-space:nowrap}
-.pred-card-footer{padding:13px 20px;border-top:1px solid rgba(255,255,255,.04);display:flex;flex-direction:column;gap:9px}
-.pred-pick-label{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
-.pred-pick-value{font-size:16px;font-weight:700;color:#fff;margin-top:2px}
-.conf-label{display:flex;justify-content:space-between;font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
-.conf-label span:last-child{color:var(--green)}
-.conf-bar{height:4px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
-.conf-fill{height:100%;border-radius:3px;transition:width .8s ease}
-.conf-fill.high{background:linear-gradient(90deg,#5cb811,var(--green))}
-.conf-fill.mid{background:linear-gradient(90deg,#b88a00,var(--yellow))}
-.conf-fill.low{background:linear-gradient(90deg,#991b1b,var(--red))}
-.tip-chips{display:flex;gap:5px;flex-wrap:wrap}
-.chip{font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:20px;text-transform:uppercase}
-.chip.green{background:rgba(155,226,60,.1);color:var(--green);border:1px solid rgba(155,226,60,.25)}
-.chip.yellow{background:rgba(250,204,21,.1);color:var(--yellow);border:1px solid rgba(250,204,21,.2)}
-.chip.red{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
-.chip.blue{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
-
-/* PAGINATION */
-.pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:30px}
-.page-btn{padding:9px 24px;background:transparent;border:1px solid rgba(155,226,60,.3);color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:uppercase}
-.page-btn:hover{background:var(--green);color:var(--dark)}
-.page-btn:disabled{opacity:.3;cursor:not-allowed}
-.page-info{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px}
-
-/* HOME PREVIEWS */
-.preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
-@media(max-width:900px){.preview-grid{grid-template-columns:1fr}}
-.preview-card{background:var(--dark2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);overflow:hidden;transition:all .25s;cursor:pointer}
-.preview-card:hover{border-color:rgba(155,226,60,.3);transform:translateY(-3px);box-shadow:0 12px 35px rgba(0,0,0,.4)}
-.preview-img{width:100%;height:150px;object-fit:cover;display:block;filter:brightness(.82);transition:filter .25s}
-.preview-card:hover .preview-img{filter:brightness(1)}
-.preview-body{padding:14px}
-.preview-league{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:4px}
-.preview-match{font-size:14px;font-weight:700;color:#fff;margin-bottom:7px}
-.preview-pick{display:flex;justify-content:space-between;align-items:center}
-.preview-pick span{font-size:11px;font-weight:600;color:var(--muted)}
-.preview-pick strong{color:var(--green);font-size:12px}
-.mini-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-top:8px;overflow:hidden}
-.mini-fill{height:100%;border-radius:2px;background:var(--green)}
-.mini-conf{font-size:9px;color:var(--muted);margin-top:4px;font-weight:700;letter-spacing:1px}
-
-/* EMPTY / LOADING */
-.empty-state{text-align:center;padding:56px 20px;color:var(--muted);font-size:14px;font-weight:600;letter-spacing:1px}
-.empty-state .icon{font-size:46px;margin-bottom:13px}
-.empty-state p{font-size:12px;margin-top:5px;opacity:.6}
-.loading-spinner{display:flex;align-items:center;justify-content:center;padding:46px;gap:10px;color:var(--muted);font-weight:700;letter-spacing:2px;font-size:12px}
-.spinner{width:20px;height:20px;border:2px solid rgba(155,226,60,.2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ADMIN */
-.admin-login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 58px);padding:20px}
-.login-card{background:var(--dark2);border:1px solid rgba(155,226,60,.15);border-radius:14px;padding:38px 46px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
-.lock-icon{font-size:50px;margin-bottom:10px}
-.login-title{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;color:#fff;margin-bottom:6px}
-.login-title span{color:var(--green)}
-.login-sub{color:var(--muted);font-size:13px;font-weight:600;letter-spacing:1px;margin-bottom:20px}
-.login-form-group{text-align:left;margin-bottom:15px}
-.login-form-group label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
-.login-input{width:100%;padding:12px 14px;background:var(--dark3);border:1px solid rgba(255,255,255,.08);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;border-radius:6px;outline:none;transition:all .2s}
-.login-input:focus{border-color:rgba(155,226,60,.5);box-shadow:0 0 0 3px rgba(155,226,60,.07)}
-.login-btn{width:100%;padding:13px;background:var(--green);color:var(--dark);font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;border:none;cursor:pointer;border-radius:6px;transition:all .2s;margin-top:5px}
-.login-btn:hover{background:#b4f04e;transform:translateY(-1px);box-shadow:0 8px 24px rgba(155,226,60,.3)}
-.security-note{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:1px;font-weight:600;margin-top:16px}
-.admin-wrap{max-width:960px;margin:0 auto;padding:46px 36px;position:relative;z-index:1}
-.admin-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06)}
-.admin-user{display:flex;align-items:center;gap:11px}
-.admin-avatar{width:38px;height:38px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:var(--dark);font-weight:700;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;border:2px solid var(--green2)}
-.admin-uname{font-weight:700;font-size:14px;color:#fff}
-.admin-uemail{font-size:11px;color:var(--muted)}
-.btn-logout{padding:7px 16px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:uppercase}
-.btn-logout:hover{background:rgba(239,68,68,.2)}
-.status-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(155,226,60,.06);border:1px solid rgba(155,226,60,.2);border-radius:6px;margin-bottom:20px;font-size:11px;font-weight:700;color:var(--green)}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
-.admin-tabs{display:flex;gap:5px;margin-bottom:26px;flex-wrap:wrap}
-.admin-tab{padding:8px 18px;background:transparent;border:1px solid rgba(255,255,255,.08);color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:uppercase}
-.admin-tab:hover{color:#fff;border-color:rgba(255,255,255,.25)}
-.admin-tab.active{background:rgba(155,226,60,.12);border-color:var(--green);color:var(--green)}
-.admin-section{display:none}.admin-section.active{display:block}
-.a-card{background:var(--dark2);border:1px solid rgba(155,226,60,.1);border-radius:12px;padding:26px;margin-bottom:22px}
-.a-card-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:9px}
-.a-card-title span{color:var(--green)}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:640px){.fgrid{grid-template-columns:1fr}}
-.fg{display:flex;flex-direction:column;gap:6px}.fg.full{grid-column:1/-1}
-.flabel{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
-.finput,.fselect,.ftextarea{background:var(--dark3);border:1px solid rgba(255,255,255,.08);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;padding:10px 13px;border-radius:6px;transition:all .2s;outline:none;width:100%}
-.finput:focus,.fselect:focus,.ftextarea:focus{border-color:rgba(155,226,60,.5);box-shadow:0 0 0 3px rgba(155,226,60,.07)}
-.fselect option{background:var(--dark3)}.ftextarea{resize:vertical;min-height:66px}
-.frange{width:100%;-webkit-appearance:none;height:5px;background:rgba(255,255,255,.08);border-radius:3px;outline:none;cursor:pointer}
-.frange::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--green);cursor:pointer;box-shadow:0 0 8px rgba(155,226,60,.4)}
-.btn-save{width:100%;margin-top:18px;padding:13px;background:var(--green);color:var(--dark);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;border-radius:6px;transition:all .2s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
-.btn-save:hover{background:#b4f04e;transform:translateY(-1px);box-shadow:0 8px 24px rgba(155,226,60,.3)}
-.btn-save:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.matches-table{width:100%;border-collapse:collapse}
-.matches-table th{padding:10px 16px;text-align:left;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.15)}
-.matches-table td{padding:11px 16px;font-size:13px;font-weight:600;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
-.matches-table tr:last-child td{border-bottom:none}
-.matches-table tr:hover td{background:rgba(255,255,255,.02)}
-.td-teams{color:#fff;font-weight:700}
-.td-league{color:var(--green);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
-.td-pred{color:var(--yellow)}
-.td-conf{color:var(--muted);font-size:11px}
-.td-actions{display:flex;gap:6px;white-space:nowrap}
-.btn-edit{padding:4px 10px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);color:var(--blue);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:10px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:uppercase;letter-spacing:1px}
-.btn-edit:hover{background:rgba(96,165,250,.2)}
-.btn-del{padding:4px 10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--red);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:10px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:uppercase;letter-spacing:1px}
-.btn-del:hover{background:rgba(239,68,68,.25)}
-.slides-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-@media(max-width:700px){.slides-grid{grid-template-columns:1fr}}
-.slide-thumb{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
-.slide-thumb-body{padding:10px}
-.slide-thumb-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.slide-thumb-actions{display:flex;gap:5px;margin-top:8px}
-.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:640px){.settings-grid{grid-template-columns:1fr}}
-.favicon-preview{width:50px;height:50px;border-radius:8px;object-fit:cover;border:2px solid rgba(155,226,60,.3)}
-
-.notif{position:fixed;top:70px;right:18px;padding:11px 18px;border-radius:7px;font-weight:700;font-size:12px;letter-spacing:1px;z-index:99999;transform:translateX(220%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);max-width:320px;pointer-events:none}
-.notif.show{transform:translateX(0)}
-.notif.success{background:rgba(155,226,60,.15);border:1px solid rgba(155,226,60,.4);color:var(--green)}
-.notif.error{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:var(--red)}
-.notif.info{background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.4);color:var(--blue)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:99000;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.open{display:flex}
-.modal{background:var(--dark2);border:1px solid rgba(155,226,60,.2);border-radius:14px;padding:28px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:#fff;margin-bottom:20px}
-.modal-title span{color:var(--green)}
-.modal-close{position:absolute;top:14px;right:16px;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;transition:color .2s;line-height:1}
-.modal-close:hover{color:#fff}
-footer{background:var(--dark2);border-top:1px solid rgba(255,255,255,.05);text-align:center;padding:26px;font-size:11px;color:var(--muted);letter-spacing:1px;position:relative;z-index:1}
-.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--green);letter-spacing:4px;margin-bottom:7px}
-.footer-disc{font-size:10px;color:rgba(255,255,255,.18);margin-top:7px}
-#scrollTop{position:fixed;bottom:20px;right:20px;width:38px;height:38px;background:rgba(155,226,60,.1);border:1px solid rgba(155,226,60,.3);color:var(--green);font-size:15px;border-radius:50%;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:999;transition:all .2s}
-#scrollTop:hover{background:var(--green);color:var(--dark)}
-@media(max-width:768px){
-  header{padding:0 16px}.slide-content h2{font-size:50px}
-  .stats-strip{grid-template-columns:repeat(2,1fr)}
-  .section{padding:36px 16px}.admin-wrap{padding:36px 16px}.slide{padding:40px 24px}
-  .date-tabs{width:100%}.date-tab{flex:1;text-align:center;justify-content:center;padding:10px 8px;font-size:11px}
-}
-</style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KEYTUBE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- ★ External CSS -->
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="notif" class="notif"></div>
-<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
 
-<!-- EDIT MATCH MODAL -->
-<div class="modal-overlay" id="edit-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('edit-modal')">✕</button>
-    <div class="modal-title">✏️ Edit <span>Prediction</span></div>
-    <div class="fgrid">
-      <div class="fg"><label class="flabel">Home Team</label><input class="finput" id="e-home" type="text"></div>
-      <div class="fg"><label class="flabel">Away Team</label><input class="finput" id="e-away" type="text"></div>
-      <div class="fg"><label class="flabel">League</label>
-        <select class="fselect" id="e-league">
-          <option value="Premier League">⚽ Premier League</option><option value="La Liga">🇪🇸 La Liga</option>
-          <option value="Champions League">🌟 Champions League</option><option value="Serie A">🇮🇹 Serie A</option>
-          <option value="Bundesliga">🇩🇪 Bundesliga</option><option value="Ligue 1">🇫🇷 Ligue 1</option><option value="Other">🌍 Other</option>
-        </select></div>
-      <div class="fg"><label class="flabel">Time</label><input class="finput" id="e-time" type="time"></div>
-      <div class="fg"><label class="flabel">Date</label><input class="finput" id="e-date" type="date"></div>
-      <div class="fg"><label class="flabel">Prediction / Pick</label><input class="finput" id="e-pred" type="text"></div>
-      <div class="fg full"><label class="flabel">Tips (comma-separated)</label><input class="finput" id="e-tips" type="text"></div>
-      <div class="fg full"><label class="flabel">Confidence: <span id="e-cv">75</span>%</label>
-        <input class="frange" id="e-conf" type="range" min="50" max="99" value="75" oninput="document.getElementById('e-cv').textContent=this.value"></div>
-      <div class="fg full"><label class="flabel">Notes</label><textarea class="ftextarea" id="e-notes"></textarea></div>
-    </div>
-    <input type="hidden" id="e-row">
-    <button class="btn-save" id="btn-update" onclick="updateMatch()">💾 UPDATE PREDICTION</button>
+<div id="pbar"></div>
+<div id="pgLoad"><div class="ld"><div class="kb">K</div><div class="ld-t">KEYTUBE</div><div class="spin"></div></div></div>
+<div id="toast"></div>
+
+<!-- LOGIN REQUIRED -->
+<div id="loginReq"><div class="lr-box">
+  <div style="font-size:2rem;margin-bottom:7px">🔒</div>
+  <h3>Sign in required</h3><p>Create a free account to access this feature.</p>
+  <div class="lr-bar"><div class="lr-fill"></div></div>
+  <button class="abtn" onclick="hideLoginReq();showAuth('register')">Create Free Account</button>
+  <div style="margin-top:8px;font-size:.78rem;color:var(--t2)">Already have one? <a style="color:var(--blue);cursor:pointer" onclick="hideLoginReq();showAuth('login')">Sign in</a></div>
+</div></div>
+
+<!-- NAVBAR -->
+<nav id="nav">
+  <div class="logo" onclick="goHome()"><div class="kb">K</div><span class="logo-t" id="snEl">KEYTUBE</span></div>
+  <div class="nav-links">
+    <span class="nl act" onclick="goHome()">Home</span>
+    <span class="nl" onclick="fType('movie')">Movies</span>
+    <span class="nl" onclick="fType('series')">TV Shows</span>
+    <span class="nl" onclick="showNew()">New</span>
+    <span class="nl" onclick="showPlaylist()">📋 Playlist</span>
   </div>
+  <div class="sbar">
+    <input id="si" type="text" placeholder="Search movies, songs, news…" oninput="onSearch(this.value)" onkeydown="if(event.key==='Enter')doSBtn()">
+    <button onclick="doSBtn()">🔍</button>
+  </div>
+  <div class="nav-r">
+    <div class="notif-btn" id="notifBtn" onclick="toggleNotif()" style="display:none">🔔<div class="notif-dot" id="notifDot"></div></div>
+    <button class="nb nb-out" id="siBtn" onclick="showAuth('login')">Sign in</button>
+    <button class="nb nb-red" id="suBtn" onclick="showAuth('register')">Sign up</button>
+    <button class="nb" id="admNavBtn" style="display:none;font-size:.85rem" onclick="openAdmin()">⚙️ Admin</button>
+    <div id="uChip" style="display:none;position:relative">
+      <div class="av" id="avEl" onclick="toggleDrop()">U</div>
+    </div>
+  </div>
+</nav>
+
+<!-- NOTIFICATION PANEL -->
+<div id="notifPanel">
+  <div class="np-hd"><span>🔔 Notifications</span><span style="font-size:.75rem;color:var(--blue);cursor:pointer" onclick="markAllRead()">Mark all read</span></div>
+  <div id="notifList"></div>
 </div>
 
-<!-- SLIDE EDIT MODAL -->
-<div class="modal-overlay" id="slide-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('slide-modal')">✕</button>
-    <div class="modal-title">🖼️ Edit <span>Slide</span></div>
-    <div class="fgrid">
-      <div class="fg full"><label class="flabel">Tag Text</label><input class="finput" id="sm-tag" type="text"></div>
-      <div class="fg full"><label class="flabel">Title Line 1</label><input class="finput" id="sm-h1" type="text"></div>
-      <div class="fg full"><label class="flabel">Title Line 2 (green)</label><input class="finput" id="sm-h2" type="text"></div>
-      <div class="fg full"><label class="flabel">Description</label><textarea class="ftextarea" id="sm-desc"></textarea></div>
-      <div class="fg full"><label class="flabel">Button Text</label><input class="finput" id="sm-btn" type="text"></div>
-      <div class="fg full"><label class="flabel">Background Image URL</label>
-        <input class="finput" id="sm-img-url" type="text" placeholder="https://images.unsplash.com/...">
-        <img id="sm-img-preview" style="width:100%;max-height:130px;object-fit:cover;border-radius:6px;margin-top:10px;display:none"></div>
-    </div>
-    <input type="hidden" id="sm-idx">
-    <button class="btn-save" onclick="saveSlide()">💾 SAVE SLIDE</button>
-  </div>
+<!-- USER DROPDOWN -->
+<div id="udrop">
+  <div class="di" onclick="cd();showPlaylist()">📋 Playlist</div>
+  <div class="di" onclick="cd();showProfile()">👤 Profile</div>
+  <div class="ddiv"></div>
+  <div class="di" id="admDropI" style="display:none" onclick="cd();openAdmin()">⚙️ Admin Panel</div>
+  <div class="di" style="color:var(--red)" onclick="logout()">🚪 Sign out</div>
 </div>
 
-<!-- HEADER -->
-<header>
-  <div class="logo" onclick="showPage('home')">
-    <img id="logo-ico" class="logo-ico" src="" alt="">
-    KEYX PREDICTER <span class="logo-tag">AI TIPS</span>
-  </div>
-  <nav>
-    <a id="nav-home" class="active" onclick="showPage('home')">Home</a>
-    <a id="nav-pred" onclick="showPage('predictions')">Predictions</a>
-    <a id="nav-today" onclick="showPage('predictions')">Today</a>
-    <button class="btn-adm" onclick="showPage('admin')">⚙ Admin</button>
-  </nav>
-</header>
-
-<!-- PAGE HOME -->
-<div id="page-home" class="page active">
-  <div class="hero">
-    <div id="slide-0" class="slide active"><div class="slide-content"><div class="slide-tag" id="s0-tag"></div><h2><span id="s0-h1"></span><br><span id="s0-h2" style="color:var(--green)"></span></h2><p id="s0-p"></p><button class="btn-main" id="s0-btn" onclick="showPage('predictions')"></button></div></div>
-    <div id="slide-1" class="slide"><div class="slide-content"><div class="slide-tag" id="s1-tag"></div><h2><span id="s1-h1"></span><br><span id="s1-h2" style="color:var(--green)"></span></h2><p id="s1-p"></p><button class="btn-main" id="s1-btn" onclick="showPage('predictions')"></button></div></div>
-    <div id="slide-2" class="slide"><div class="slide-content"><div class="slide-tag" id="s2-tag"></div><h2><span id="s2-h1"></span><br><span id="s2-h2" style="color:var(--green)"></span></h2><p id="s2-p"></p><button class="btn-main" id="s2-btn" onclick="showPage('predictions')"></button></div></div>
-    <div class="slide-dots" id="dots"><div class="dot active" onclick="goSlide(0)"></div><div class="dot" onclick="goSlide(1)"></div><div class="dot" onclick="goSlide(2)"></div></div>
-  </div>
-  <div class="ticker-bar"><div class="ticker-track" id="ticker-home"></div></div>
-  <div class="stats-strip">
-    <div class="stat-item"><div class="stat-num" id="stat-acc">85%</div><div class="stat-label">Accuracy Rate</div></div>
-    <div class="stat-item"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Tips Available</div></div>
-    <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Leagues Covered</div></div>
-    <div class="stat-item"><div class="stat-num">50K+</div><div class="stat-label">Happy Users</div></div>
-  </div>
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">TODAY'S <span>TOP PICKS</span></div>
-      <div class="acc-badge" id="home-badge">🎯 Loading...</div>
-    </div>
-    <div id="home-previews" class="preview-grid">
-      <div class="loading-spinner" style="grid-column:1/-1"><div class="spinner"></div> LOADING TIPS...</div>
-    </div>
-    <div style="text-align:center;margin-top:28px">
-      <button class="btn-main" onclick="showPage('predictions')">VIEW ALL PREDICTIONS →</button>
-    </div>
-  </div>
-</div>
-
-<!-- PAGE PREDICTIONS -->
-<div id="page-predictions" class="page">
-  <div class="ticker-bar"><div class="ticker-track" id="ticker-pred"></div></div>
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">ALL <span>PREDICTIONS</span></div>
-      <div class="acc-badge" id="pred-count-badge">🎯 Loading...</div>
-    </div>
-
-    <!-- DATE TABS -->
-    <div class="date-tabs">
-      <button class="date-tab active" id="dtab-today" onclick="switchDateTab('today',this)">
-        📅 Today <span class="tab-count" id="cnt-today">0</span>
-      </button>
-      <button class="date-tab" id="dTab-tomorrow" onclick="switchDateTab('tomorrow',this)">
-        ⏭ Tomorrow <span class="tab-count" id="cnt-tomorrow">0</span>
-      </button>
-      <button class="date-tab" id="dTab-all" onclick="switchDateTab('all',this)">
-        📋 All <span class="tab-count" id="cnt-all">0</span>
-      </button>
-    </div>
-
-    <!-- LEAGUE FILTER -->
-    <div class="filter-tabs">
-      <button class="filter-tab active" onclick="filterLeague(this,'all')">All Leagues</button>
-      <button class="filter-tab" onclick="filterLeague(this,'Premier League')">Premier League</button>
-      <button class="filter-tab" onclick="filterLeague(this,'La Liga')">La Liga</button>
-      <button class="filter-tab" onclick="filterLeague(this,'Champions League')">UCL</button>
-      <button class="filter-tab" onclick="filterLeague(this,'Serie A')">Serie A</button>
-      <button class="filter-tab" onclick="filterLeague(this,'Bundesliga')">Bundesliga</button>
-    </div>
-
-    <div id="pred-loading" class="loading-spinner"><div class="spinner"></div> LOADING PREDICTIONS...</div>
-    <div id="pred-content"></div>
-    <div id="pred-empty" class="empty-state" style="display:none">
-      <div class="icon">⚽</div>
-      <div>No predictions found for this selection.</div>
-      <p>Try "All" tab or check back later.</p>
-    </div>
-    <div id="pred-pagi"></div>
-  </div>
-</div>
-
-<!-- PAGE ADMIN -->
-<div id="page-admin" class="page">
-  <div id="admin-login" class="admin-login-screen">
-    <div class="login-card">
-      <div class="lock-icon">🔐</div>
-      <div class="login-title">ADMIN <span>PANEL</span></div>
-      <div class="login-sub">Injira kugira ngo ugenzure predictions</div>
-      <div class="login-form-group"><label>USERNAME</label><input type="text" id="adm-user-input" class="login-input" placeholder="Kim Aristide" autocomplete="username"></div>
-      <div class="login-form-group"><label>PASSWORD</label><input type="password" id="adm-pass-input" class="login-input" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')handleManualLogin()"></div>
-      <button class="login-btn" onclick="handleManualLogin()">SIGN IN →</button>
-      <div class="security-note">🔒 Only authorized admins can access this panel.</div>
-    </div>
-  </div>
-
-  <div id="admin-panel" class="admin-wrap" style="display:none">
-    <div class="admin-topbar">
-      <div class="admin-user">
-        <div class="admin-avatar">KA</div>
-        <div><div class="admin-uname">Kim Aristide</div><div class="admin-uemail">Administrator</div></div>
+<!-- APP BANNER (full card) -->
+<div id="appBanner">
+  <button class="ab-close" onclick="document.getElementById('appBanner').classList.remove('show')">✕</button>
+  <div class="ab-glow"></div>
+  <div class="ab-glow2"></div>
+  <div class="ab-inner">
+    <div class="ab-icon-col"><span>📱</span><small>APP</small></div>
+    <div class="ab-body">
+      <div class="ab-title">KEYTUBE Mobile App</div>
+      <div class="ab-desc">Stream &amp; download movies anytime, anywhere — faster &amp; smoother.</div>
+      <div class="ab-feats">
+        <span class="ab-feat">📶 Offline mode</span>
+        <span class="ab-feat">🎬 HD streaming</span>
+        <span class="ab-feat">🔔 Notifications</span>
       </div>
-      <button class="btn-logout" onclick="adminLogout()">↩ Sign Out</button>
-    </div>
-    <div class="status-bar"><div class="status-dot"></div><span>✅ Connected to Google Sheets — Apps Script iri mu murongo</span></div>
-    <div class="admin-tabs">
-      <button class="admin-tab active" onclick="adminTab(this,'tab-matches')">⚽ Predictions</button>
-      <button class="admin-tab" onclick="adminTab(this,'tab-slides')">🖼️ Hero Slides</button>
-      <button class="admin-tab" onclick="adminTab(this,'tab-settings')">⚙️ Settings</button>
-    </div>
-
-    <div id="tab-matches" class="admin-section active">
-      <div class="a-card">
-        <div class="a-card-title">➕ Add <span>New Prediction</span></div>
-        <div class="fgrid">
-          <div class="fg"><label class="flabel">Home Team</label><input class="finput" id="f-home" type="text" placeholder="e.g. Arsenal"></div>
-          <div class="fg"><label class="flabel">Away Team</label><input class="finput" id="f-away" type="text" placeholder="e.g. Chelsea"></div>
-          <div class="fg"><label class="flabel">League</label>
-            <select class="fselect" id="f-league">
-              <option value="Premier League">⚽ Premier League</option><option value="La Liga">🇪🇸 La Liga</option>
-              <option value="Champions League">🌟 Champions League</option><option value="Serie A">🇮🇹 Serie A</option>
-              <option value="Bundesliga">🇩🇪 Bundesliga</option><option value="Ligue 1">🇫🇷 Ligue 1</option><option value="Other">🌍 Other</option>
-            </select></div>
-          <div class="fg"><label class="flabel">Time</label><input class="finput" id="f-time" type="time" value="16:30"></div>
-          <div class="fg"><label class="flabel">Date</label><input class="finput" id="f-date" type="date"></div>
-          <div class="fg"><label class="flabel">Prediction / Pick</label><input class="finput" id="f-pred" type="text" placeholder="e.g. Home Win"></div>
-          <div class="fg full"><label class="flabel">Tips (comma-separated)</label><input class="finput" id="f-tips" type="text" placeholder="Home Win, Over 2.5, BTTS"></div>
-          <div class="fg full"><label class="flabel">Confidence: <span id="conf-val">75</span>%</label><input class="frange" id="f-conf" type="range" min="50" max="99" value="75" oninput="document.getElementById('conf-val').textContent=this.value"></div>
-          <div class="fg full"><label class="flabel">Notes (optional)</label><textarea class="ftextarea" id="f-notes" placeholder="Extra analysis..."></textarea></div>
-        </div>
-        <button class="btn-save" id="btn-save" onclick="saveMatch()">💾 SAVE TO GOOGLE SHEETS</button>
-      </div>
-      <div class="a-card" style="padding:0;overflow:hidden">
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.06)">
-          <div class="a-card-title" style="margin-bottom:0">📋 Current <span>Predictions</span></div>
-          <button onclick="loadAdminMatches()" style="background:transparent;border:1px solid rgba(155,226,60,.3);color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;padding:5px 13px;border-radius:4px;cursor:pointer;text-transform:uppercase">↻ Refresh</button>
-        </div>
-        <div id="admin-list" style="overflow-x:auto"><div class="loading-spinner"><div class="spinner"></div> LOADING...</div></div>
-      </div>
-    </div>
-
-    <div id="tab-slides" class="admin-section">
-      <div class="a-card"><div class="a-card-title">🖼️ Manage <span>Hero Slides</span></div>
-        <p style="color:var(--muted);font-size:13px;font-weight:600;margin-bottom:18px">Hindura ibisobanuro by'ibiboneka mu slideshow.</p>
-        <div class="slides-grid" id="slides-manager"></div>
-      </div>
-    </div>
-
-    <div id="tab-settings" class="admin-section">
-      <div class="a-card"><div class="a-card-title">⚙️ Site <span>Settings</span></div>
-        <div class="settings-grid">
-          <div class="fg"><label class="flabel">Site Title</label><input class="finput" id="site-title" type="text"></div>
-          <div class="fg"><label class="flabel">Accuracy Stat</label><input class="finput" id="site-accuracy" type="text"></div>
-          <div class="fg full"><label class="flabel">Favicon / Logo Icon URL</label>
-            <div style="display:flex;align-items:center;gap:14px;margin-top:8px">
-              <img id="fav-preview" class="favicon-preview" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>" alt="fav">
-              <div>
-                <button onclick="document.getElementById('fav-file').click()" style="background:rgba(155,226,60,.1);border:1px solid rgba(155,226,60,.3);color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;padding:7px 14px;border-radius:4px;cursor:pointer;text-transform:uppercase">📁 Upload Favicon</button>
-                <input type="file" id="fav-file" accept="image/*" style="display:none" onchange="uploadFavicon(this)">
-              </div>
-            </div>
-          </div>
-          <div class="fg full"><label class="flabel">Ticker Messages (imwe ku murongo)</label><textarea class="ftextarea" id="ticker-input" style="min-height:100px"></textarea></div>
-          <div class="fg full"><label class="flabel">Google Apps Script URL</label>
-            <input class="finput" id="set-scripturl" type="text">
-            <div style="margin-top:8px;font-size:11px;color:var(--green);font-weight:600">✅ URL ishyizwemo kandi irikora.</div>
-          </div>
-        </div>
-        <button class="btn-save" onclick="saveSettings()">💾 SAVE ALL SETTINGS</button>
+      <div class="ab-actions">
+        <button class="ab-dl-btn" id="appDlBtn" onclick="downloadApp()">
+          <svg viewBox="0 0 24 24"><path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 4v-2h14v2H5z"/></svg>
+          Download Free App
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- HERO -->
+<div id="hero">
+  <img class="hi" id="hCover" src="" alt="">
+  <div class="hs"></div>
+  <div class="hinfo">
+    <span class="hbadge" id="hBadge">Featured</span>
+    <div class="htitle" id="hTitle">KEYTUBE</div>
+    <div class="hmeta" id="hMeta"></div>
+    <div class="hdesc" id="hDesc"></div>
+    <div class="hbtns">
+      <button class="hbp" onclick="heroPlay()">▶ Play</button>
+      <button class="hbi" onclick="heroInfo()">ℹ More Info</button>
+    </div>
+  </div>
+  <div class="hdots" id="hDots"></div>
+</div>
+
+<div class="adslot" id="adTop"></div>
+
+<!-- CATEGORY + FILTERS -->
+<div class="catbar">
+  <div class="catpills" id="catPills">
+    <button class="cp active" onclick="setCat('all',this)">All</button>
+    <button class="cp" onclick="setCat('english',this)">🇬🇧 English</button>
+    <button class="cp" onclick="setCat('french',this)">🇫🇷 French</button>
+    <button class="cp" onclick="setCat('drama',this)">🎭 Drama</button>
+    <button class="cp" onclick="setCat('chinese',this)">🇨🇳 Chinese</button>
+    <button class="cp" onclick="setCat('indian',this)">🇮🇳 Indian</button>
+    <button class="cp" onclick="setCat('cartoon',this)">🎨 Cartoon</button>
+    <button class="cp" onclick="setCat('comedy',this)">😂 Comedy</button>
+    <button class="cp" onclick="setCat('song',this)">🎵 Song</button>
+    <button class="cp" onclick="setCat('news',this)">📰 News</button>
+    <button class="cp" onclick="setCat('series',this)">📺 Series</button>
+  </div>
+  <button class="filter-toggle" onclick="toggleAdv()">🔧 Filters <span id="fArrow">▼</span></button>
+  <div class="adv-filters" id="advF">
+    <div class="afg"><label>Year</label><input type="number" id="fYear" placeholder="2024" min="1900" max="2030" onchange="applyF()"></div>
+    <div class="afg"><label>Min Rating</label>
+      <select id="fRat" onchange="applyF()">
+        <option value="">Any</option><option value="9">9+</option><option value="8">8+</option>
+        <option value="7">7+</option><option value="6">6+</option><option value="5">5+</option>
+      </select>
+    </div>
+    <div class="afg"><label>Country</label><input type="text" id="fCo" placeholder="e.g. USA" onchange="applyF()"></div>
+    <div class="afg"><label>Type</label>
+      <select id="fType2" onchange="applyF()">
+        <option value="all">All</option><option value="movie">Movie</option>
+        <option value="series">Series</option><option value="song">🎵 Song</option><option value="news">📰 News</option>
+      </select>
+    </div>
+    <button class="ab2" onclick="clearF()">✕ Clear</button>
+  </div>
+</div>
+
+<main>
+  <section class="section" id="trendSec">
+    <div class="shead"><div class="stitle">🔥 Trending Now</div><div class="sarrs"><button class="sarr" onclick="sRow('tRow',-1)">◀</button><button class="sarr" onclick="sRow('tRow',1)">▶</button></div></div>
+    <div class="row-w" id="tRow"></div>
+  </section>
+  <section class="section hidden" id="newSec">
+    <div class="shead"><div class="stitle">✨ New Releases</div><div class="sarrs"><button class="sarr" onclick="sRow('nRow',-1)">◀</button><button class="sarr" onclick="sRow('nRow',1)">▶</button></div></div>
+    <div class="row-w" id="nRow"></div>
+  </section>
+  <div class="adslot" id="adMid"></div>
+  <section class="section">
+    <div class="shead"><div class="stitle" id="gTitle">All Movies</div></div>
+    <div class="gw" id="mGrid"></div>
+    <div class="empty-st hidden" id="emptySt"><div class="ei">🎬</div><p id="emptyMsg">No content found.</p></div>
+  </section>
+  <div id="guestBanner">
+    <h3>🔒 Sign in to see more</h3>
+    <p>Create a free account to access new releases, playlist and more.</p>
+    <button class="abtn" style="max-width:200px;margin:0 auto;display:block" onclick="showAuth('register')">Create Free Account</button>
+  </div>
+</main>
+
+<div class="adslot" id="adBot"></div>
 
 <footer>
-  <div class="footer-logo">KEYX PREDICTER</div>
-  <div>© 2025 Keyx Predicter. All rights reserved.</div>
-  <div class="footer-disc">For entertainment purposes only. Please gamble responsibly.</div>
+  <div class="fg2">
+    <div class="fc">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:9px">
+        <div class="kb" style="width:26px;height:22px;font-size:13px">K</div>
+        <strong id="fbrand" style="font-family:'Bebas Neue';letter-spacing:1px">KEYTUBE</strong>
+      </div>
+      <p>Stream &amp; download worldwide.</p>
+    </div>
+    <div class="fc"><h4>Browse</h4><a onclick="goHome()">Home</a><a onclick="fType('movie')">Movies</a><a onclick="fType('series')">TV Shows</a><a onclick="setCatByName('song')">Songs</a><a onclick="setCatByName('news')">News</a></div>
+    <div class="fc"><h4>Account</h4><a onclick="showAuth('register')">Sign Up</a><a onclick="showAuth('login')">Sign In</a></div>
+    <div class="fc"><h4>Info</h4><a onclick="showPage('contact')">Contact Us</a><a onclick="showPage('about')">About Us</a><a onclick="showPage('follow')">Follow Us</a></div>
+  </div>
+  <div class="foot-bot">
+    <p>© <span class="yr" id="yrSpan" ondblclick="onDblYear()">2026</span> KEYTUBE. All rights reserved.</p>
+    <p>Available worldwide</p>
+  </div>
 </footer>
 
-<script>
-// ═══════════════════════════════════════════════════
-//  HARDCODED APPS SCRIPT URL
-// ═══════════════════════════════════════════════════
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxTccMDwisr5rk6j488qBg7FmoqRNokpyWvd2tH2lmiCy65RxTACQprXaH3RQcLU0tHfA/exec';
+<!-- SEARCH OVERLAY -->
+<div id="srOv">
+  <div class="sr-close" onclick="cSearch()">✕</div>
+  <div class="sr-head">Results for "<span id="srQ" style="color:var(--red)"></span>"</div>
+  <div class="sr-sub" id="srSub"></div>
+  <div id="srEx"></div><div id="srSim"></div>
+</div>
 
-// ═══════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════
-let allMatches=[],curDateTab='today',curLeague='all',curPage=1;
-const PER_PAGE=15;
-let slideEls,dotEls,curSl=0,slTimer;
-let _cache=null,_cacheAt=0;
-
-let CFG={SCRIPT_URL:localStorage.getItem('kx_scripturl')||SCRIPT_URL};
-let SLIDES=tryParse(localStorage.getItem('kx_slides'))||defSlides();
-let TICKER=localStorage.getItem('kx_ticker')||defTicker();
-let S_TITLE=localStorage.getItem('kx_title')||'KEYX PREDICTER — AI Football Tips';
-let S_ACC=localStorage.getItem('kx_acc')||'85%';
-let FAV_URL=localStorage.getItem('kx_favicon')||'';
-if(!localStorage.getItem('kx_scripturl'))localStorage.setItem('kx_scripturl',SCRIPT_URL);
-
-// ─── DATE HELPERS ────────────────────────────────
-function pad(n){return String(n).padStart(2,'0');}
-function ymd(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
-function todayYMD(){return ymd(new Date());}
-function tomorrowYMD(){const d=new Date();d.setDate(d.getDate()+1);return ymd(d);}
-
-function normDate(raw){
-  if(!raw)return'';
-  const s=String(raw).trim();
-  if(/^\d{4}-\d{2}-\d{2}/.test(s))return s.slice(0,10);
-  if(/^\d{2}\/\d{2}\/\d{4}/.test(s)){const p=s.split('/');return p[2]+'-'+p[1]+'-'+p[0];}
-  if(/^\d{1,2}\/\d{1,2}\/\d{4}/.test(s)){const p=s.split('/');return p[2]+'-'+pad(p[0])+'-'+pad(p[1]);}
-  try{const d=new Date(s);if(!isNaN(d))return ymd(d);}catch(e){}
-  return s;
-}
-function humanD(raw){
-  const nd=normDate(raw);
-  if(!nd)return'Today';
-  if(nd===todayYMD())return'Today';
-  if(nd===tomorrowYMD())return'Tomorrow';
-  try{const d=new Date(nd+'T00:00:00');return d.toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short'});}
-  catch(e){return nd;}
-}
-
-// ─── DEFAULTS ────────────────────────────────────
-function defSlides(){
-  return[
-    {tag:'🤖 AI Powered Predictions',h1:'PREDICT',h2:'LIKE A PRO',p:'Smart football predictions powered by real data and AI analysis.',btn:'VIEW PREDICTIONS →',bg:'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1600'},
-    {tag:'⚽ Daily Tips',h1:"TODAY'S",h2:'BEST PICKS',p:"Up to 15 high-confidence predictions every day across Europe's top leagues.",btn:"SEE TODAY'S TIPS →",bg:'https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1600'},
-    {tag:'📊 85% Accuracy Rate',h1:'DATA-DRIVEN',h2:'WINNERS',p:'Our model analyses form, head-to-head records, injuries and more.',btn:'EXPLORE NOW →',bg:'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1600'},
-  ];
-}
-function defTicker(){return'Arsenal WIN ✓ — 85%|Barcelona WIN ✓ — 79%|PSG WIN ✓ — 91%|Inter WIN ✓ — 78%|Man City BTTS ✓ — 88%|Dortmund WIN ✓ — 73%';}
-function tryParse(s){try{return JSON.parse(s);}catch(e){return null;}}
-
-// ═══════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════
-window.addEventListener('load',()=>{
-  applySettings();renderSlides();renderTickers();loadHomePreviews();
-  const dEl=document.getElementById('f-date');if(dEl)dEl.valueAsDate=new Date();
-  document.getElementById('ticker-input').value=TICKER.replace(/\|/g,'\n');
-  document.getElementById('site-title').value=S_TITLE;
-  document.getElementById('site-accuracy').value=S_ACC;
-  document.getElementById('set-scripturl').value=CFG.SCRIPT_URL;
-  if(sessionStorage.getItem('keyx_admin_logged')==='true')showAdminPanel();
-});
-function applySettings(){
-  document.title=S_TITLE;
-  document.getElementById('stat-acc').textContent=S_ACC;
-  if(FAV_URL){document.getElementById('favicon-link').href=FAV_URL;const li=document.getElementById('logo-ico');li.src=FAV_URL;li.style.display='block';document.getElementById('fav-preview').src=FAV_URL;}
-}
-
-// ═══════════════════════════════════════════════════
-//  NAV
-// ═══════════════════════════════════════════════════
-function showPage(name){
-  ['home','predictions','admin'].forEach(p=>document.getElementById('page-'+p).classList.toggle('active',p===name));
-  document.getElementById('nav-home').classList.toggle('active',name==='home');
-  document.getElementById('nav-pred').classList.toggle('active',name==='predictions');
-  document.getElementById('nav-today').classList.toggle('active',name==='predictions');
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(name==='predictions')initPredPage();
-  if(name==='home')loadHomePreviews();
-}
-window.addEventListener('scroll',()=>{document.getElementById('scrollTop').style.display=window.scrollY>400?'flex':'none';});
-
-// ═══════════════════════════════════════════════════
-//  NOTIFY / MODAL
-// ═══════════════════════════════════════════════════
-let _nt;
-function notify(msg,type='success'){const el=document.getElementById('notif');el.className='notif '+type;el.textContent=msg;el.classList.add('show');clearTimeout(_nt);_nt=setTimeout(()=>el.classList.remove('show'),3500);}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-
-// ═══════════════════════════════════════════════════
-//  SLIDESHOW
-// ═══════════════════════════════════════════════════
-function renderSlides(){
-  SLIDES.forEach((s,i)=>{
-    const el=document.getElementById('slide-'+i);if(!el)return;
-    el.style.backgroundImage=`url('${s.bg}')`;
-    document.getElementById('s'+i+'-tag').textContent=s.tag;
-    document.getElementById('s'+i+'-h1').textContent=s.h1;
-    document.getElementById('s'+i+'-h2').textContent=s.h2;
-    document.getElementById('s'+i+'-p').textContent=s.p;
-    document.getElementById('s'+i+'-btn').textContent=s.btn;
-  });
-  slideEls=document.querySelectorAll('.slide');dotEls=document.querySelectorAll('.dot');
-  clearInterval(slTimer);slTimer=setInterval(()=>goSlide((curSl+1)%slideEls.length),4800);
-}
-function goSlide(n){slideEls[curSl].classList.remove('active');dotEls[curSl].classList.remove('active');curSl=n;slideEls[curSl].classList.add('active');dotEls[curSl].classList.add('active');}
-
-// ═══════════════════════════════════════════════════
-//  TICKER
-// ═══════════════════════════════════════════════════
-function renderTickers(){
-  const msgs=TICKER.split('|').filter(Boolean);
-  const html=[...msgs,...msgs].map(m=>`<span>${esc(m)}</span>`).join('');
-  ['ticker-home','ticker-pred'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=html;});
-}
-
-// ═══════════════════════════════════════════════════
-//  FETCH DATA  (30s cache, handles any date format)
-// ═══════════════════════════════════════════════════
-async function fetchData(){
-  const now=Date.now();
-  if(_cache&&now-_cacheAt<30000)return _cache;
-  const url=(CFG.SCRIPT_URL||SCRIPT_URL)+'?v='+now;
-  try{
-    const r=await fetch(url,{method:'GET',redirect:'follow'});
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const raw=await r.json();
-    if(!Array.isArray(raw)){console.warn('Not array:',raw);return[];}
-    const data=raw.map(row=>({
-      id:String(row.id||''),
-      home:String(row.home||'').trim(),
-      away:String(row.away||'').trim(),
-      league:String(row.league||'').trim(),
-      time:String(row.time||'').trim(),
-      date:normDate(row.date||''),
-      prediction:String(row.prediction||'').trim(),
-      confidence:Math.max(0,Math.min(99,parseInt(row.confidence)||75)),
-      tips:parseTips(row.tips),
-      notes:String(row.notes||'').trim(),
-      rowIndex:parseInt(row.rowIndex)||0
-    })).filter(m=>m.home&&m.away); // skip empty rows
-    _cache=data;_cacheAt=now;
-    return data;
-  }catch(e){console.error('fetchData:',e);return _cache||[];}
-}
-function parseTips(raw){
-  if(!raw)return[];
-  if(Array.isArray(raw))return raw.map(t=>String(t).trim()).filter(Boolean);
-  return String(raw).split(',').map(t=>t.trim()).filter(Boolean);
-}
-async function scriptPost(payload){
-  const url=CFG.SCRIPT_URL||SCRIPT_URL;
-  const r=await fetch(url,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});
-  if(!r.ok)throw new Error('Server error: '+r.status);
-  _cache=null;return true;
-}
-
-// ═══════════════════════════════════════════════════
-//  HOME PREVIEWS
-// ═══════════════════════════════════════════════════
-const PIMGS=['https://images.unsplash.com/photo-1459865264687-595d652de67e?w=600','https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600','https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600'];
-async function loadHomePreviews(){
-  const c=document.getElementById('home-previews');
-  c.innerHTML='<div class="loading-spinner" style="grid-column:1/-1"><div class="spinner"></div> LOADING TIPS...</div>';
-  const matches=await fetchData();
-  allMatches=matches;
-  document.getElementById('stat-total').textContent=matches.length||'0';
-  const todayM=matches.filter(m=>m.date===todayYMD());
-  const show=todayM.length>0?todayM.slice(0,3):matches.slice(0,3);
-  const badge=document.getElementById('home-badge');
-  if(badge)badge.textContent=todayM.length>0?`🎯 ${todayM.length} tips today`:`🎯 ${matches.length} tips`;
-  if(show.length>0){c.innerHTML=show.map((m,i)=>buildPreviewCard(m,i)).join('');}
-  else{c.innerHTML=buildFallback();if(badge)badge.textContent='🎯 Demo tips';}
-}
-function buildPreviewCard(m,i=0){
-  return`<div class="preview-card" onclick="showPage('predictions')">
-    <img class="preview-img" src="${PIMGS[i%3]}" loading="lazy" onerror="this.src='${PIMGS[0]}'">
-    <div class="preview-body">
-      <div class="preview-league">${getLF(m.league)} ${esc(m.league||'Football')}</div>
-      <div class="preview-match">${esc(m.home)} vs ${esc(m.away)}</div>
-      <div class="preview-pick"><span>Prediction</span><strong>${esc(m.prediction).toUpperCase()}</strong></div>
-      <div class="mini-bar"><div class="mini-fill" style="width:${m.confidence}%"></div></div>
-      <div class="mini-conf">${m.confidence}% CONFIDENCE</div>
+<!-- USER AUTH MODAL -->
+<div class="ov" id="authOv" onclick="if(event.target===this)cOv('authOv')">
+  <div class="mbox">
+    <div class="mxbtn" onclick="cOv('authOv')">✕</div>
+    <div class="auth-hd"><div class="kb">K</div><h2 id="authTitle">Sign in to KEYTUBE</h2></div>
+    <div class="atabs">
+      <div class="atab active" id="tab-login" onclick="stab('login')">Sign In</div>
+      <div class="atab" id="tab-register" onclick="stab('register')">Create Account</div>
     </div>
-  </div>`;
-}
-function buildFallback(){
-  return[{league:'Premier League',home:'Arsenal',away:'Chelsea',prediction:'Home Win',confidence:85},
-         {league:'La Liga',home:'Barcelona',away:'Real Madrid',prediction:'Both Score',confidence:79},
-         {league:'UCL',home:'PSG',away:'Bayern Munich',prediction:'Home Win',confidence:91}]
-    .map((m,i)=>buildPreviewCard(m,i)).join('');
-}
+    <div class="aform" id="form-login">
+      <div class="fg"><label>Gmail</label><input class="fi" id="liE" type="email" placeholder="you@gmail.com"></div>
+      <div class="fg"><label>Password</label><input class="fi" id="liP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="aerr" id="liErr"></div>
+      <button class="abtn" onclick="doLogin()">Sign In →</button>
+      <div class="afoot">No account? <a onclick="stab('register')">Create one free</a></div>
+    </div>
+    <div class="aform hidden" id="form-register">
+      <div class="fg"><label>Full Name</label><input class="fi" id="reN" type="text" placeholder="John Doe"></div>
+      <div class="fg"><label>Gmail</label><input class="fi" id="reE" type="email" placeholder="you@gmail.com"></div>
+      <div class="fg"><label>Password (min 6)</label><input class="fi" id="reP" type="password" placeholder="••••••••"></div>
+      <div class="fg"><label>Country</label>
+        <select class="fi-s fi" id="reCo">
+          <option value="">Select country</option>
+          <option>Rwanda</option><option>Nigeria</option><option>Kenya</option><option>Ghana</option>
+          <option>South Africa</option><option>Ethiopia</option><option>Tanzania</option><option>Uganda</option>
+          <option>France</option><option>USA</option><option>UK</option><option>Canada</option>
+          <option>India</option><option>China</option><option>Other</option>
+        </select>
+      </div>
+      <div class="aerr" id="reErr"></div>
+      <button class="abtn" onclick="doRegister()">Create Account →</button>
+      <div class="afoot">Already have account? <a onclick="stab('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
 
-// ═══════════════════════════════════════════════════
-//  PREDICTIONS PAGE — Today / Tomorrow / All
-// ═══════════════════════════════════════════════════
-async function initPredPage(){
-  const loading=document.getElementById('pred-loading');
-  const content=document.getElementById('pred-content');
-  const empty=document.getElementById('pred-empty');
-  loading.style.display='flex';
-  content.innerHTML='';
-  empty.style.display='none';
-  document.getElementById('pred-pagi').innerHTML='';
+<!-- ADMIN AUTH MODAL (double-click 2026 in footer) -->
+<div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')">
+  <div class="mbox">
+    <div class="mxbtn" onclick="cOv('adminAuthOv')">✕</div>
+    <div class="admin-auth-hd">
+      <div class="kb" style="background:#222">🔐</div>
+      <h2>Admin Access</h2><p>Enter your admin password</p>
+    </div>
+    <div class="aform">
+      <div class="fg"><label>Admin Password</label><input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminAuth()"></div>
+      <div class="aerr" id="adErr"></div>
+      <button class="abtn" style="background:#222" onclick="doAdminAuth()">Enter Admin Panel →</button>
+    </div>
+  </div>
+</div>
 
-  const matches=await fetchData();
-  allMatches=matches;
-  loading.style.display='none';
+<!-- MOVIE MODAL -->
+<div class="ov" id="movOv" onclick="if(event.target===this)cMovie()">
+  <div class="mbox">
+    <div class="mxbtn" onclick="cMovie()">✕</div>
+    <div id="vidWrap"></div>
 
-  // Update tab counts
-  const td=todayYMD(),tm=tomorrowYMD();
-  const cT=matches.filter(m=>m.date===td).length;
-  const cTm=matches.filter(m=>m.date===tm).length;
-  document.getElementById('cnt-today').textContent=cT;
-  document.getElementById('cnt-tomorrow').textContent=cTm;
-  document.getElementById('cnt-all').textContent=matches.length;
-  document.getElementById('pred-count-badge').textContent='🎯 '+matches.length+' predictions';
-
-  renderPredPage();
-}
-
-function switchDateTab(tab,btn){
-  curDateTab=tab;curPage=1;
-  document.querySelectorAll('.date-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  renderPredPage();
-}
-function filterLeague(btn,lg){
-  curLeague=lg;curPage=1;
-  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  renderPredPage();
-}
-
-function getPool(){
-  let pool;
-  const td=todayYMD(),tm=tomorrowYMD();
-  if(curDateTab==='today')pool=allMatches.filter(m=>m.date===td);
-  else if(curDateTab==='tomorrow')pool=allMatches.filter(m=>m.date===tm);
-  else pool=[...allMatches];
-  if(curLeague!=='all')pool=pool.filter(m=>m.league===curLeague);
-  return pool.sort((a,b)=>{
-    const dc=(a.date||'').localeCompare(b.date||'');
-    return dc!==0?dc:(a.time||'').localeCompare(b.time||'');
-  });
-}
-
-function renderPredPage(){
-  const content=document.getElementById('pred-content');
-  const empty=document.getElementById('pred-empty');
-  const pagi=document.getElementById('pred-pagi');
-  const pool=getPool();
-
-  if(!pool.length){
-    content.innerHTML='';
-    empty.style.display='block';
-    pagi.innerHTML='';
-    return;
-  }
-  empty.style.display='none';
-
-  if(curDateTab==='all'){
-    // Group by date
-    const groups={};
-    pool.forEach(m=>{const d=m.date||'unknown';if(!groups[d])groups[d]=[];groups[d].push(m);});
-    let html='';
-    Object.keys(groups).sort().forEach(date=>{
-      const isT=date===todayYMD(),isTm=date===tomorrowYMD();
-      const lbl=isT?'TODAY':isTm?'TOMORROW':humanD(date);
-      const icon=isT?'📅':isTm?'⏭':'📋';
-      html+=`<div class="day-section${isTm?' tomorrow-day':''}">
-        <div class="day-header">
-          <div class="day-icon">${icon}</div>
-          <div><div class="day-label">${lbl}</div><div class="day-sub">${humanD(date)}</div></div>
-          <div class="day-count">${groups[date].length} match${groups[date].length!==1?'es':''}</div>
+    <!-- Comedy auto-next banner -->
+    <div id="autoNextBanner">
+      <div class="anb-top">
+        <span class="anb-icon">😂</span>
+        <div class="anb-info">
+          <div class="anb-label">Next Comedy · Auto-playing</div>
+          <div class="anb-name" id="anTitle">—</div>
+          <div class="anb-pos" id="anPos"></div>
         </div>
-        <div class="predictions-grid">${groups[date].map(buildPredCard).join('')}</div>
-      </div>`;
-    });
-    content.innerHTML=html;
-    pagi.innerHTML='';
-    return;
+        <div class="anb-right">
+          <div class="anb-ring">
+            <svg viewBox="0 0 44 44" width="46" height="46">
+              <circle class="anb-ring-bg" cx="22" cy="22" r="19"/>
+              <circle class="anb-ring-fill" id="anRingFill" cx="22" cy="22" r="19"/>
+            </svg>
+            <div class="anb-num" id="anNum">5</div>
+          </div>
+          <button class="anb-cancel" onclick="cancelAutoNext()">✕ Cancel</button>
+        </div>
+      </div>
+      <div class="anb-bar"><div class="anb-prog" id="anProg"></div></div>
+    </div>
+
+    <div class="mm-cov" id="mmCovW"><img id="mmCovI" src="" alt=""><div class="mm-cs"></div></div>
+    <div class="mmbody">
+      <div id="mmBadges" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px"></div>
+      <div class="mm-title" id="mmTitle">—</div>
+      <div class="mm-meta" id="mmMeta"></div>
+      <div class="mm-acts" id="mmActs"></div>
+      <div class="mm-desc" id="mmDesc"></div>
+
+      <!-- ★ Related Videos — choose another video like YouTube -->
+      <div class="related-section" id="relatedSec" style="display:none">
+        <h3>▶ More to Watch</h3>
+        <div class="rel-list" id="relList"></div>
+      </div>
+
+      <div class="cmts">
+        <h3>Comments <span id="cmtCnt" style="color:var(--t2);font-weight:400;font-size:.77rem"></span></h3>
+        <div id="cmtFA"></div>
+        <div id="cmtList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE MODAL -->
+<div class="ov" id="pageOv" onclick="if(event.target===this)cOv('pageOv')">
+  <div class="mbox" style="max-width:520px;padding:28px 22px 24px">
+    <div class="mxbtn" onclick="cOv('pageOv')">✕</div>
+    <div class="page-title" id="pageTit">Page</div>
+    <div class="page-body" id="pageBody"></div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admPanel">
+  <div class="abar">
+    <div class="alogo">⚙ KEYTUBE ADMIN</div>
+    <button class="atb act" onclick="aTab('dash')">📊 Dashboard</button>
+    <button class="atb" onclick="aTab('movies')">🎬 Movies</button>
+    <button class="atb" onclick="aTab('users')">👥 Users</button>
+    <button class="atb" onclick="aTab('comments')">💬 Comments</button>
+    <button class="atb" onclick="aTab('notif')">🔔 Notifications</button>
+    <button class="atb" onclick="aTab('pages')">📄 Pages</button>
+    <button class="atb" onclick="aTab('traffic')">📈 Traffic</button>
+    <button class="atb" onclick="aTab('settings')">⚙️ Settings</button>
+    <div class="abar-spacer"></div>
+    <button class="atb atb-logout" onclick="adminLogout()">🚪 Logout</button>
+    <button class="ax" onclick="closeAdmin()">✕</button>
+  </div>
+  <div class="abody" id="abody"><div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div></div>
+</div>
+
+<!-- ════════ AD CLICK TRACKER ════════ -->
+<script>
+var _ac=0;
+document.addEventListener('click',function(){
+  _ac++;
+  if(_ac===5) window.open('https://omg10.com/4/11024124','_blank','noopener,noreferrer');
+  if(_ac===10){window.open('https://omg10.com/4/11024393','_blank','noopener,noreferrer');_ac=0;}
+});
+</script>
+
+<!-- ════════ MAIN JAVASCRIPT ════════ -->
+<script>
+var API='https://script.google.com/macros/s/AKfycbxVdY-_WNOhxAEVqAMi2E1Q6R0KVBWnhq7EQGwNj21BWpbIOfi7phMt3y85qEhs9tXQ/exec';
+var EMOJIS=['💬','😂','❤️','😭','🔥','😍','👍','🤣','😮','💯','😎','🎬'];
+var S={user:null,adminToken:null,movies:[],settings:{},pages:{},curMovie:null,
+       heroMovies:[],heroIdx:0,heroTimer:null,activeCat:'all',activeType:'all',
+       srTimer:null,pingTimer:null,selEmoji:'💬'};
+
+/* ══ COMEDY AUTO-NEXT (v4 fixed) ══ */
+var YT_READY=false,YT_QUEUE=[],ytPlayer=null;
+var comedyList=[],comedyIdx=0,autoNextTimer=null,autoNextCount=0,AN_SECS=5;
+
+function onYouTubeIframeAPIReady(){YT_READY=true;var fn;while((fn=YT_QUEUE.shift())){try{fn();}catch(e){}}}
+(function(){var t=document.createElement('script');t.src='https://www.youtube.com/iframe_api';document.head.appendChild(t);})();
+
+function buildComedyList(id){
+  comedyList=S.movies.filter(function(m){return m.category==='comedy';});
+  comedyList.sort(function(a,b){var na=parseInt(a.id),nb=parseInt(b.id);if(!isNaN(na)&&!isNaN(nb))return na-nb;return String(a.id).localeCompare(String(b.id));});
+  comedyIdx=0;for(var i=0;i<comedyList.length;i++){if(String(comedyList[i].id)===String(id)){comedyIdx=i;break;}}
+}
+
+function startAutoNext(){
+  if(!comedyList.length)return;
+  var nextIdx=(comedyIdx+1)%comedyList.length;
+  var nextMovie=comedyList[nextIdx]; /* LOCAL — safe */
+  if(!nextMovie)return;
+  var banner=document.getElementById('autoNextBanner');if(!banner)return;
+  document.getElementById('anTitle').textContent=nextMovie.name;
+  document.getElementById('anPos').textContent='Comedy '+(nextIdx+1)+' / '+comedyList.length+(nextIdx===0?'  ↩ Loop':'');
+  banner.classList.add('show');
+  autoNextCount=AN_SECS;
+  var DASH=119.4;
+  function tick(){
+    var n=document.getElementById('anNum'),r=document.getElementById('anRingFill'),p=document.getElementById('anProg');
+    if(n)n.textContent=autoNextCount;
+    if(r)r.style.strokeDashoffset=DASH*(autoNextCount/AN_SECS);
+    if(p)p.style.width=((AN_SECS-autoNextCount)/AN_SECS*100)+'%';
   }
-
-  // Paginated for today/tomorrow
-  const total=pool.length,pages=Math.ceil(total/PER_PAGE);
-  const slice=pool.slice((curPage-1)*PER_PAGE,curPage*PER_PAGE);
-  content.innerHTML=`<div class="predictions-grid">${slice.map(buildPredCard).join('')}</div>`;
-  pagi.innerHTML=pages>1?`<div class="pagination">
-    <button class="page-btn" onclick="chPage(${curPage-1})" ${curPage===1?'disabled':''}>◀ Prev</button>
-    <span class="page-info">Page ${curPage} of ${pages}</span>
-    <button class="page-btn" onclick="chPage(${curPage+1})" ${curPage===pages?'disabled':''}>Next ▶</button>
-  </div>`:'';
+  tick();
+  clearInterval(autoNextTimer);
+  autoNextTimer=setInterval(function(){
+    autoNextCount--;tick();
+    if(autoNextCount<=0){
+      var gId=nextMovie.id,gIdx=nextIdx; /* save locals */
+      clearInterval(autoNextTimer);autoNextTimer=null;
+      var b=document.getElementById('autoNextBanner');if(b)b.classList.remove('show');
+      comedyIdx=gIdx;stopCurrentVideo();openMovie(gId,true);
+    }
+  },1000);
 }
-function chPage(n){curPage=n;renderPredPage();window.scrollTo({top:0,behavior:'smooth'});}
+function cancelAutoNext(){clearInterval(autoNextTimer);autoNextTimer=null;var b=document.getElementById('autoNextBanner');if(b)b.classList.remove('show');var p=document.getElementById('anProg');if(p)p.style.width='0%';toast('Auto-play cancelled');}
+function clearAutoNext(){clearInterval(autoNextTimer);autoNextTimer=null;var b=document.getElementById('autoNextBanner');if(b)b.classList.remove('show');var p=document.getElementById('anProg');if(p)p.style.width='0%';}
+function stopCurrentVideo(){
+  try{if(ytPlayer&&typeof ytPlayer.destroy==='function'){ytPlayer.destroy();}ytPlayer=null;}catch(e){}
+  var vw=document.getElementById('vidWrap');if(vw){vw.innerHTML='';vw.style.display='none';}
+  var cw=document.getElementById('mmCovW');if(cw)cw.style.display='block';
+}
 
-// ═══════════════════════════════════════════════════
-//  BUILD PREDICTION CARD
-// ═══════════════════════════════════════════════════
-function buildPredCard(m){
-  const cc=m.confidence>=80?'high':m.confidence>=65?'mid':'low';
-  const chips=(m.tips||[]).map(t=>{
-    const cl=t.toLowerCase().includes('home')?'green':t.toLowerCase().includes('away')?'red':(t.toLowerCase().includes('btts')||t.toLowerCase().includes('both'))?'blue':'yellow';
-    return`<span class="chip ${cl}">${esc(t)}</span>`;
+/* ══ UTILS ══ */
+function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function cap(s){return s?String(s).charAt(0).toUpperCase()+String(s).slice(1):'';}
+function fmtDate(d){var dt=new Date(d);return isNaN(dt)?d:dt.toLocaleDateString();}
+function toast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type?' '+type:'');clearTimeout(t._t);t._t=setTimeout(function(){t.className='';},3000);}
+
+/* ══ PROGRESS BAR ══ */
+var pbarW=0,pbarT;
+function pStart(){pbarW=0;var el=document.getElementById('pbar');el.className='';el.style.width='0%';clearInterval(pbarT);pbarT=setInterval(function(){pbarW=Math.min(pbarW+Math.random()*8,88);el.style.width=pbarW+'%';},120);}
+function pDone(){clearInterval(pbarT);var el=document.getElementById('pbar');el.style.width='100%';setTimeout(function(){el.className='done';setTimeout(function(){el.style.width='0%';el.className='';},500);},300);}
+
+/* ══ API ══ */
+function api(action,data,cb){
+  pStart();
+  fetch(API,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({},data||{},{action:action})),redirect:'follow'})
+  .then(function(r){return r.json();})
+  .then(function(res){pDone();if(cb)cb(res);})
+  .catch(function(e){pDone();toast('Connection error','terr');console.error(e);document.getElementById('pgLoad').style.display='none';});
+}
+
+/* ══ INIT ══ */
+window.onload=function(){
+  try{var u=sessionStorage.getItem('km_u');if(u)S.user=JSON.parse(u);}catch(e){}
+  try{var a=sessionStorage.getItem('km_a');if(a)S.adminToken=a;}catch(e){}
+  updateNavUI();
+  api('getSettings',{},function(r){
+    if(r.ok){S.settings=r.settings;applySettings();}
+    api('getPages',{},function(pr){if(pr.ok)S.pages=pr.pages||{};});
+    loadMovies();
+    if(S.user){loadNotifs();startPing();}
+    api('logTraffic',{user:S.user?S.user.gmail:'guest',action:'visit',country:S.user?S.user.country:'',details:navigator.language});
+  });
+};
+
+/* ══ SETTINGS — ads now rendered as link banners ══ */
+function applySettings(){
+  var s=S.settings,sn=s['site_name']||'KEYTUBE';
+  document.title=sn;
+  var e=document.getElementById('snEl');if(e)e.textContent=sn;
+  var fb=document.getElementById('fbrand');if(fb)fb.textContent=sn;
+  if(s['favicon_url']&&s['favicon_url'].trim()){
+    var lk=document.querySelector("link[rel~='icon']")||document.createElement('link');
+    lk.rel='icon';lk.href=s['favicon_url'];document.head.appendChild(lk);
+  }
+  if(s['background_url']){document.body.style.backgroundImage='url('+s['background_url']+')';document.body.style.backgroundSize='cover';document.body.style.backgroundAttachment='fixed';}
+  /* ★ Ads: display as link banners instead of raw HTML */
+  setAdSlot('adTop',s['ads_top']);
+  setAdSlot('adMid',s['ads_middle']);
+  setAdSlot('adBot',s['ads_bottom']);
+  if(s['app_download_url']&&s['app_download_url'].trim()){
+    document.getElementById('appBanner').classList.add('show');
+    document.getElementById('appDlBtn').dataset.url=s['app_download_url'];
+  }
+}
+
+/* Render ad slot as a clean link banner */
+function setAdSlot(elId,url){
+  var el=document.getElementById(elId);if(!el)return;
+  if(url&&url.trim()){
+    el.innerHTML='<a href="'+h(url)+'" target="_blank" rel="noopener sponsored" class="ad-link-banner">'+
+      '<span class="ad-lbl">AD</span>'+
+      '<span class="ad-txt">Sponsored — Click to learn more</span>'+
+      '<span class="ad-arr">→</span></a>';
+  }else{el.innerHTML='';}
+}
+function downloadApp(){var url=document.getElementById('appDlBtn').dataset.url||'';if(url)window.open(url,'_blank');else toast('App URL not set yet','terr');}
+
+/* ══ LOGIN REQUIRED ══ */
+function showLoginReq(){document.getElementById('loginReq').classList.add('show');var f=document.querySelector('.lr-fill');if(f){f.style.width='0%';void f.offsetWidth;f.style.width='100%';}}
+function hideLoginReq(){document.getElementById('loginReq').classList.remove('show');}
+
+/* ══ PING ══ */
+function startPing(){clearInterval(S.pingTimer);pingOnline();S.pingTimer=setInterval(pingOnline,30000);}
+function pingOnline(){if(S.user)api('pingOnline',{gmail:S.user.gmail,country:S.user.country||''},null);}
+
+/* ══ SEED SHUFFLE ══ */
+function getUserSeed(gmail){var s=0;for(var i=0;i<gmail.length;i++)s+=gmail.charCodeAt(i)*(i+1);return Math.abs(s)||42;}
+function seededShuffle(arr,seed){var a=arr.slice();for(var i=a.length-1;i>0;i--){seed=(seed*9301+49297)%233280;var j=Math.floor((seed/233280)*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+/* ══ MOVIES ══ */
+function loadMovies(cat,type,year,minRating,country){
+  api('getMovies',{isLoggedIn:!!S.user,category:cat||S.activeCat,type:type||S.activeType,year:year||'',minRating:minRating||'',country:country||''},function(r){
+    document.getElementById('pgLoad').style.display='none';
+    if(!r.ok){toast(r.msg,'terr');return;}
+    S.movies=r.movies||[];renderAll();
+  });
+}
+function renderAll(){
+  var raw=S.movies.slice().reverse();
+  var nw=raw.filter(function(m){return m.isNew;}),old=raw.filter(function(m){return !m.isNew;});
+  var mv=nw.concat(old);
+  var feat=mv.filter(function(m){return m.featured;});
+  if(!feat.length)feat=mv.slice(0,Math.min(5,mv.length));
+  S.heroMovies=feat;S.heroIdx=0;
+  if(feat.length){document.getElementById('hero').style.display='block';buildHeroDots();renderHero(0);startHeroTimer();}
+  var tPool=mv.filter(function(m){return !m.isNew;}).slice(0,30);
+  if(S.user)tPool=seededShuffle(tPool,getUserSeed(S.user.gmail));
+  renderRow('tRow',tPool.slice(0,20));
+  if(S.user){
+    var newItems=mv.filter(function(m){return m.isNew;}),ns=document.getElementById('newSec');
+    if(newItems.length){ns.classList.remove('hidden');renderRow('nRow',newItems.slice(0,20));}else ns.classList.add('hidden');
+    document.getElementById('guestBanner').style.display='none';
+  }else{document.getElementById('newSec').classList.add('hidden');document.getElementById('guestBanner').style.display='block';}
+  var grid=mv.slice();
+  if(S.user){var s2=getUserSeed(S.user.gmail)+7777;var gN=grid.filter(function(m){return m.isNew;});var gO=seededShuffle(grid.filter(function(m){return !m.isNew;}),s2);grid=gN.concat(gO);}
+  renderGrid(grid);
+}
+function renderHero(i){
+  var m=S.heroMovies[i];if(!m)return;
+  document.getElementById('hCover').src=m.cover||'';
+  document.getElementById('hTitle').textContent=m.name;
+  document.getElementById('hDesc').textContent=m.description||'';
+  document.getElementById('hBadge').textContent=m.isNew?'🆕 New':'⭐ Featured';
+  document.getElementById('hMeta').innerHTML='<span class="hrat">⭐ '+(m.rating||'?')+'</span><span>'+h(m.year)+'</span><span>'+cap(m.category)+'</span>';
+  document.querySelectorAll('.hdot').forEach(function(d,j){d.classList.toggle('active',j===i);});
+}
+function buildHeroDots(){var c=document.getElementById('hDots');c.innerHTML='';S.heroMovies.forEach(function(_,i){var d=document.createElement('span');d.className='hdot'+(i===0?' active':'');d.onclick=function(){heroGoTo(i);};c.appendChild(d);});}
+function heroGoTo(i){S.heroIdx=i;renderHero(i);}
+function heroPlay(){var m=S.heroMovies[S.heroIdx];if(m)openMovie(m.id,true);}
+function heroInfo(){var m=S.heroMovies[S.heroIdx];if(m)openMovie(m.id,false);}
+function startHeroTimer(){clearInterval(S.heroTimer);S.heroTimer=setInterval(function(){S.heroIdx=(S.heroIdx+1)%S.heroMovies.length;renderHero(S.heroIdx);},6000);}
+function renderRow(id,movies){var c=document.getElementById(id);if(!c)return;c.innerHTML='';if(!movies.length){c.innerHTML='<p style="color:var(--t2);font-size:.79rem;padding:8px 0">Nothing here yet.</p>';return;}movies.forEach(function(m){c.appendChild(mkCard(m,'row'));});}
+function renderGrid(movies){var g=document.getElementById('mGrid'),e=document.getElementById('emptySt');g.innerHTML='';if(!movies.length){e.classList.remove('hidden');document.getElementById('emptyMsg').textContent=S.user?'No content found.':'Sign in to see more.';return;}e.classList.add('hidden');movies.forEach(function(m){g.appendChild(mkCard(m,'grid'));});}
+function getCatBadge(m){
+  if(m.category==='comedy')return'<span class="cbg cb-comedy">😂 Comedy</span>';
+  if(m.category==='song')return'<span class="cbg cb-song">🎵 Song</span>';
+  if(m.category==='news')return'<span class="cbg cb-news">📰 News</span>';
+  return'<span class="cbg cb-c">'+cap(m.category||'')+'</span>';
+}
+function mkCard(m,mode){
+  var d=document.createElement('div');d.className='mc';if(mode==='grid')d.style.width='100%';
+  var ph='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="240"><rect fill="%23f2f2f2" width="160" height="240"/><text x="80" y="130" text-anchor="middle" fill="%23ccc" font-size="42">🎬</text></svg>';
+  d.innerHTML='<div class="ct"><img src="'+(m.cover||ph)+'" alt="'+h(m.name)+'" loading="lazy" onerror="this.src=\''+ph+'\'">'+
+    '<div class="cbadges">'+getCatBadge(m)+(m.isNew?'<span class="cbg cb-n">NEW</span>':'')+(m.season?'<span class="cbg cb-e">S'+h(m.season)+'</span>':'')+'</div>'+
+    '<div class="chov"><div class="cpl">▶</div></div></div>'+
+    '<div class="ci"><div class="ctit">'+h(m.name)+'</div><div class="csub"><span class="crat">⭐ '+(m.rating||'—')+'</span><span>'+h(m.year)+'</span></div></div>';
+  d.onclick=function(){openMovie(m.id,false);};
+  return d;
+}
+
+/* ══ RELATED VIDEOS — choose another video (YouTube-style) ══ */
+function loadRelated(movie){
+  var sec=document.getElementById('relatedSec'),list=document.getElementById('relList');
+  if(!sec||!list)return;
+  /* same category first, then other categories */
+  var same=S.movies.filter(function(m){return m.id!==movie.id&&m.category===movie.category;});
+  var other=S.movies.filter(function(m){return m.id!==movie.id&&m.category!==movie.category;});
+  /* shuffle for variety */
+  var seed=movie.id.split('').reduce(function(s,c){return s+c.charCodeAt(0);},0);
+  same=seededShuffle(same,seed);other=seededShuffle(other,seed+99);
+  var related=same.slice(0,6).concat(other.slice(0,4-Math.min(same.length,6)+6)).slice(0,8);
+  if(!related.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  var ph='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="88" height="58"><rect fill="%23f2f2f2" width="88" height="58"/><text x="44" y="35" text-anchor="middle" fill="%23ccc" font-size="20">🎬</text></svg>';
+  list.innerHTML=related.map(function(m){
+    return'<div class="rel-item" onclick="openMovie(\''+m.id+'\',false)">'+
+      '<img class="rel-thumb" src="'+(m.cover||ph)+'" loading="lazy" onerror="this.src=\''+ph+'\'">'+
+      '<div class="rel-info">'+
+        '<div class="rel-title">'+h(m.name)+'</div>'+
+        '<div class="rel-meta"><span class="rel-cat">'+cap(m.category)+'</span>'+h(m.year)+(m.rating?' · ⭐'+h(m.rating):'')+'</div>'+
+      '</div></div>';
   }).join('');
-  return`<div class="pred-card">
-    <div class="pred-card-header">
-      <div class="pred-league">${getLF(m.league)} ${esc(m.league||'Football')}</div>
-      <div class="pred-time-info">⏰ ${esc(humanD(m.date))} ${m.time?'— '+esc(m.time):''}</div>
-    </div>
-    <div class="pred-card-body">
-      <div class="team-side">
-        <div class="team-logo-wrap">${getEmj(m.home)}</div>
-        <div class="team-name">${esc(m.home)}</div>
-      </div>
-      <div class="vs-block">
-        <span class="vs-label">VS</span>
-        <span class="vs-time-badge">${esc(m.time||'--:--')}</span>
-      </div>
-      <div class="team-side right">
-        <div class="team-logo-wrap">${getEmj(m.away)}</div>
-        <div class="team-name">${esc(m.away)}</div>
-      </div>
-    </div>
-    <div class="pred-card-footer">
-      <div>
-        <div class="pred-pick-label">Prediction</div>
-        <div class="pred-pick-value">${esc(m.prediction||'—')}</div>
-      </div>
-      <div>
-        <div class="conf-label"><span>Confidence</span><span>${m.confidence}%</span></div>
-        <div class="conf-bar"><div class="conf-fill ${cc}" style="width:${m.confidence}%"></div></div>
-      </div>
-      ${chips?`<div class="tip-chips">${chips}</div>`:''}
-      ${m.notes?`<div style="font-size:11px;color:var(--muted);font-style:italic;font-weight:600;border-top:1px solid rgba(255,255,255,.05);padding-top:7px">📝 ${esc(m.notes)}</div>`:''}
-    </div>
-  </div>`;
 }
 
-// ═══════════════════════════════════════════════════
-//  ADMIN
-// ═══════════════════════════════════════════════════
-function handleManualLogin(){
-  const user=document.getElementById('adm-user-input').value.trim();
-  const pass=document.getElementById('adm-pass-input').value.trim();
-  if(user.toLowerCase()==='kim aristide'&&pass==='25125ABC@kim'){
-    sessionStorage.setItem('keyx_admin_logged','true');showAdminPanel();notify('✅ Welcome, Kim Aristide!','success');
-  }else{notify('❌ Amazina cyangwa Password ntabwo ari byo!','error');document.getElementById('adm-pass-input').value='';}
+/* ══ VIDEO PLAYER ══ */
+function buildPlayer(url){
+  url=(url||'').trim();if(!url)return'<p style="padding:20px;color:#999;text-align:center">No video link.</p>';
+  var yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+  if(yt)return'<iframe src="https://www.youtube.com/embed/'+yt[1]+'?autoplay=1&rel=0" allowfullscreen allow="autoplay;encrypted-media" style="width:100%;height:100%;border:none"></iframe>';
+  var vi=url.match(/vimeo\.com\/(\d+)/);
+  if(vi)return'<iframe src="https://player.vimeo.com/video/'+vi[1]+'?autoplay=1" allowfullscreen allow="autoplay" style="width:100%;height:100%;border:none"></iframe>';
+  var dm=url.match(/dailymotion\.com\/video\/([a-z0-9]+)/i);
+  if(dm)return'<iframe src="https://www.dailymotion.com/embed/video/'+dm[1]+'?autoplay=1" allowfullscreen allow="autoplay" style="width:100%;height:100%;border:none"></iframe>';
+  var gd=url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if(gd)return'<iframe src="https://drive.google.com/file/d/'+gd[1]+'/preview" allowfullscreen allow="autoplay" style="width:100%;height:100%;border:none"></iframe>';
+  if(/\.(mp4|webm|ogg|mkv|mov)(\?.*)?$/i.test(url))return'<video controls autoplay src="'+h(url)+'" style="width:100%;height:100%;background:#000">Not supported.</video>';
+  return'<iframe src="'+h(url)+'" allowfullscreen allow="autoplay;encrypted-media" style="width:100%;height:100%;border:none"></iframe>';
 }
-function showAdminPanel(){document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='block';loadAdminMatches();}
-function adminLogout(){sessionStorage.removeItem('keyx_admin_logged');document.getElementById('admin-login').style.display='flex';document.getElementById('admin-panel').style.display='none';notify('👋 Signed out','info');}
-function adminTab(btn,id){
-  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
-  btn.classList.add('active');document.getElementById(id).classList.add('active');
-  if(id==='tab-slides')buildSlidesManager();
-  if(id==='tab-matches')loadAdminMatches();
-}
-async function saveMatch(){
-  const home=fv('f-home'),away=fv('f-away'),pred=fv('f-pred');
-  if(!home||!away||!pred){notify('⚠️ Home Team, Away Team na Prediction birakenewe!','error');return;}
-  const btn=document.getElementById('btn-save');btn.disabled=true;btn.textContent='⏳ SAVING...';
-  try{
-    const row=[String(Date.now()),home,away,fv('f-league'),fv('f-time'),fv('f-date'),pred,fv('f-conf'),fv('f-tips'),fv('f-notes')];
-    await scriptPost({action:'add',row});notify('✅ Saved to Google Sheets!','success');
-    clearAddForm();setTimeout(loadAdminMatches,1500);
-  }catch(e){notify('❌ '+e.message,'error');}
-  finally{btn.disabled=false;btn.textContent='💾 SAVE TO GOOGLE SHEETS';}
-}
-function clearAddForm(){
-  ['f-home','f-away','f-pred','f-tips','f-notes'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-conf').value=75;document.getElementById('conf-val').textContent='75';
-  document.getElementById('f-date').valueAsDate=new Date();
-}
-async function loadAdminMatches(){
-  const c=document.getElementById('admin-list');if(!c)return;
-  c.innerHTML='<div class="loading-spinner"><div class="spinner"></div> LOADING...</div>';
-  _cache=null;const matches=await fetchData();allMatches=matches;
-  if(!matches.length){c.innerHTML=`<div class="empty-state"><div class="icon">📋</div><div>Nta predictions zirahari.</div><p>Shyiramo imwe ukoresheje form hejuru.</p></div>`;return;}
-  c.innerHTML=`<table class="matches-table">
-    <thead><tr><th>Match</th><th>League</th><th>Date / Time</th><th>Prediction</th><th>Conf</th><th>Actions</th></tr></thead>
-    <tbody>${matches.map((m,i)=>`<tr>
-      <td><div class="td-teams">${esc(m.home)} vs ${esc(m.away)}</div></td>
-      <td><div class="td-league">${getLF(m.league)} ${esc(m.league)}</div></td>
-      <td style="color:var(--muted);font-size:11px">${esc(humanD(m.date))} ${esc(m.time||'')}</td>
-      <td class="td-pred">${esc(m.prediction)}</td>
-      <td class="td-conf">${m.confidence}%</td>
-      <td><div class="td-actions">
-        <button class="btn-edit" onclick="openEditModal(${i})">✏️ Edit</button>
-        <button class="btn-del"  onclick="delMatch(${i},'${esc(m.home+' vs '+m.away)}')">🗑 Del</button>
-      </div></td>
-    </tr>`).join('')}</tbody>
-  </table>`;
-}
-function openEditModal(idx){
-  const m=allMatches[idx];
-  document.getElementById('e-home').value=m.home||'';document.getElementById('e-away').value=m.away||'';
-  document.getElementById('e-pred').value=m.prediction||'';document.getElementById('e-time').value=m.time||'';
-  document.getElementById('e-date').value=m.date||'';document.getElementById('e-tips').value=(m.tips||[]).join(', ');
-  document.getElementById('e-notes').value=m.notes||'';document.getElementById('e-conf').value=m.confidence||75;
-  document.getElementById('e-cv').textContent=m.confidence||75;document.getElementById('e-league').value=m.league||'Premier League';
-  document.getElementById('e-row').value=m.rowIndex||0;
-  document.getElementById('edit-modal').classList.add('open');
-}
-async function updateMatch(){
-  const rowNum=parseInt(document.getElementById('e-row').value);
-  const home=document.getElementById('e-home').value.trim();
-  const away=document.getElementById('e-away').value.trim();
-  const pred=document.getElementById('e-pred').value.trim();
-  if(!home||!away||!pred){notify('⚠️ Fill required fields','error');return;}
-  const row=[String(Date.now()),home,away,document.getElementById('e-league').value,document.getElementById('e-time').value,document.getElementById('e-date').value,pred,document.getElementById('e-conf').value,document.getElementById('e-tips').value,document.getElementById('e-notes').value];
-  const btn=document.getElementById('btn-update');btn.disabled=true;btn.textContent='⏳ UPDATING...';
-  try{await scriptPost({action:'update',rowIndex:rowNum,row});notify('✅ Prediction yavuguruwe!','success');closeModal('edit-modal');setTimeout(loadAdminMatches,1500);}
-  catch(e){notify('❌ '+e.message,'error');}
-  finally{btn.disabled=false;btn.textContent='💾 UPDATE PREDICTION';}
-}
-async function delMatch(idx,label){
-  if(!confirm('Delete "'+label+'"?'))return;
-  try{await scriptPost({action:'delete',rowIndex:allMatches[idx].rowIndex||0});notify('🗑 Deleted: '+label,'info');setTimeout(loadAdminMatches,1500);}
-  catch(e){notify('❌ '+e.message,'error');}
-}
-function buildSlidesManager(){
-  document.getElementById('slides-manager').innerHTML=SLIDES.map((s,i)=>`
-    <div class="slide-thumb">
-      <img src="${s.bg}" style="width:100%;height:110px;object-fit:cover;display:block;filter:brightness(.7)" onerror="this.src='https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400'">
-      <div class="slide-thumb-body">
-        <div class="slide-thumb-title">Slide ${i+1}: ${esc(s.h1)} ${esc(s.h2)}</div>
-        <div style="font-size:10px;color:var(--muted);font-weight:600">${esc(s.tag)}</div>
-        <div class="slide-thumb-actions"><button class="btn-edit" onclick="openSlideModal(${i})">✏️ Edit</button><button class="btn-del" onclick="resetSlide(${i})">↺ Reset</button></div>
-      </div>
-    </div>`).join('');
-}
-function openSlideModal(i){
-  const s=SLIDES[i];
-  document.getElementById('sm-tag').value=s.tag;document.getElementById('sm-h1').value=s.h1;
-  document.getElementById('sm-h2').value=s.h2;document.getElementById('sm-desc').value=s.p;
-  document.getElementById('sm-btn').value=s.btn;document.getElementById('sm-img-url').value=s.bg;
-  const prev=document.getElementById('sm-img-preview');prev.src=s.bg;prev.style.display='block';
-  document.getElementById('sm-idx').value=i;document.getElementById('slide-modal').classList.add('open');
-}
-function saveSlide(){
-  const i=parseInt(document.getElementById('sm-idx').value);
-  SLIDES[i]={tag:document.getElementById('sm-tag').value,h1:document.getElementById('sm-h1').value,h2:document.getElementById('sm-h2').value,p:document.getElementById('sm-desc').value,btn:document.getElementById('sm-btn').value,bg:document.getElementById('sm-img-url').value.trim()||SLIDES[i].bg};
-  localStorage.setItem('kx_slides',JSON.stringify(SLIDES));renderSlides();buildSlidesManager();closeModal('slide-modal');notify('✅ Slide '+(i+1)+' yavuguruwe!','success');
-}
-function resetSlide(i){if(!confirm('Reset slide '+(i+1)+'?'))return;SLIDES[i]=defSlides()[i];localStorage.setItem('kx_slides',JSON.stringify(SLIDES));renderSlides();buildSlidesManager();notify('↺ Reset','info');}
-function uploadFavicon(input){
-  if(!input.files[0])return;const r=new FileReader();
-  r.onload=e=>{FAV_URL=e.target.result;localStorage.setItem('kx_favicon',FAV_URL);document.getElementById('favicon-link').href=FAV_URL;document.getElementById('fav-preview').src=FAV_URL;const li=document.getElementById('logo-ico');li.src=FAV_URL;li.style.display='block';notify('✅ Favicon yavuguruwe!','success');};
-  r.readAsDataURL(input.files[0]);
-}
-function saveSettings(){
-  const newUrl=document.getElementById('set-scripturl').value.trim();
-  CFG.SCRIPT_URL=newUrl||SCRIPT_URL;
-  TICKER=document.getElementById('ticker-input').value.trim().split('\n').filter(Boolean).join('|');
-  S_TITLE=document.getElementById('site-title').value.trim()||'KEYX PREDICTER';
-  S_ACC=document.getElementById('site-accuracy').value.trim()||'85%';
-  localStorage.setItem('kx_scripturl',CFG.SCRIPT_URL);localStorage.setItem('kx_ticker',TICKER);
-  localStorage.setItem('kx_title',S_TITLE);localStorage.setItem('kx_acc',S_ACC);
-  document.title=S_TITLE;document.getElementById('stat-acc').textContent=S_ACC;
-  _cache=null;renderTickers();notify('✅ Settings zachunzwe!','success');
+function playVideo(m){
+  var vw=document.getElementById('vidWrap'),cw=document.getElementById('mmCovW'),desc=document.getElementById('mmDesc');
+  clearAutoNext();
+  if(m.category==='comedy'){
+    buildComedyList(m.id);
+    var ytM=(m.videoURL||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+    if(ytM){
+      vw.innerHTML='<div id="ytPlayerDiv" style="width:100%;height:100%"></div>';
+      vw.style.display='block';cw.style.display='none';
+      if(desc)desc.classList.add('hidden-desc');
+      vw.scrollIntoView({behavior:'smooth',block:'start'});
+      var videoId=ytM[1];
+      var create=function(){
+        try{if(ytPlayer&&typeof ytPlayer.destroy==='function')ytPlayer.destroy();ytPlayer=null;}catch(e){}
+        var el=document.getElementById('ytPlayerDiv');if(!el)return;
+        ytPlayer=new YT.Player(el,{height:'100%',width:'100%',videoId:videoId,
+          playerVars:{autoplay:1,rel:0,modestbranding:1,playsinline:1},
+          events:{onStateChange:function(evt){if(evt.data===0)startAutoNext();}}});
+      };
+      if(YT_READY)create();else YT_QUEUE.push(create);
+      api('logTraffic',{user:S.user?S.user.gmail:'guest',action:'play',country:'',details:m.name});
+      return;
+    }
+    if(/\.(mp4|webm|ogg)(\?.*)?$/i.test((m.videoURL||'').trim())){
+      vw.innerHTML='<video controls autoplay id="comedyVid" style="width:100%;height:100%;background:#000" src="'+h(m.videoURL)+'">Not supported.</video>';
+      vw.style.display='block';cw.style.display='none';if(desc)desc.classList.add('hidden-desc');
+      vw.scrollIntoView({behavior:'smooth',block:'start'});
+      var vid=document.getElementById('comedyVid');if(vid)vid.onended=function(){startAutoNext();};
+      api('logTraffic',{user:S.user?S.user.gmail:'guest',action:'play',country:'',details:m.name});
+      return;
+    }
+  }
+  vw.innerHTML=buildPlayer(m.videoURL);vw.style.display='block';cw.style.display='none';
+  if(desc)desc.classList.add('hidden-desc');
+  vw.scrollIntoView({behavior:'smooth',block:'start'});
+  api('logTraffic',{user:S.user?S.user.gmail:'guest',action:'play',country:'',details:m.name});
 }
 
-// ─── HELPERS ─────────────────────────────────────
-function fv(id){return document.getElementById(id)?.value?.trim()||'';}
-function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function getLF(l){if(!l)return'⚽';const ll=l.toLowerCase();if(ll.includes('premier')||ll.includes('epl'))return'⚽';if(ll.includes('la liga'))return'🇪🇸';if(ll.includes('champions')||ll.includes('ucl'))return'🌟';if(ll.includes('serie'))return'🇮🇹';if(ll.includes('bundesliga'))return'🇩🇪';if(ll.includes('ligue'))return'🇫🇷';return'🌍';}
-function getEmj(team){if(!team)return'⚽';const t=team.toLowerCase();if(t.includes('arsenal')||t.includes('liverpool')||t.includes('dortmund'))return'🔴';if(t.includes('chelsea')||t.includes('man city')||t.includes('inter'))return'🔵';if(t.includes('barcelona'))return'🔵🔴';if(t.includes('real madrid')||t.includes('juventus')||t.includes('spurs'))return'⚪';if(t.includes('psg'))return'🔵🔴';if(t.includes('bayern'))return'🔴⚪';return'⚽';}
+/* ══ MOVIE MODAL ══ */
+function openMovie(id,autoPlay){
+  api('getMovie',{id:id},function(r){
+    if(!r.ok){toast(r.msg,'terr');return;}
+    var m=r.movie;S.curMovie=m;
+    var vw=document.getElementById('vidWrap');vw.innerHTML='';vw.style.display='none';
+    document.getElementById('mmCovW').style.display='block';
+    document.getElementById('mmCovI').src=m.cover||'';
+    document.getElementById('mmBadges').innerHTML=getCatBadge(m)+(m.isNew?'<span class="cbg cb-n">NEW</span>':'')+(m.type==='series'?'<span class="cbg cb-e">📺 Series</span>':'');
+    document.getElementById('mmTitle').textContent=m.name;
+    document.getElementById('mmMeta').innerHTML=
+      '<span class="mm-rat">⭐ '+(m.rating||'N/A')+'</span>'+
+      '<span>📅 '+h(m.year)+'</span><span>🌍 '+h(m.country||'International')+'</span>'+
+      (m.season?'<span>S'+h(m.season)+'</span>':'')+(m.episode?'<span>E'+h(m.episode)+'</span>':'');
+    var descEl=document.getElementById('mmDesc');descEl.textContent=m.description||'';descEl.classList.remove('hidden-desc');
+    /* action buttons — NO download */
+    var acts=document.getElementById('mmActs');acts.innerHTML='';
+    if(m.videoURL){
+      var pb=document.createElement('button');pb.className='mmb mmb-play';
+      pb.innerHTML='▶ Play'+(m.category==='comedy'?' 😂':m.category==='song'?' 🎵':m.category==='news'?' 📰':'');
+      pb.onclick=function(){playVideo(m);};acts.appendChild(pb);
+    }
+    var inPL=false;
+    var plb=document.createElement('button');plb.className='mmb';
+    function updPL(){plb.innerHTML=inPL?'✓ In Playlist':'📋 + Playlist';}updPL();
+    plb.onclick=function(){
+      if(!S.user){showLoginReq();return;}
+      if(inPL){api('removeFromPlaylist',{gmail:S.user.gmail,movieId:m.id},function(r2){if(r2.ok){inPL=false;updPL();toast('Removed from playlist');}else toast(r2.msg,'terr');});}
+      else{api('addToPlaylist',{gmail:S.user.gmail,movieId:m.id},function(r2){if(r2.ok){inPL=true;updPL();toast('Added to playlist ✓','tok');}else toast(r2.msg,'terr');});}
+    };acts.appendChild(plb);
+    /* ★ Load related videos so user can choose another */
+    loadRelated(m);
+    loadComments(m.id);
+    openOv('movOv');
+    api('logTraffic',{user:S.user?S.user.gmail:'guest',action:'view',country:'',details:m.name});
+    if(autoPlay&&m.videoURL)setTimeout(function(){playVideo(m);},300);
+  });
+}
+function cMovie(){clearAutoNext();stopCurrentVideo();cOv('movOv');}
 
-document.addEventListener('input',e=>{if(e.target.id==='sm-img-url'){const prev=document.getElementById('sm-img-preview');prev.src=e.target.value;prev.style.display=e.target.value?'block':'none';}});
+/* ══ COMMENTS ══ */
+function loadComments(movieId){
+  api('getComments',{movieId:movieId},function(r){
+    if(!r.ok)return;
+    var list=r.comments||[];
+    document.getElementById('cmtCnt').textContent='('+list.length+')';
+    var cl=document.getElementById('cmtList');cl.innerHTML='';
+    list.forEach(function(c){
+      var d=document.createElement('div');d.className='cmt-item';
+      var init=(c.name||c.gmail||'?')[0].toUpperCase();
+      d.innerHTML='<div class="cmt-av">'+init+'</div><div style="flex:1"><div style="display:flex;gap:5px;align-items:center"><span class="cmt-name">'+h(c.name||c.gmail)+'</span><span class="cmt-emoji">'+h(c.emoji||'💬')+'</span></div><div class="cmt-txt">'+h(c.comment)+'</div><div class="cmt-date">'+fmtDate(c.date)+'</div></div>'+(S.adminToken?'<span class="cmt-del" onclick="admDelCmt(\''+c.id+'\')">🗑</span>':'');
+      cl.appendChild(d);
+    });
+    var cfa=document.getElementById('cmtFA');
+    if(S.user){
+      cfa.innerHTML='<div class="emoji-row">'+EMOJIS.map(function(e){return'<button class="emoj" onclick="selEmoji(this,\''+e+'\')" data-e="'+e+'">'+e+'</button>';}).join('')+'</div>'+
+        '<div class="cmt-form"><textarea id="cmtTxt" placeholder="Add a comment…"></textarea><button onclick="postComment()">Post</button></div>';
+      var first=cfa.querySelector('.emoj');if(first)first.classList.add('sel');S.selEmoji='💬';
+    }else{cfa.innerHTML='<div class="sign-cmt" onclick="cMovie();showAuth(\'login\')">🔒 Sign in to comment</div>';}
+  });
+}
+function selEmoji(btn,emoji){S.selEmoji=emoji;document.querySelectorAll('.emoj').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');}
+function postComment(){
+  var ta=document.getElementById('cmtTxt');
+  if(!ta||!ta.value.trim()){toast('Write something first','terr');return;}
+  api('addComment',{gmail:S.user.gmail,name:S.user.name,movieId:S.curMovie.id,comment:ta.value.trim(),emoji:S.selEmoji},function(r){
+    if(r.ok){toast('Comment posted ✓','tok');ta.value='';loadComments(S.curMovie.id);}else toast(r.msg,'terr');
+  });
+}
+
+/* ══ PLAYLIST ══ */
+function showPlaylist(){
+  if(!S.user){showLoginReq();return;}
+  api('getPlaylist',{gmail:S.user.gmail},function(r){
+    if(!r.ok){toast(r.msg,'terr');return;}
+    renderGrid(r.movies||[]);
+    document.getElementById('gTitle').textContent='📋 My Playlist ('+(r.movies||[]).length+')';
+    document.querySelector('main').scrollIntoView({behavior:'smooth'});
+  });
+}
+
+/* ══ NOTIFICATIONS ══ */
+function loadNotifs(){
+  if(!S.user)return;
+  api('getNotifications',{gmail:S.user.gmail},function(r){
+    if(!r.ok)return;
+    var list=r.notifications||[];
+    var dot=document.getElementById('notifDot');
+    dot.className='notif-dot'+(list.filter(function(n){return !n.isRead;}).length?' on':'');
+    var nl=document.getElementById('notifList');nl.innerHTML='';
+    if(!list.length){nl.innerHTML='<div style="padding:16px;text-align:center;font-size:.8rem;color:var(--t2)">No notifications</div>';return;}
+    list.forEach(function(n){
+      var d=document.createElement('div');d.className='np-item'+(n.isRead?'':' unread');
+      d.innerHTML='<div class="np-title">'+(n.type==='download'?'📱 ':n.type==='new'?'✨ ':'🔔 ')+h(n.title)+'</div><div class="np-msg">'+h(n.message)+'</div><div class="np-date">'+fmtDate(n.date)+'</div>';
+      d.onclick=function(){if(!n.isRead){api('markNotifRead',{gmail:S.user.gmail,notifId:n.id},null);d.classList.remove('unread');dot.classList.remove('on');}};
+      nl.appendChild(d);
+    });
+  });
+}
+function markAllRead(){
+  if(!S.user)return;
+  api('getNotifications',{gmail:S.user.gmail},function(r){
+    (r.notifications||[]).filter(function(n){return !n.isRead;}).forEach(function(n){api('markNotifRead',{gmail:S.user.gmail,notifId:n.id},null);});
+    setTimeout(loadNotifs,600);document.getElementById('notifDot').classList.remove('on');
+  });
+}
+function toggleNotif(){document.getElementById('notifPanel').classList.toggle('open');}
+
+/* ══ PAGES ══ */
+function showPage(key){
+  var pg=S.pages[key]||{title:cap(key),content:'No content yet.'};
+  document.getElementById('pageTit').textContent=pg.title;
+  document.getElementById('pageBody').textContent=pg.content;
+  openOv('pageOv');
+}
+
+/* ══ SEARCH ══ */
+function onSearch(v){clearTimeout(S.srTimer);if(!v.trim()){cSearch();return;}S.srTimer=setTimeout(function(){execSearch(v.trim());},360);}
+function doSBtn(){var v=document.getElementById('si').value.trim();if(v)execSearch(v);else cSearch();}
+function execSearch(q){
+  api('searchMovies',{query:q,isLoggedIn:!!S.user},function(r){
+    if(!r.ok)return;
+    var so=document.getElementById('srOv');so.classList.add('open');
+    document.getElementById('srQ').textContent=q;
+    var exact=r.exact||[],sim=r.similar||[];
+    document.getElementById('srSub').textContent=exact.length+' exact  ·  '+sim.length+' similar';
+    var ex=document.getElementById('srEx');ex.innerHTML='';
+    if(exact.length){var g=document.createElement('div');g.className='gw';exact.forEach(function(m){g.appendChild(mkCard(m,'grid'));});ex.appendChild(g);}
+    else ex.innerHTML='<div class="nomatch"><h3>No exact match for "'+h(q)+'"</h3><p>Showing similar results ↓</p></div>';
+    var sm=document.getElementById('srSim');sm.innerHTML='';
+    if(sim.length){var t2=document.createElement('div');t2.className='sr-st';t2.textContent='Similar Results';var g2=document.createElement('div');g2.className='gw';sim.forEach(function(m){g2.appendChild(mkCard(m,'grid'));});sm.appendChild(t2);sm.appendChild(g2);}
+  });
+}
+function cSearch(){document.getElementById('srOv').classList.remove('open');document.getElementById('si').value='';}
+
+/* ══ FILTERS ══ */
+var advOpen=false;
+function toggleAdv(){advOpen=!advOpen;document.getElementById('advF').classList.toggle('open',advOpen);document.getElementById('fArrow').textContent=advOpen?'▲':'▼';}
+function applyF(){loadMovies(S.activeCat,document.getElementById('fType2').value||S.activeType,document.getElementById('fYear').value,document.getElementById('fRat').value,document.getElementById('fCo').value);}
+function clearF(){document.getElementById('fYear').value='';document.getElementById('fRat').value='';document.getElementById('fCo').value='';document.getElementById('fType2').value='all';loadMovies();}
+function setCat(cat,btn){
+  S.activeCat=cat;
+  document.querySelectorAll('.cp').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  S.activeType=cat==='series'?'series':cat==='song'?'song':cat==='news'?'news':'all';
+  loadMovies(cat,S.activeType);document.querySelector('main').scrollIntoView({behavior:'smooth'});
+}
+function setCatByName(cat){document.querySelectorAll('.cp').forEach(function(b){if(b.textContent.toLowerCase().indexOf(cat)>=0)setCat(cat,b);});}
+function fType(type){S.activeType=type;loadMovies(S.activeCat,type);document.querySelector('main').scrollIntoView({behavior:'smooth'});}
+function showNew(){if(!S.user){showLoginReq();return;}var nw=S.movies.filter(function(m){return m.isNew;});renderGrid(nw);document.getElementById('gTitle').textContent='✨ New Releases ('+nw.length+')';document.querySelector('main').scrollIntoView({behavior:'smooth'});}
+function goHome(){S.activeCat='all';S.activeType='all';clearF();window.scrollTo({top:0,behavior:'smooth'});}
+function sRow(id,dir){var el=document.getElementById(id);if(el)el.scrollBy({left:dir*350,behavior:'smooth'});}
+
+/* ══ AUTH ══ */
+function showAuth(tab){stab(tab||'login');openOv('authOv');}
+function stab(tab){
+  ['login','register'].forEach(function(t){document.getElementById('tab-'+t).classList.toggle('active',t===tab);document.getElementById('form-'+t).classList.toggle('hidden',t!==tab);});
+  document.getElementById('authTitle').textContent=tab==='register'?'Create Account':'Sign in to KEYTUBE';
+  ['liErr','reErr'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='';});
+}
+function onDblYear(){document.getElementById('adP').value='';var er=document.getElementById('adErr');if(er)er.textContent='';openOv('adminAuthOv');}
+function doLogin(){
+  var em=document.getElementById('liE').value.trim(),pw=document.getElementById('liP').value,er=document.getElementById('liErr');
+  if(!em||!pw){er.textContent='Fill all fields';return;}
+  api('login',{gmail:em,password:pw},function(r){
+    if(r.ok){S.user=r.user;sessionStorage.setItem('km_u',JSON.stringify(r.user));cOv('authOv');updateNavUI();loadMovies();loadNotifs();startPing();toast('Welcome, '+r.user.name+' 👋','tok');}
+    else er.textContent=r.msg;
+  });
+}
+function doRegister(){
+  var nm=document.getElementById('reN').value.trim(),em=document.getElementById('reE').value.trim(),pw=document.getElementById('reP').value,co=document.getElementById('reCo').value,er=document.getElementById('reErr');
+  if(!nm||!em||!pw){er.textContent='Fill all required fields';return;}
+  api('register',{name:nm,gmail:em,password:pw,country:co},function(r){
+    if(r.ok){S.user=r.user;sessionStorage.setItem('km_u',JSON.stringify(r.user));cOv('authOv');updateNavUI();loadMovies();startPing();toast('Welcome '+nm+' 🎉','tok');}
+    else er.textContent=r.msg;
+  });
+}
+function doAdminAuth(){
+  var pw=document.getElementById('adP').value,er=document.getElementById('adErr');
+  api('adminLogin',{password:pw},function(r){
+    if(r.ok){S.adminToken=r.token;sessionStorage.setItem('km_a',r.token);cOv('adminAuthOv');updateNavUI();openAdmin();toast('Admin access granted ✓','tok');}
+    else er.textContent=r.msg;
+  });
+}
+function logout(){S.user=null;S.adminToken=null;sessionStorage.removeItem('km_u');sessionStorage.removeItem('km_a');clearInterval(S.pingTimer);updateNavUI();loadMovies();toast('Signed out 👋');}
+function adminLogout(){if(!confirm('Log out of admin?'))return;S.adminToken=null;sessionStorage.removeItem('km_a');updateNavUI();closeAdmin();toast('Admin logged out 👋');}
+function updateNavUI(){
+  var u=S.user;
+  document.getElementById('siBtn').style.display=u?'none':'';
+  document.getElementById('suBtn').style.display=u?'none':'';
+  document.getElementById('uChip').style.display=u?'':'none';
+  document.getElementById('admNavBtn').style.display=S.adminToken?'':'none';
+  document.getElementById('admDropI').style.display=S.adminToken?'':'none';
+  document.getElementById('notifBtn').style.display=u?'':'none';
+  if(u)document.getElementById('avEl').textContent=(u.name||u.gmail||'U')[0].toUpperCase();
+}
+function toggleDrop(){document.getElementById('udrop').classList.toggle('open');}
+function cd(){document.getElementById('udrop').classList.remove('open');}
+document.addEventListener('click',function(e){
+  var uc=document.getElementById('uChip'),ud=document.getElementById('udrop');
+  var nb=document.getElementById('notifBtn'),np=document.getElementById('notifPanel');
+  if(uc&&ud&&!uc.contains(e.target)&&!ud.contains(e.target))ud.classList.remove('open');
+  if(nb&&np&&!nb.contains(e.target)&&!np.contains(e.target))np.classList.remove('open');
+});
+function showProfile(){if(S.user)toast(S.user.name+' | '+S.user.gmail+(S.user.country?' | '+S.user.country:''));}
+
+/* ══ OVERLAYS ══ */
+function openOv(id){document.getElementById(id).classList.add('open');}
+function cOv(id){document.getElementById(id).classList.remove('open');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){cSearch();cOv('authOv');cOv('adminAuthOv');cMovie();cOv('pageOv');}});
+
+/* ══ ADMIN ══ */
+function openAdmin(){document.getElementById('admPanel').classList.add('open');aTab('dash');}
+function closeAdmin(){document.getElementById('admPanel').classList.remove('open');}
+function aTab(tab){
+  document.querySelectorAll('.atb').forEach(function(b){b.classList.remove('act');});
+  var tabs=['dash','movies','users','comments','notif','pages','traffic','settings'];
+  var idx=tabs.indexOf(tab);if(idx>=0)document.querySelectorAll('.atb')[idx].classList.add('act');
+  document.getElementById('abody').innerHTML='<div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div>';
+  ({dash:aDash,movies:aMovies,users:aUsers,comments:aComments,notif:aNotif,pages:aPages,traffic:aTraffic,settings:aSettings})[tab]();
+}
+function aDash(){
+  api('getStats',{token:S.adminToken},function(r){
+    if(!r.ok){aErr(r.msg);return;}var s=r.stats;
+    api('getOnlineUsers',{token:S.adminToken},function(lo){
+      var lc=lo.ok?lo.count:0,lu=lo.ok?lo.users:[];
+      document.getElementById('abody').innerHTML=
+        '<div class="stats-r">'+[['👥','Users',s.users],['🎬','Movies',s.movies],['💬','Comments',s.comments],['📈','Visits',s.traffic],['⬇','Downloads',s.downloads||0],['📋','Playlists',s.playlist||0]].map(function(x){return'<div class="sc"><div class="sc-i">'+x[0]+'</div><div class="sc-n">'+x[2]+'</div><div class="sc-l">'+x[1]+'</div></div>';}).join('')+'</div>'+
+        '<div style="background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span class="live-badge"><span class="live-dot"></span>'+lc+' online now</span><button class="ab2" onclick="aDash()">🔄 Refresh</button></div>'+
+        '<div class="aform2"><h3 style="margin-bottom:11px">Quick Actions</h3><div class="fa-row"><button class="ab2 ab2-red" onclick="aTab(\'movies\')">+ Add Movie</button><button class="ab2 ab2-bl" onclick="aTab(\'users\')">Manage Users</button><button class="ab2 ab2-red" onclick="aTab(\'notif\')">Send Notification</button><button class="ab2" onclick="aTab(\'settings\')">Settings</button></div></div>'+
+        '<div class="aform2"><h3 style="margin-bottom:10px">🟢 Live Users ('+lc+')</h3>'+(lu.length?lu.map(function(u){return'<div class="tf"><span class="tf-u">'+h(u.gmail)+'</span><span class="tf-a">online</span><span style="color:var(--t2);font-size:.71rem">'+h(u.country||'—')+'</span><span class="tf-t">'+fmtDate(u.lastSeen)+'</span></div>';}).join(''):'<p style="font-size:.8rem;color:var(--t2)">No users online.</p>')+'</div>';
+    });
+  });
+}
+var editId=null;
+var ALL_CATS=['english','french','drama','chinese','indian','cartoon','comedy','song','news'];
+var ALL_TYPES=['movie','series','song','news'];
+function aMovies(){
+  api('getMovies',{isLoggedIn:true,category:'all',type:'all'},function(r){
+    if(!r.ok){aErr(r.msg);return;}
+    var movies=r.movies||[],sorted=movies.slice().reverse();
+    var rows=sorted.map(function(m){return'<tr><td><img src="'+h(m.cover)+'" style="width:32px;height:44px;object-fit:cover;border-radius:3px;background:var(--bg2)" onerror="this.style.display=\'none\'"></td><td><strong>'+h(m.name)+'</strong></td><td>'+cap(m.type)+'</td><td>'+cap(m.category)+'</td><td>'+h(m.year)+'</td><td style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.7rem;color:var(--blue)">'+h(m.videoURL||'—')+'</td><td>'+(m.isNew?'<span class="s-ok">New</span>':'Old')+'</td><td style="display:flex;gap:3px;padding:7px 11px"><button class="ab2 ab2-bl" onclick="aEdit(\''+m.id+'\')">Edit</button><button class="ab2 ab2-red" onclick="aDel(\''+m.id+'\',\''+h(m.name)+'\')">Del</button></td></tr>';}).join('');
+    document.getElementById('abody').innerHTML='<div class="aform2" id="mfw">'+mFH(null)+'</div>'+
+      '<div class="atw"><div class="ath"><h3>🎬 All Content ('+movies.length+') — Newest First</h3></div>'+
+      '<div style="overflow-x:auto"><table class="dt"><thead><tr><th>Cover</th><th>Name</th><th>Type</th><th>Category</th><th>Year</th><th>Video URL</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+  });
+}
+function mFH(m){
+  var lbl=function(t){return'<label style="display:block;font-size:.7rem;color:var(--t2);margin-bottom:3px;font-weight:500;text-transform:uppercase">'+t+'</label>';};
+  return'<h3>'+(m?'Edit: '+h(m.name):'Add New Movie / Song / News')+'</h3><div class="fgrid">'+
+    '<div class="fg">'+lbl('Name *')+'<input class="af2" id="mfN" value="'+h(m?m.name:'')+'" placeholder="Title"></div>'+
+    '<div class="fg">'+lbl('Year')+'<input class="af2" id="mfY" type="number" value="'+(m?h(m.year):new Date().getFullYear())+'"></div>'+
+    '<div class="fg">'+lbl('Type')+'<select class="af2" id="mfT">'+ALL_TYPES.map(function(t){return'<option value="'+t+'"'+(m&&m.type===t?' selected':'')+'>'+cap(t)+'</option>';}).join('')+'</select></div>'+
+    '<div class="fg">'+lbl('Category')+'<select class="af2" id="mfC">'+ALL_CATS.map(function(c){return'<option value="'+c+'"'+(m&&m.category===c?' selected':'')+'>'+cap(c)+'</option>';}).join('')+'</select></div>'+
+    '<div class="fg full">'+lbl('Cover Image URL')+'<input class="af2" id="mfCov" value="'+h(m?m.cover:'')+'" placeholder="https://…/poster.jpg"></div>'+
+    '<div class="fg full">'+lbl('🎬 Video URL')+'<input class="af2" id="mfVid" value="'+h(m?m.videoURL:'')+'" placeholder="YouTube / MP4 / Google Drive…"></div>'+
+    '<div class="fg full">'+lbl('Description')+'<textarea class="af2" id="mfDesc" rows="3" placeholder="Synopsis…">'+h(m?m.description:'')+'</textarea></div>'+
+    '<div class="fg">'+lbl('Country')+'<input class="af2" id="mfCo" value="'+h(m?m.country:'')+'" placeholder="USA"></div>'+
+    '<div class="fg">'+lbl('Rating (e.g. 8.2)')+'<input class="af2" id="mfRat" value="'+h(m?m.rating:'')+'" placeholder="7.5"></div>'+
+    '<div class="fg">'+lbl('Season')+'<input class="af2" id="mfSeas" value="'+h(m?m.season:'')+'" placeholder="1"></div>'+
+    '<div class="fg">'+lbl('Episode')+'<input class="af2" id="mfEp" value="'+h(m?m.episode:'')+'" placeholder="1"></div>'+
+    '<div class="fg full" style="display:flex;gap:18px;flex-wrap:wrap">'+
+    '<label style="display:flex;gap:6px;align-items:center;cursor:pointer;font-size:.79rem"><input type="checkbox" id="mfNew"'+(m&&m.isNew?' checked':'')+'>  New Release</label>'+
+    '<label style="display:flex;gap:6px;align-items:center;cursor:pointer;font-size:.79rem"><input type="checkbox" id="mfFeat"'+(m&&m.featured?' checked':'')+'>  Hero Banner</label>'+
+    '</div></div>'+
+    '<div class="fa-row"><button class="ab2 ab2-red" onclick="aSave()">'+(m?'💾 Update':'➕ Add')+'</button>'+(m?'<button class="ab2" onclick="aCancelEdit()">Cancel</button>':'')+'</div>';
+}
+function aEdit(id){api('getMovie',{id:id},function(r){if(!r.ok)return;editId=id;document.getElementById('mfw').innerHTML=mFH(r.movie);document.getElementById('mfw').scrollIntoView({behavior:'smooth'});});}
+function aCancelEdit(){editId=null;document.getElementById('mfw').innerHTML=mFH(null);}
+function aSave(){
+  var d={token:S.adminToken,name:document.getElementById('mfN').value.trim(),year:document.getElementById('mfY').value,type:document.getElementById('mfT').value,category:document.getElementById('mfC').value,cover:document.getElementById('mfCov').value.trim(),videoURL:document.getElementById('mfVid').value.trim(),downloadURL:'',description:document.getElementById('mfDesc').value.trim(),country:document.getElementById('mfCo').value.trim(),rating:document.getElementById('mfRat').value.trim(),season:document.getElementById('mfSeas').value.trim(),episode:document.getElementById('mfEp').value.trim(),isNew:document.getElementById('mfNew').checked,featured:document.getElementById('mfFeat').checked};
+  if(!d.name){toast('Name required','terr');return;}
+  if(editId)d.id=editId;
+  api(editId?'updateMovie':'addMovie',d,function(r){if(r.ok){toast(r.msg,'tok');editId=null;aMovies();loadMovies();}else toast(r.msg,'terr');});
+}
+function aDel(id,name){if(!confirm('Delete "'+name+'"?'))return;api('deleteMovie',{token:S.adminToken,id:id},function(r){if(r.ok){toast('Deleted','tok');aMovies();loadMovies();}else toast(r.msg,'terr');});}
+function aUsers(){
+  api('getUsers',{token:S.adminToken},function(r){
+    if(!r.ok){aErr(r.msg);return;}var users=r.users||[];
+    var rows=users.map(function(u){var st=u.status||'active';return'<tr><td><strong>'+h(u.name)+'</strong></td><td style="color:var(--blue)">'+h(u.gmail)+'</td><td>'+h(u.country||'—')+'</td><td>'+u.commentCount+'</td><td><span class="'+(st==='active'?'s-ok':'s-bl')+'">'+st+'</span></td><td style="display:flex;gap:3px;padding:7px 11px">'+(st==='active'?'<button class="ab2 ab2-red" onclick="aSetSt(\''+u.id+'\',\'blocked\')">Block</button>':'<button class="ab2 ab2-gr" onclick="aSetSt(\''+u.id+'\',\'active\')">Unblock</button>')+'<button class="ab2 ab2-red" onclick="aDelU(\''+u.id+'\',\''+h(u.name)+'\')">Del</button></td></tr>';}).join('');
+    document.getElementById('abody').innerHTML='<div class="atw"><div class="ath"><h3>👥 Users ('+users.length+')</h3></div><div style="overflow-x:auto"><table class="dt"><thead><tr><th>Name</th><th>Gmail</th><th>Country</th><th>Comments</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+  });
+}
+function aSetSt(id,st){api('setUserStatus',{token:S.adminToken,id:id,status:st},function(r){if(r.ok){toast('Updated','tok');aUsers();}else toast(r.msg,'terr');});}
+function aDelU(id,nm){if(!confirm('Delete "'+nm+'"?'))return;api('deleteUser',{token:S.adminToken,id:id},function(r){if(r.ok){toast('Deleted','tok');aUsers();}else toast(r.msg,'terr');});}
+function aComments(){
+  api('getAllComments',{token:S.adminToken},function(r){
+    if(!r.ok){aErr(r.msg);return;}var list=r.comments||[];
+    var rows=list.map(function(c){return'<tr><td>'+h(c.name||c.gmail)+'</td><td style="font-size:.7rem;color:var(--t2)">'+h(c.movieId)+'</td><td>'+h(c.emoji||'💬')+' '+h(c.comment.substring(0,60))+'</td><td style="font-size:.7rem">'+fmtDate(c.date)+'</td><td><button class="ab2 ab2-red" onclick="admDelCmt(\''+c.id+'\')">Del</button></td></tr>';}).join('');
+    document.getElementById('abody').innerHTML='<div class="atw"><div class="ath"><h3>💬 Comments ('+list.length+')</h3></div><div style="overflow-x:auto"><table class="dt"><thead><tr><th>User</th><th>Movie</th><th>Comment</th><th>Date</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+  });
+}
+function admDelCmt(id){if(!confirm('Delete?'))return;api('deleteComment',{token:S.adminToken,id:id},function(r){if(r.ok){toast('Deleted','tok');aComments();if(S.curMovie)loadComments(S.curMovie.id);}else toast(r.msg,'terr');});}
+function aNotif(){
+  api('getNotifications',{gmail:''},function(r){
+    var list=r.notifications||[];
+    var rows=list.map(function(n){return'<tr><td>'+h(n.title)+'</td><td>'+h(n.message.substring(0,50))+'</td><td>'+h(n.type)+'</td><td style="font-size:.7rem">'+fmtDate(n.date)+'</td><td><button class="ab2 ab2-red" onclick="aDelNotif(\''+n.id+'\')">Del</button></td></tr>';}).join('');
+    document.getElementById('abody').innerHTML=
+      '<div class="aform2"><h3>🔔 Send Notification</h3>'+
+      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Title</label><input class="af2" id="ntT" placeholder="e.g. New Movies Added!"></div>'+
+      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Message</label><textarea class="af2" id="ntM" rows="3" placeholder="Your message…"></textarea></div>'+
+      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Type</label><select class="af2" id="ntTy"><option value="info">ℹ️ Info</option><option value="download">📱 App Download</option><option value="new">✨ New Content</option></select></div>'+
+      '<div class="fa-row"><button class="ab2 ab2-red" onclick="aSendNotif()">📤 Send to All Users</button></div></div>'+
+      '<div class="atw"><div class="ath"><h3>Sent ('+list.length+')</h3></div><div style="overflow-x:auto"><table class="dt"><thead><tr><th>Title</th><th>Message</th><th>Type</th><th>Date</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+  });
+}
+function aSendNotif(){
+  var t=document.getElementById('ntT').value.trim(),m=document.getElementById('ntM').value.trim(),ty=document.getElementById('ntTy').value;
+  if(!t||!m){toast('Fill title and message','terr');return;}
+  api('addNotification',{token:S.adminToken,title:t,message:m,type:ty},function(r){if(r.ok){toast('Sent! 🔔','tok');document.getElementById('ntT').value='';document.getElementById('ntM').value='';aNotif();}else toast(r.msg,'terr');});
+}
+function aDelNotif(id){if(!confirm('Delete?'))return;api('deleteNotification',{token:S.adminToken,id:id},function(r){if(r.ok){toast('Deleted','tok');aNotif();}else toast(r.msg,'terr');});}
+function aPages(){
+  api('getPages',{},function(r){
+    var pages=r.pages||{};
+    document.getElementById('abody').innerHTML='<div class="aform2"><h3>📄 Edit Pages</h3>'+
+      ['contact','about','follow'].map(function(key){
+        var pg=pages[key]||{title:cap(key)+' Us',content:''};
+        return'<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--brd)">'+
+          '<p style="font-size:.8rem;font-weight:700;margin-bottom:8px">📌 '+cap(key)+' Page</p>'+
+          '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Title</label><input class="af2" id="pt-'+key+'" value="'+h(pg.title)+'"></div>'+
+          '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Content</label><textarea class="af2" id="pc-'+key+'" rows="4">'+h(pg.content)+'</textarea></div>'+
+          '<button class="ab2 ab2-red" onclick="aSavePage(\''+key+'\')">💾 Save</button></div>';
+      }).join('')+'</div>';
+  });
+}
+function aSavePage(key){
+  api('savePage',{token:S.adminToken,key:key,title:document.getElementById('pt-'+key).value.trim(),content:document.getElementById('pc-'+key).value.trim()},function(r){
+    if(r.ok){toast(r.msg,'tok');api('getPages',{},function(pr){if(pr.ok)S.pages=pr.pages||{};});}else toast(r.msg,'terr');
+  });
+}
+function aTraffic(){
+  api('getTraffic',{token:S.adminToken},function(r){
+    if(!r.ok){aErr(r.msg);return;}var list=r.traffic||[];
+    var items=list.map(function(t){return'<div class="tf"><span class="tf-t">'+fmtDate(t.timestamp)+'</span><span class="tf-u">'+h(t.user)+'</span><span class="tf-a">'+h(t.action)+'</span><span style="color:var(--t2);font-size:.71rem">'+h(t.country||'—')+'</span><span style="color:var(--t3);font-size:.69rem">'+h(t.details||'')+'</span></div>';}).join('');
+    document.getElementById('abody').innerHTML='<div class="atw"><div class="ath"><h3>📈 Traffic Log ('+list.length+')</h3></div><div style="padding:0 14px 14px">'+(items||'<p style="padding:18px;color:var(--t2)">No data yet.</p>')+'</div></div>';
+  });
+}
+
+/* ★ SETTINGS — ads are now URL inputs, not HTML textareas */
+function aSettings(){
+  api('getSettings',{},function(r){
+    var s=r.settings||{};
+    document.getElementById('abody').innerHTML=
+      '<div class="aform2"><h3>⚙️ Site Settings</h3><div class="fgrid">'+
+      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Site Name</label><input class="af2" id="ss-n" value="'+h(s['site_name']||'KEYTUBE')+'"></div>'+
+      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">New Admin Password (blank = keep)</label><input class="af2" type="password" id="ss-p" placeholder="Leave blank to keep"></div>'+
+      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">🌐 Favicon URL</label><input class="af2" id="ss-fav" value="'+h(s['favicon_url']||'')+'" placeholder="https://…/icon.png"></div>'+
+      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">🖼 Background Image URL</label><input class="af2" id="ss-bg" value="'+h(s['background_url']||'')+'" placeholder="https://…/bg.jpg"></div>'+
+      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">📱 Mobile App Download URL</label><input class="af2" id="ss-app" value="'+h(s['app_download_url']||'')+'" placeholder="https://…/keytube.apk"></div>'+
+      /* ★ Ad slots now use URL inputs, not HTML textareas */
+      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">📢 Ad Top — Link URL</label>'+
+        '<input class="af2" type="url" id="ss-at" value="'+h(s['ads_top']||'')+'" placeholder="https://your-ad-link.com">'+
+        '<p class="ad-url-hint">Paste your ad link — it will show as a banner with a click-through link</p></div>'+
+      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">📢 Ad Middle — Link URL</label>'+
+        '<input class="af2" type="url" id="ss-am" value="'+h(s['ads_middle']||'')+'" placeholder="https://your-ad-link.com">'+
+        '<p class="ad-url-hint">Paste your ad link</p></div>'+
+      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">📢 Ad Bottom — Link URL</label>'+
+        '<input class="af2" type="url" id="ss-ab" value="'+h(s['ads_bottom']||'')+'" placeholder="https://your-ad-link.com">'+
+        '<p class="ad-url-hint">Paste your ad link</p></div>'+
+      '</div><div class="fa-row" style="margin-top:11px"><button class="ab2 ab2-red" onclick="aSaveSettings()">💾 Save All Settings</button></div></div>';
+  });
+}
+function aSaveSettings(){
+  var sett={
+    'site_name':document.getElementById('ss-n').value.trim(),
+    'favicon_url':document.getElementById('ss-fav').value.trim(),
+    'background_url':document.getElementById('ss-bg').value.trim(),
+    'app_download_url':document.getElementById('ss-app').value.trim(),
+    'ads_top':document.getElementById('ss-at').value.trim(),
+    'ads_middle':document.getElementById('ss-am').value.trim(),
+    'ads_bottom':document.getElementById('ss-ab').value.trim()
+  };
+  var np=document.getElementById('ss-p').value;if(np)sett['admin_password']=np;
+  api('updateSettings',{token:S.adminToken,settings:sett},function(r){
+    if(r.ok){toast(r.msg,'tok');api('getSettings',{},function(g){if(g.ok){S.settings=g.settings;applySettings();}});}else toast(r.msg,'terr');
+  });
+}
+function aErr(msg){document.getElementById('abody').innerHTML='<p style="color:var(--red);padding:18px">'+h(msg)+'</p>';}
 </script>
 </body>
 </html>
