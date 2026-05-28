@@ -4,24 +4,16 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
- <!-- ★ External CSS -->
-
 <link rel="stylesheet" href="style.css">  
 </head>
 <body>
-
 <div id="pbar"></div>
-
-<!-- PAGE LOADER — logo.png replaces "K" -->
 <div id="pgLoad"><div class="ld">
   <div class="kb kb-logo"><img src="logo.png" alt="KEYTUBE"></div>
   <div class="ld-t">KEYTUBE</div>
   <div class="spin"></div>
 </div></div>
-
 <div id="toast"></div>
-
-<!-- LOGIN REQUIRED -->
 <div id="loginReq"><div class="lr-box">
   <div style="font-size:2rem;margin-bottom:7px">🔒</div>
   <h3>Sign in required</h3><p>Create a free account to access this feature.</p>
@@ -29,8 +21,6 @@
   <button class="abtn" onclick="hideLoginReq();showAuth('register')">Create Free Account</button>
   <div style="margin-top:8px;font-size:.78rem;color:var(--t2)">Already have one? <a style="color:var(--blue);cursor:pointer" onclick="hideLoginReq();showAuth('login')">Sign in</a></div>
 </div></div>
-
-<!-- NAVBAR — logo.png replaces "K" -->
 <nav id="nav">
   <div class="logo" onclick="goHome()">
     <div class="kb kb-logo"><img src="logo.png" alt="KEYTUBE"></div>
@@ -57,14 +47,10 @@
     </div>
   </div>
 </nav>
-
-<!-- NOTIFICATION PANEL -->
 <div id="notifPanel">
   <div class="np-hd"><span>🔔 Notifications</span><span style="font-size:.75rem;color:var(--blue);cursor:pointer" onclick="markAllRead()">Mark all read</span></div>
   <div id="notifList"></div>
 </div>
-
-<!-- USER DROPDOWN -->
 <div id="udrop">
   <div class="di" onclick="cd();showPlaylist()">📋 Playlist</div>
   <div class="di" onclick="cd();showProfile()">👤 Profile</div>
@@ -72,8 +58,6 @@
   <div class="di" id="admDropI" style="display:none" onclick="cd();openAdmin()">⚙️ Admin Panel</div>
   <div class="di" style="color:var(--red)" onclick="logout()">🚪 Sign out</div>
 </div>
-
-<!-- APP BANNER -->
 <div id="appBanner">
   <button class="ab-close" onclick="document.getElementById('appBanner').classList.remove('show')">✕</button>
   <div class="ab-inner">
@@ -90,8 +74,6 @@
     </div>
   </div>
 </div>
-
-<!-- HERO -->
 <div id="hero">
   <img class="hi" id="hCover" src="" alt="">
   <div class="hs"></div>
@@ -107,23 +89,20 @@
   </div>
   <div class="hdots" id="hDots"></div>
 </div>
-
 <div class="adslot" id="adTop"></div>
-
-<!-- CATEGORY + FILTERS -->
 <div class="catbar">
   <div class="catpills" id="catPills">
     <button class="cp active" onclick="setCat('all',this)">All</button>
-    <button class="cp" onclick="setCat('english',this)">🇬🇧 English</button>
-    <button class="cp" onclick="setCat('french',this)">🇫🇷 French</button>
-    <button class="cp" onclick="setCat('drama',this)">🎭 Drama</button>
-    <button class="cp" onclick="setCat('chinese',this)">🇨🇳 Chinese</button>
-    <button class="cp" onclick="setCat('indian',this)">🇮🇳 Indian</button>
-    <button class="cp" onclick="setCat('cartoon',this)">🎨 Cartoon</button>
-    <button class="cp" onclick="setCat('comedy',this)">😂 Comedy</button>
-    <button class="cp" onclick="setCat('song',this)">🎵 Song</button>
-    <button class="cp" onclick="setCat('news',this)">📰 News</button>
-    <button class="cp" onclick="setCat('series',this)">📺 Series</button>
+    <button class="cp" onclick="setCat('english',this)"> English</button>
+    <button class="cp" onclick="setCat('french',this)"> French</button>
+    <button class="cp" onclick="setCat('drama',this)"> Drama</button>
+    <button class="cp" onclick="setCat('chinese',this)"> Chinese</button>
+    <button class="cp" onclick="setCat('indian',this)"> Indian</button>
+    <button class="cp" onclick="setCat('cartoon',this)"> Cartoon</button>
+    <button class="cp" onclick="setCat('comedy',this)"> Comedy</button>
+    <button class="cp" onclick="setCat('song',this)"> Song</button>
+    <button class="cp" onclick="setCat('news',this)"> News</button>
+    <button class="cp" onclick="setCat('series',this)"> Series</button>
   </div>
   <button class="filter-toggle" onclick="toggleAdv()">🔧 Filters <span id="fArrow">▼</span></button>
   <div class="adv-filters" id="advF">
@@ -147,7 +126,6 @@
     <button class="ab2" onclick="clearF()">✕ Clear</button>
   </div>
 </div>
-
 <main>
   <section class="section" id="trendSec">
     <div class="shead"><div class="stitle">🔥 Trending Now</div><div class="sarrs"><button class="sarr" onclick="sRow('tRow',-1)">◀</button><button class="sarr" onclick="sRow('tRow',1)">▶</button></div></div>
@@ -169,10 +147,7 @@
     <button class="abtn" style="max-width:200px;margin:0 auto;display:block" onclick="showAuth('register')">Create Free Account</button>
   </div>
 </main>
-
 <div class="adslot" id="adBot"></div>
-
-<!-- FOOTER — logo.png replaces "K" -->
 <footer>
   <div class="fg2">
     <div class="fc">
@@ -191,16 +166,12 @@
     <p>Available worldwide</p>
   </div>
 </footer>
-
-<!-- SEARCH OVERLAY -->
 <div id="srOv">
   <div class="sr-close" onclick="cSearch()">✕</div>
   <div class="sr-head">Results for "<span id="srQ" style="color:var(--red)"></span>"</div>
   <div class="sr-sub" id="srSub"></div>
   <div id="srEx"></div><div id="srSim"></div>
 </div>
-
-<!-- USER AUTH MODAL — logo.png replaces "K" -->
 <div class="ov" id="authOv" onclick="if(event.target===this)cOv('authOv')">
   <div class="mbox">
     <div class="mxbtn" onclick="cOv('authOv')">✕</div>
@@ -238,8 +209,6 @@
     </div>
   </div>
 </div>
-
-<!-- ADMIN AUTH MODAL — keeps 🔐 icon, logo NOT used here -->
 <div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')">
   <div class="mbox">
     <div class="mxbtn" onclick="cOv('adminAuthOv')">✕</div>
@@ -254,8 +223,6 @@
     </div>
   </div>
 </div>
-
-<!-- MOVIE MODAL -->
 <div class="ov" id="movOv" onclick="if(event.target===this)cMovie()">
   <div class="mbox">
     <div class="mxbtn" onclick="cMovie()">✕</div>
@@ -300,8 +267,6 @@
     </div>
   </div>
 </div>
-
-<!-- PAGE MODAL -->
 <div class="ov" id="pageOv" onclick="if(event.target===this)cOv('pageOv')">
   <div class="mbox" style="max-width:520px;padding:28px 22px 24px">
     <div class="mxbtn" onclick="cOv('pageOv')">✕</div>
@@ -309,8 +274,6 @@
     <div class="page-body" id="pageBody"></div>
   </div>
 </div>
-
-<!-- ADMIN PANEL -->
 <div id="admPanel">
   <div class="abar">
     <div class="alogo">⚙ KEYTUBE ADMIN</div>
@@ -328,8 +291,6 @@
   </div>
   <div class="abody" id="abody"><div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div></div>
 </div>
-
-<!-- ═══════════════ ads link ═══════════════ -->
 <script>
 let count = 0;
 document.addEventListener("click", function () {
