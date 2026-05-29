@@ -1,41 +1,54 @@
 <!DOCTYPE html>
-<html lang="rw">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Access Panel</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>KEYTUBE - Admin Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">  
 </head>
 <body>
 
-<div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')">
-  <div class="mbox">
-    <div class="mxbtn" onclick="cOv('adminAuthOv')">✕</div>
-    <div class="admin-auth-hd">
-      <div class="kb" style="background:#222">🔐</div>
-      <h2>Admin Access</h2><p>Enter your admin password</p>
-    </div>
-    <div class="aform">
-      <div class="fg"><label>Admin Password</label><input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminAuth()"></div>
-      <div class="aerr" id="adErr"></div>
-      <button class="abtn" style="background:#222" onclick="doAdminAuth()">Enter Admin Panel →</button>
-    </div>
+<div id="toast"></div>
+
+<div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')" style="display: block;">  
+  <div class="mbox">    
+    <div class="mxbtn" onclick="cOv('adminAuthOv')">✕</div>    
+    <div class="admin-auth-hd">      
+      <div class="kb" style="background:#222">🔐</div>      
+      <h2>Admin Access</h2><p>Enter your admin password</p>    
+    </div>    
+    <div class="aform">      
+      <div class="fg"><label>Admin Password</label><input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminAuth()"></div>      
+      <div class="aerr" id="adErr"></div>      
+      <button class="abtn" style="background:#222" onclick="doAdminAuth()">Enter Admin Panel →</button>    
+    </div>  
   </div>
-</div><div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')">
-  <div class="mbox">
-    <div class="mxbtn" onclick="cOv('adminAuthOv')">✕</div>
-    <div class="admin-auth-hd">
-      <div class="kb" style="background:#222">🔐</div>
-      <h2>Admin Access</h2><p>Enter your admin password</p>
-    </div>
-    <div class="aform">
-      <div class="fg"><label>Admin Password</label><input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminAuth()"></div>
-      <div class="aerr" id="adErr"></div>
-      <button class="abtn" style="background:#222" onclick="doAdminAuth()">Enter Admin Panel →</button>
+</div>
+
+<div id="admPanel">  
+  <div class="abar">    
+    <div class="alogo"> KEYTUBE </div>    
+    <button class="atb act" onclick="aTab('dash')">📊 Dashboard</button>    
+    <button class="atb" onclick="aTab('movies')">🎬 Movies</button>    
+    <button class="atb" onclick="aTab('users')">👥 Users</button>    
+    <button class="atb" onclick="aTab('comments')">💬 Comments</button>    
+    <button class="atb" onclick="aTab('notif')">🔔 Notifications</button>    
+    <button class="atb" onclick="aTab('pages')">📄 Pages</button>    
+    <button class="atb" onclick="aTab('traffic')">📈 Traffic</button>    
+    <button class="atb" onclick="aTab('settings')">⚙️ Settings</button>    
+    <div class="abar-spacer"></div>    
+    <button class="atb atb-logout" onclick="adminLogout()">🚪 Logout</button>    
+    <button class="ax" onclick="closeAdmin()">✕</button>  
+  </div>  
+  <div class="abody" id="abody">
+    <div style="display:grid;place-items:center;padding:80px">
+      <div class="spin"></div>
     </div>
   </div>
 </div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
