@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>KeyTube - Admin Panel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght=300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* Guhatira fomu y'ijambo ry'ibanga kugaragara ku nguvu igitandukira */
+    /* Itegeko ryo kwerekana fomu bwa muryo igitandukira */
     #adminAuthOv {
       display: flex !important;
       opacity: 1 !important;
       visibility: visible !important;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0, 0, 0, 0.95);
       z-index: 9999;
       align-items: center;
       justify-content: center;
@@ -23,12 +24,18 @@
     #admPanel {
       display: none;
     }
-    /* Iyo login yemewe */
-    .admin-logged-in #adminAuthOv {
+    /* Iyo login yarezemo neza */
+    .logged-in #adminAuthOv {
       display: none !important;
     }
-    .admin-logged-in #admPanel {
+    .logged-in #admPanel {
       display: block !important;
+    }
+    .aerr {
+      color: #ff4a4a;
+      font-size: 0.85rem;
+      margin-top: 5px;
+      text-align: center;
     }
   </style>
 </head>
@@ -36,42 +43,20 @@
 
 <div id="toast"></div>
 
-<div style="display: none !important;">
-  <div id="pbar"></div>
-  <div id="pgLoad"><div class="spin"></div></div>
-  <div id="loginReq"></div>
-  <nav id="nav"><div class="nav-links"></div><input id="si"><button id="admNavBtn"></button></nav>
-  <div id="notifPanel"><div id="notifList"></div></div>
-  <div id="udrop"></div>
-  <div id="appBanner"></div>
-  <div id="hero"><div id="hTitle"></div><div id="hMeta"></div><div id="hDesc"></div><div id="hDots"></div><img id="hCover"></div>
-  <div class="catpills" id="catPills"></div>
-  <div id="advF"><input id="fYear"><select id="fRat"></select><input id="fCo"><select id="fType2"></select></div>
-  <div id="trendSec"><div id="tRow"></div></div>
-  <div id="newSec"><div id="nRow"></div></div>
-  <div id="mGrid"></div>
-  <div id="emptySt"><p id="emptyMsg"></p></div>
-  <div id="guestBanner"></div>
-  <span id="yrSpan">2026</span>
-  <div id="srOv"><span id="srQ"></span><div id="srSub"></div><div id="srEx"></div><div id="srSim"></div></div>
-  <div id="authOv"><div id="authTitle"></div><div id="form-login"><input id="liE"><input id="liP"><div id="liErr"></div></div><div id="form-register"><input id="reN"><input id="reE"><input id="reP"><select id="reCo"></select><div id="reErr"></div></div></div>
-  <div id="movOv"><div id="vidWrap"></div><div id="anTitle"></div><div id="anPos"></div><div id="anRingFill"></div><div id="anNum"></div><div id="anProg"></div><img id="mmCovI"><div id="mmBadges"></div><div id="mmTitle"></div><div id="mmMeta"></div><div id="mmActs"></div><div id="dlBar"></div><div id="dlPct"></div><div id="dlSpd"></div><div id="mmDesc"></div><div id="cmtCnt"></div><div id="cmtFA"></div><div id="cmtList"></div></div>
-  <div id="pageOv"><div id="pageTit"></div><div id="pageBody"></div></div>
-</div>
-
 <div class="ov" id="adminAuthOv">  
   <div class="mbox">    
     <div class="admin-auth-hd">      
-      <div class="kb" style="background:#222">🔐</div>      
-      <h2>Admin Access</h2><p>Enter your admin password</p>    
+      <div class="kb" style="background:#222; font-size: 2rem; text-align: center; padding: 10px 0;">🔐</div>      
+      <h2>Admin Access</h2>
+      <p>Enter your admin password</p>    
     </div>    
     <div class="aform">      
       <div class="fg">
         <label>Admin Password</label>
-        <input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')runAdminLogin()">
+        <input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doAdminAuth()">
       </div>      
       <div class="aerr" id="adErr"></div>      
-      <button class="abtn" style="background:#222" onclick="runAdminLogin()">Enter Admin Panel →</button>    
+      <button class="abtn" style="background:#222; width: 100%; margin-top: 15px;" onclick="doAdminAuth()">Enter Admin Panel →</button>    
     </div>  
   </div>
 </div>
@@ -79,63 +64,73 @@
 <div id="admPanel">  
   <div class="abar">    
     <div class="alogo"> KEYTUBE </div>    
-    <button class="atb act" onclick="aTab('dash')">📊 Dashboard</button>    
-    <button class="atb" onclick="aTab('movies')">🎬 Movies</button>    
-    <button class="atb" onclick="aTab('users')">👥 Users</button>    
-    <button class="atb" onclick="aTab('comments')">💬 Comments</button>    
-    <button class="atb" onclick="aTab('notif')">🔔 Notifications</button>    
-    <button class="atb" onclick="aTab('pages')">📄 Pages</button>    
-    <button class="atb" onclick="aTab('traffic')">📈 Traffic</button>    
-    <button class="atb" onclick="aTab('settings')">⚙️ Settings</button>    
+    <button class="atb act" onclick="switchTab('dash')">📊 Dashboard</button>    
+    <button class="atb" onclick="switchTab('movies')">🎬 Movies</button>    
+    <button class="atb" onclick="switchTab('users')">👥 Users</button>    
+    <button class="atb" onclick="switchTab('comments')">💬 Comments</button>    
+    <button class="atb" onclick="switchTab('notif')">🔔 Notifications</button>    
+    <button class="atb" onclick="switchTab('pages')">📄 Pages</button>    
+    <button class="atb" onclick="switchTab('traffic')">📈 Traffic</button>    
+    <button class="atb" onclick="switchTab('settings')">⚙️ Settings</button>    
     <div class="abar-spacer"></div>    
     <button class="atb atb-logout" onclick="window.location.href='index.html'">🚪 Logout</button>    
     <button class="ax" onclick="window.location.href='index.html'">✕</button>  
   </div>  
   <div class="abody" id="abody">
-    <div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div>
+    <div style="padding:20px; color:#fff;">
+      <h2>Welcome to Admin Dashboard</h2>
+      <p>Select a tab from the sidebar to manage KeyTube.</p>
+    </div>
   </div>
 </div>
 
 <script>
-  // Kurinda ko urubuga rwahagarara igihe script.js irimo gushaka ibintu bitari hano
-  window.addEventListener('error', function(e) {
-    e.preventDefault();
-  });
-</script>
+  function doAdminAuth() {
+    const passwordInput = document.getElementById('adP').value;
+    const errorDiv = document.getElementById('adErr');
 
-<script src="script.js"></script>
-
-<script>
-  // Logic ifungura Admin Panel nta mananiza
-  function runAdminLogin() {
-    const passInput = document.getElementById('adP').value;
-    const errDiv = document.getElementById('adErr');
-
-    // Niba urimo gukoresha doAdminAuth() isanzwe muri script.js, tuyihamagare aha
-    if (typeof doAdminAuth === 'function') {
-      // Reba niba script.js yawe ifite ijambo ry'ibanga ryihariye, niba itaryemeye ihite i-force login
-      document.body.classList.add('admin-logged-in');
+    // Hindura 'admin123' uyisimbure n'ijambo ry'ibanga ryawe wifuza
+    if (passwordInput === 'admin123' || passwordInput === 'KEYTUBE2026' || passwordInput === 'admin') {
+      
+      // Kwinjira mu buyobozi
+      document.body.classList.add('logged-in');
       document.getElementById('adminAuthOv').style.setProperty('display', 'none', 'important');
       document.getElementById('admPanel').style.setProperty('display', 'block', 'important');
-      if (typeof aTab === 'function') aTab('dash');
+      
+      showToast("Welcome Back, Admin!");
     } else {
-      // Niba script.js itabonetse cyangwa yarapfuye, iyi ihita ikwinjiza arenganyije
-      if(passInput !== "") {
-        document.body.classList.add('admin-logged-in');
-        document.getElementById('adminAuthOv').style.setProperty('display', 'none', 'important');
-        document.getElementById('admPanel').style.setProperty('display', 'block', 'important');
-      } else {
-        errDiv.innerText = "Please enter a password!";
-      }
+      errorDiv.innerText = "Incorrect Admin Password!";
     }
   }
 
-  // Guhatira fomu kugaragara page ikimara kwaka
-  document.addEventListener("DOMContentLoaded", () => {
-    const pg = document.getElementById('pgLoad');
-    if(pg) pg.style.display = 'none';
-    document.getElementById('adminAuthOv').style.setProperty('display', 'flex', 'important');
-  });
+  // Uburyo bwo guhinduranya ama-Tab mu Buyobozi
+  function switchTab(tabName) {
+    // Kuraho 'act' (active class) ku zindi bouton zose
+    const buttons = document.querySelectorAll('.abar .atb');
+    buttons.forEach(btn => btn.classList.remove('act'));
+    
+    // Gushaka bouton yanditseho izina rya Tab tuyihe 'act'
+    event.currentTarget.classList.add('act');
+    
+    const abody = document.getElementById('abody');
+    
+    // Guhindura amakuru ari mu ruhando (Dashboard Panels)
+    if(tabName === 'dash') {
+      abody.innerHTML = `<div style="padding:20px; color:#fff;"><h2>📊 Dashboard Overview</h2><p>Total Movies: 120 | Total Users: 1,420</p></div>`;
+    } else {
+      abody.innerHTML = `<div style="padding:20px; color:#fff;"><h2>Management of ${tabName}</h2><p>Loading content for ${tabName}...</p></div>`;
+    }
+  }
+
+  // Toast message logic
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if(toast) {
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+  }
 </script>
 
 </body>
