@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>KEYTUBE - Admin Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">  
@@ -12,7 +11,7 @@
 
 <div id="toast"></div>
 
-<div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')" style="display: block;">  
+<div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')">  
   <div class="mbox">    
     <div class="mxbtn" onclick="cOv('adminAuthOv')">✕</div>    
     <div class="admin-auth-hd">      
@@ -42,11 +41,7 @@
     <button class="atb atb-logout" onclick="adminLogout()">🚪 Logout</button>    
     <button class="ax" onclick="closeAdmin()">✕</button>  
   </div>  
-  <div class="abody" id="abody">
-    <div style="display:grid;place-items:center;padding:80px">
-      <div class="spin"></div>
-    </div>
-  </div>
+  <div class="abody" id="abody"><div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div></div>
 </div>
 
 <script src="script.js"></script>
