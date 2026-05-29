@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght=300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -45,5 +45,19 @@
 </div>
 
 <script src="script.js"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // Niba muri script.js harimo function openAdmin() cyangwa ikwerekana ama-overlay
+    if (typeof openAdmin === 'function') {
+      // Niba isanzwe ihari, tuyikoresha bwa muryo
+      document.getElementById('adminAuthOv').style.display = 'flex';
+    } else {
+      // Niba bitagenze bityo, ihatire kugaragara ku nguvu
+      document.getElementById('adminAuthOv').style.display = 'flex';
+    }
+  });
+</script>
+
 </body>
 </html>
