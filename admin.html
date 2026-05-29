@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* Itegeko ryo guhatira fomu kugaragara bwa muryo */
+    /* Guhatira fomu kugaragara bwa muryo */
     #adminAuthOv {
       display: flex !important;
       opacity: 1 !important;
@@ -36,6 +36,7 @@
       font-size: 0.85rem;
       margin-top: 5px;
       text-align: center;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -50,14 +51,16 @@
       <h2>Admin Access</h2>
       <p>Enter your admin password</p>    
     </div>    
-    <div class="aform">      
+    
+    <form class="aform" onsubmit="executeAdminLogin(event)">      
       <div class="fg">
         <label>Admin Password</label>
-        <input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter') executeAdminLogin()">
+        <input class="fi" id="adP" type="password" placeholder="••••••••" autocomplete="current-password" required>
       </div>      
       <div class="aerr" id="adErr"></div>      
-      <button class="abtn" style="background:#222; width: 100%; margin-top: 15px;" onclick="executeAdminLogin()">Enter Admin Panel →</button>    
-    </div>  
+      <button type="submit" class="abtn" style="background:#222; width: 100%; margin-top: 15px; cursor: pointer;">Enter Admin Panel →</button>    
+    </form>
+    
   </div>
 </div>
 
@@ -85,28 +88,31 @@
 </div>
 
 <script>
-  function executeAdminLogin() {
-    const passwordInput = document.getElementById('adP').value;
+  function executeAdminLogin(e) {
+    // Ibi bihagarika browser gupfa cyangwa gufreshing page (No Reload)
+    if(e) e.preventDefault(); 
+    
+    const passwordInput = document.getElementById('adP').value.trim();
     const errorDiv = document.getElementById('adErr');
 
-    // Hano harimo amagambo y'ibanga ushobora kwandikamo (Urugero: 'admin' cyangwa 'KEYTUBE2026')
+    // Amagambo y'ibanga yose ushobora gukoresha hano:
     if (passwordInput === 'admin' || passwordInput === 'KEYTUBE2026' || passwordInput === 'admin123') {
       
-      // Ibi bihita bikuraho fomu, bikazana Dashboard bwa muryo
+      // Ibi bihita bikuraho overlay, bikazana Dashboard ako kanya
       document.body.classList.add('logged-in');
       document.getElementById('adminAuthOv').style.setProperty('display', 'none', 'important');
       document.getElementById('admPanel').style.setProperty('display', 'block', 'important');
       
-      // Niba script.js isanzwe uhitamo kuyikoresha, reba niba aTab ihari
+      // Niba script.js ihari ikaba ifite aTab, tuyihamagare
       if (typeof aTab === 'function') {
-        try { aTab('dash'); } catch(e) { console.log(e); }
+        try { aTab('dash'); } catch(err) { console.log(err); }
       }
     } else {
       errorDiv.innerText = "Incorrect Admin Password!";
     }
   }
 
-  // To switch sections inside the panel without script.js crashing
+  // Guhinduranya ama-Tab
   function switchAdminTab(tabName) {
     const buttons = document.querySelectorAll('.abar .atb');
     buttons.forEach(btn => btn.classList.remove('act'));
@@ -117,10 +123,9 @@
       try { 
         aTab(tabName); 
         return;
-      } catch(e) {}
+      } catch(err) {}
     }
     
-    // Fallback niba script.js itari gukora
     if(tabName === 'dash') {
       abody.innerHTML = `<div style="padding:20px; color:#fff;"><h2>📊 Dashboard Overview</h2><p>Total Movies: 120 | Total Users: 1,420</p></div>`;
     } else {
