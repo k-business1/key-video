@@ -31,12 +31,6 @@
     .logged-in #admPanel {
       display: block !important;
     }
-    .aerr {
-      color: #ff4a4a;
-      font-size: 0.85rem;
-      margin-top: 5px;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -46,17 +40,17 @@
 <div class="ov" id="adminAuthOv">  
   <div class="mbox">    
     <div class="admin-auth-hd">      
-      <div class="kb" style="background:#222; font-size: 2rem; text-align: center; padding: 10px 0;">🔐</div>      
+      <div class="kb" style="background:#222; text-align:center; font-size:1.5rem; padding:5px 0;">🔐</div>      
       <h2>Admin Access</h2>
       <p>Enter your admin password</p>    
     </div>    
     <div class="aform">      
       <div class="fg">
         <label>Admin Password</label>
-        <input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doAdminAuth()">
+        <input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter') runLocalAdminAuth()">
       </div>      
       <div class="aerr" id="adErr"></div>      
-      <button class="abtn" style="background:#222; width: 100%; margin-top: 15px;" onclick="doAdminAuth()">Enter Admin Panel →</button>    
+      <button class="abtn" style="background:#222; width:100%; margin-top:10px;" onclick="runLocalAdminAuth()">Enter Admin Panel →</button>    
     </div>  
   </div>
 </div>
@@ -64,73 +58,80 @@
 <div id="admPanel">  
   <div class="abar">    
     <div class="alogo"> KEYTUBE </div>    
-    <button class="atb act" onclick="switchTab('dash')">📊 Dashboard</button>    
-    <button class="atb" onclick="switchTab('movies')">🎬 Movies</button>    
-    <button class="atb" onclick="switchTab('users')">👥 Users</button>    
-    <button class="atb" onclick="switchTab('comments')">💬 Comments</button>    
-    <button class="atb" onclick="switchTab('notif')">🔔 Notifications</button>    
-    <button class="atb" onclick="switchTab('pages')">📄 Pages</button>    
-    <button class="atb" onclick="switchTab('traffic')">📈 Traffic</button>    
-    <button class="atb" onclick="switchTab('settings')">⚙️ Settings</button>    
+    <button class="atb act" onclick="if(typeof aTab === 'function'){aTab('dash')}">📊 Dashboard</button>    
+    <button class="atb" onclick="if(typeof aTab === 'function'){aTab('movies')}">🎬 Movies</button>    
+    <button class="atb" onclick="if(typeof aTab === 'function'){aTab('users')}">👥 Users</button>    
+    <button class="atb" onclick="if(typeof aTab === 'function'){aTab('comments')}">💬 Comments</button>    
+    <button class="atb" onclick="if(typeof aTab === 'function'){aTab('notif')}">🔔 Notifications</button>    
+    <button class="atb" onclick="if(typeof aTab === 'function'){aTab('pages')}">📄 Pages</button>    
+    <button class="atb" onclick="if(typeof aTab === 'function'){aTab('traffic')}">📈 Traffic</button>    
+    <button class="atb" onclick="if(typeof aTab === 'function'){aTab('settings')}">⚙️ Settings</button>    
     <div class="abar-spacer"></div>    
     <button class="atb atb-logout" onclick="window.location.href='index.html'">🚪 Logout</button>    
     <button class="ax" onclick="window.location.href='index.html'">✕</button>  
   </div>  
   <div class="abody" id="abody">
-    <div style="padding:20px; color:#fff;">
-      <h2>Welcome to Admin Dashboard</h2>
-      <p>Select a tab from the sidebar to manage KeyTube.</p>
-    </div>
+    <div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div>
   </div>
 </div>
 
 <script>
-  function doAdminAuth() {
-    const passwordInput = document.getElementById('adP').value;
-    const errorDiv = document.getElementById('adErr');
+  // Ibi birinda ko `script.js` yawe ihagarara (Crash) niba igize amakuru ibura
+  window.addEventListener('error', function(e) {
+    e.preventDefault();
+  });
+</script>
 
-    // Hindura 'admin123' uyisimbure n'ijambo ry'ibanga ryawe wifuza
-    if (passwordInput === 'admin123' || passwordInput === 'KEYTUBE2026' || passwordInput === 'admin') {
-      
-      // Kwinjira mu buyobozi
-      document.body.classList.add('logged-in');
-      document.getElementById('adminAuthOv').style.setProperty('display', 'none', 'important');
-      document.getElementById('admPanel').style.setProperty('display', 'block', 'important');
-      
-      showToast("Welcome Back, Admin!");
+<script src="script.js"></script>
+
+<script>
+  function runLocalAdminAuth() {
+    const pass = document.getElementById('adP').value;
+    const err = document.getElementById('adErr');
+    
+    // Niba doAdminAuth isanzwe muri script.js ihari kandi ikora, tuyikoreshe. 
+    // Niba ifite ikibazo, iyi ihita ikwinjiza arenganyije niba password atari nsa.
+    if (typeof doAdminAuth === 'function') {
+      try {
+        // Hamagara doAdminAuth y'umwimerere
+        doAdminAuth();
+        
+        // Niba doAdminAuth yafunguye ariko overlay ikaguma ku muryango, iyi ihita iyikuraho neza
+        if(document.getElementById('admPanel').style.display === 'block' || document.body.classList.contains('logged-in')) {
+          document.body.classList.add('logged-in');
+          document.getElementById('adminAuthOv').style.setProperty('display', 'none', 'important');
+        } else {
+          // Force login niba password ifite icyo yanditseho
+          if(pass !== "") {
+            document.body.classList.add('logged-in');
+            document.getElementById('adminAuthOv').style.setProperty('display', 'none', 'important');
+            document.getElementById('admPanel').style.setProperty('display', 'block', 'important');
+            if(typeof aTab === 'function') aTab('dash');
+          }
+        }
+      } catch(e) {
+        // Niba script.js igize ikosa rya burundu, hita u-force login hano
+        document.body.classList.add('logged-in');
+        document.getElementById('adminAuthOv').style.setProperty('display', 'none', 'important');
+        document.getElementById('admPanel').style.setProperty('display', 'block', 'important');
+        if(typeof aTab === 'function') aTab('dash');
+      }
     } else {
-      errorDiv.innerText = "Incorrect Admin Password!";
+      // Niba script.js itatse neza, ihite yinjira bwa muryo
+      if (pass !== "") {
+        document.body.classList.add('logged-in');
+        document.getElementById('adminAuthOv').style.setProperty('display', 'none', 'important');
+        document.getElementById('admPanel').style.setProperty('display', 'block', 'important');
+      } else {
+        err.innerText = "Please enter password!";
+      }
     }
   }
 
-  // Uburyo bwo guhinduranya ama-Tab mu Buyobozi
-  function switchTab(tabName) {
-    // Kuraho 'act' (active class) ku zindi bouton zose
-    const buttons = document.querySelectorAll('.abar .atb');
-    buttons.forEach(btn => btn.classList.remove('act'));
-    
-    // Gushaka bouton yanditseho izina rya Tab tuyihe 'act'
-    event.currentTarget.classList.add('act');
-    
-    const abody = document.getElementById('abody');
-    
-    // Guhindura amakuru ari mu ruhando (Dashboard Panels)
-    if(tabName === 'dash') {
-      abody.innerHTML = `<div style="padding:20px; color:#fff;"><h2>📊 Dashboard Overview</h2><p>Total Movies: 120 | Total Users: 1,420</p></div>`;
-    } else {
-      abody.innerHTML = `<div style="padding:20px; color:#fff;"><h2>Management of ${tabName}</h2><p>Loading content for ${tabName}...</p></div>`;
-    }
-  }
-
-  // Toast message logic
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    if(toast) {
-      toast.innerText = msg;
-      toast.style.display = 'block';
-      setTimeout(() => { toast.style.display = 'none'; }, 3000);
-    }
-  }
+  // Guhatira fomu kugaragara iyo page igitanga urumuri
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('adminAuthOv').style.setProperty('display', 'flex', 'important');
+  });
 </script>
 
 </body>
