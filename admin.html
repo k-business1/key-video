@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>KeyTube - Admin Panel</title>
+  <title>KEYTUBE - Admin Access</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght=300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   
   <style>
     :root {
@@ -26,13 +27,13 @@
     }
 
     body {
-      background-color: var(--bg-light);
-      color: var(--text-dark);
+      background-color: var(--bg-light) !important;
+      color: var(--text-dark) !important;
       overflow-x: hidden;
     }
 
     /* WHITE & RED LOGIN OVERLAY */
-    #localAdminAuthOv {
+    #adminAuthOv {
       position: fixed !important;
       top: 0 !important; left: 0 !important; 
       width: 100vw !important; height: 100vh !important;
@@ -43,7 +44,7 @@
       justify-content: center !important;
     }
 
-    .local-mbox {
+    .mbox {
       background: var(--bg-white) !important;
       border: 2px solid var(--red-primary) !important;
       padding: 35px 30px !important;
@@ -53,12 +54,12 @@
       box-shadow: 0 10px 40px rgba(229, 9, 20, 0.1) !important;
     }
 
-    .local-hd {
+    .admin-auth-hd {
       text-align: center !important;
       margin-bottom: 25px !important;
     }
 
-    .local-hd h2 {
+    .admin-auth-hd h2 {
       font-family: 'Bebas Neue', sans-serif !important;
       font-size: 2.5rem !important;
       letter-spacing: 1px !important;
@@ -66,16 +67,16 @@
       margin: 10px 0 5px 0 !important;
     }
 
-    .local-hd p {
+    .admin-auth-hd p {
       color: var(--text-muted) !important;
       font-size: 0.9rem !important;
     }
 
-    .local-input-group {
+    .fg {
       margin-bottom: 20px !important;
     }
 
-    .local-input-group label {
+    .fg label {
       display: block !important;
       color: var(--text-dark) !important;
       font-weight: 500;
@@ -83,7 +84,7 @@
       font-size: 0.85rem !important;
     }
 
-    .local-fi {
+    .fi {
       width: 100% !important;
       padding: 12px 15px !important;
       background: var(--bg-light) !important;
@@ -94,13 +95,13 @@
       transition: border-color 0.2s;
     }
 
-    .local-fi:focus {
+    .fi:focus {
       border-color: var(--red-primary) !important;
       outline: none !important;
       background: var(--bg-white) !important;
     }
 
-    .local-btn {
+    .abtn {
       width: 100% !important;
       padding: 14px !important;
       background: var(--red-primary) !important;
@@ -115,11 +116,11 @@
       transition: background 0.2s !important;
     }
 
-    .local-btn:hover {
+    .abtn:hover {
       background: var(--red-hover) !important;
     }
 
-    .local-err {
+    .aerr {
       color: var(--red-primary) !important;
       font-size: 0.85rem !important;
       margin-top: 10px !important;
@@ -128,8 +129,8 @@
       min-height: 18px !important;
     }
 
-    /* ADMIN PANEL SCREEN (WHITE & RED) */
-    #localAdmPanel {
+    /* WHITE & RED ADMIN PANEL SIDEBAR & BODY */
+    #admPanel {
       display: none;
       position: fixed !important;
       top: 0 !important; left: 0 !important;
@@ -142,214 +143,182 @@
       position: fixed;
       top: 0; left: 0;
       width: 240px; height: 100vh;
-      background: var(--bg-white);
-      border-right: 1px solid var(--border-color);
+      background: var(--bg-white) !important;
+      border-right: 1px solid var(--border-color) !important;
       display: flex;
       flex-direction: column;
       padding: 20px 0;
     }
 
     .alogo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.2rem;
-      color: var(--red-primary);
-      letter-spacing: 2px;
-      padding: 0 25px 25px 25px;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 15px;
+      font-family: 'Bebas Neue', sans-serif !important;
+      font-size: 2.2rem !important;
+      color: var(--red-primary) !important;
+      letter-spacing: 2px !important;
+      padding: 0 25px 25px 25px !important;
+      border-bottom: 1px solid var(--border-color) !important;
+      margin-bottom: 15px !important;
     }
 
     .atb {
-      background: none;
-      border: none;
-      padding: 12px 25px;
-      text-align: left;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--text-dark);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.2s;
+      background: none !important;
+      border: none !important;
+      padding: 12px 25px !important;
+      text-align: left !important;
+      font-size: 0.95rem !important;
+      font-weight: 500 !important;
+      color: var(--text-dark) !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      transition: all 0.2s !important;
     }
 
     .atb:hover {
-      background: var(--bg-light);
-      color: var(--red-primary);
+      background: var(--bg-light) !important;
+      color: var(--red-primary) !important;
     }
 
     .atb.act {
-      background: rgba(229, 9, 24, 0.08);
-      color: var(--red-primary);
-      border-left: 4px solid var(--red-primary);
-      padding-left: 21px;
+      background: rgba(229, 9, 24, 0.08) !important;
+      color: var(--red-primary) !important;
+      border-left: 4px solid var(--red-primary) !important;
+      padding-left: 21px !important;
     }
 
     .abar-spacer {
-      flex-grow: 1;
+      flex-grow: 1 !important;
     }
 
     .atb-logout {
-      color: #555;
-      border-top: 1px solid var(--border-color);
-      padding-top: 15px;
+      color: #555 !important;
+      border-top: 1px solid var(--border-color) !important;
+      padding-top: 15px !important;
     }
+    
     .atb-logout:hover {
-      color: var(--red-primary);
-      background: rgba(229, 9, 24, 0.05);
+      color: var(--red-primary) !important;
+      background: rgba(229, 9, 24, 0.05) !important;
+    }
+
+    .ax {
+      position: absolute !important;
+      top: 20px !important; right: 20px !important;
+      background: none !important;
+      border: none !important;
+      font-size: 1.2rem !important;
+      color: var(--text-muted) !important;
+      cursor: pointer !important;
     }
 
     .abody {
-      margin-left: 240px;
-      padding: 40px;
-      height: 100vh;
-      overflow-y: auto;
+      margin-left: 240px !important;
+      padding: 40px !important;
+      height: 100vh !important;
+      overflow-y: auto !important;
+      background: var(--bg-light) !important;
+      color: var(--text-dark) !important;
     }
 
-    .card-row {
-      display: flex;
-      gap: 20px;
-      margin-top: 25px;
+    /* FORCE LIGHT THEME FOR PANEL CONTENT */
+    .abody h2, .abody h3, .abody th, .abody td, .abody p {
+      color: var(--text-dark) !important;
     }
 
-    .stat-card {
-      background: var(--bg-white);
-      padding: 25px;
-      border-radius: 8px;
-      flex: 1;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-    }
-
-    .stat-card h3 {
-      color: var(--red-primary);
-      font-size: 2.2rem;
-      font-family: 'Bebas Neue', sans-serif;
-      letter-spacing: 1px;
-      margin-bottom: 5px;
-    }
-
-    .stat-card p {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    /* LOGGED IN TRIGGER */
-    .admin-ok #localAdminAuthOv {
+    /* IYO LOGIN YAKOZE NEZA CYANGWA SCRIPT.JS IFUNGUYE PANEL */
+    .admin-ok #adminAuthOv {
       display: none !important;
     }
-    .admin-ok #localAdmPanel {
+    .admin-ok #admPanel {
       display: block !important;
     }
   </style>
 </head>
 <body>
 
-<div id="localAdminAuthOv">  
-  <div class="local-mbox">    
-    <div class="local-hd">      
-      <div style="font-size: 2.5rem; color: var(--red-primary);">🚨</div>      
+<div id="toast"></div>
+
+<div style="display:none !important;">
+  <div id="pbar"></div><div id="pgLoad"></div><div id="loginReq"></div>
+  <nav id="nav"><div class="nav-links"></div><input id="si"><button id="admNavBtn"></button></nav>
+  <div id="hero"><div id="hTitle"></div><div id="hMeta"></div><div id="hDesc"></div><div id="hDots"></div><img id="hCover"></div>
+  <div class="catpills" id="catPills"></div><div id="trendSec"><div id="tRow"></div></div><div id="newSec"><div id="nRow"></div></div>
+  <div id="mGrid"></div><div id="emptySt"><p id="emptyMsg"></p></div><div id="guestBanner"></div><span id="yrSpan">2026</span>
+</div>
+
+<div class="ov" id="adminAuthOv">  
+  <div class="mbox">    
+    <div class="admin-auth-hd">      
+      <div style="font-size: 2.5rem; color: var(--red-primary);">🔐</div>      
       <h2>Admin Access</h2>
-      <p>Enter your admin credentials</p>    
+      <p>Verifying password via Google Apps Script</p>    
     </div>    
     
-    <form onsubmit="handleLocalLogin(event)">      
-      <div class="local-input-group">
+    <form class="aform" onsubmit="forwardToScriptJs(event)">      
+      <div class="fg">
         <label>Admin Password</label>
-        <input class="local-fi" id="localPassInput" type="password" placeholder="••••••••" required autocomplete="current-password">
+        <input class="fi" id="adP" type="password" placeholder="••••••••" required autocomplete="current-password">
       </div>      
-      <div class="local-err" id="localErrorDiv"></div>      
-      <button type="submit" class="local-btn">Sign In →</button>    
+      <div class="aerr" id="adErr"></div>      
+      <button type="submit" class="abtn">Enter Admin Panel →</button>    
     </form>
   </div>
 </div>
 
-<div id="localAdmPanel">  
+<div id="admPanel">  
   <div class="abar">    
     <div class="alogo">KEYTUBE</div>    
-    <button class="atb act" onclick="switchTabContent('dash')">📊 Dashboard</button>    
-    <button class="atb" onclick="switchTabContent('movies')">🎬 Movies</button>    
-    <button class="atb" onclick="switchTabContent('users')">👥 Users</button>    
-    <button class="atb" onclick="switchTabContent('comments')">💬 Comments</button>    
-    <button class="atb" onclick="switchTabContent('notif')">🔔 Notifications</button>    
-    <button class="atb" onclick="switchTabContent('pages')">📄 Pages</button>    
-    <button class="atb" onclick="switchTabContent('traffic')">📈 Traffic</button>    
-    <button class="atb" onclick="switchTabContent('settings')">⚙️ Settings</button>    
+    <button class="atb act" onclick="aTab('dash')">📊 Dashboard</button>    
+    <button class="atb" onclick="aTab('movies')">🎬 Movies</button>    
+    <button class="atb" onclick="aTab('users')">👥 Users</button>    
+    <button class="atb" onclick="aTab('comments')">💬 Comments</button>    
+    <button class="atb" onclick="aTab('notif')">🔔 Notifications</button>    
+    <button class="atb" onclick="aTab('pages')">📄 Pages</button>    
+    <button class="atb" onclick="aTab('traffic')">📈 Traffic</button>    
+    <button class="atb" onclick="aTab('settings')">⚙️ Settings</button>    
     <div class="abar-spacer"></div>    
-    <button class="atb atb-logout" onclick="window.location.href='index.html'">🚪 Return Home</button>  
+    <button class="atb atb-logout" onclick="adminLogout()">🚪 Logout</button>    
+    <button class="ax" onclick="closeAdmin()">✕</button>  
   </div>  
   
-  <div class="abody" id="localPanelBody">
-    <div style="color: var(--text-dark);">
-      <h2 style="font-size: 1.8rem; font-weight: 700;">📊 Dashboard Overview</h2>
-      <p style="color: var(--text-muted); margin-top: 5px;">Welcome back, Administrator! Here is your live platform status.</p>
-      
-      <div class="card-row">
-        <div class="stat-card">
-          <h3>120</h3>
-          <p>TOTAL ITEMS Listed</p>
-        </div>
-        <div class="stat-card">
-          <h3>1,420</h3>
-          <p>TOTAL REGISTERED USERS</p>
-        </div>
-        <div class="stat-card">
-          <h3>42</h3>
-          <p>PENDING NOTIFICATIONS</p>
-        </div>
-      </div>
-    </div>
+  <div class="abody" id="abody">
+    <div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div>
   </div>
 </div>
 
 <script>
-  function handleLocalLogin(e) {
-    e.preventDefault();
-    
-    // Trim ihita ikuraho ama spaces y'ikosa inyuma cyangwa imbere ya password
-    const inputPass = document.getElementById('localPassInput').value.trim();
-    const errorDiv = document.getElementById('localErrorDiv');
+  window.addEventListener('error', function(e) {
+    e.preventDefault(); 
+  });
+</script>
 
-    // Kwemera password zose zishoboka mu buryo bwizewe (Urugero: admin, admin123, KEYTUBE2026)
-    if (inputPass.toLowerCase() === 'admin' || inputPass === 'KEYTUBE2026' || inputPass === 'admin123') {
+<script src="script.js"></script>
+
+<script>
+  function forwardToScriptJs(e) {
+    if(e) e.preventDefault();
+    const errorDiv = document.getElementById('adErr');
+    
+    // Niba doAdminAuth() yo muli script.js ihari, tuyikoreshe ngo yohereze password kuri Apps Script
+    if (typeof doAdminAuth === 'function') {
+      try {
+        doAdminAuth(); 
+      } catch(err) {
+        errorDiv.innerText = "Connection error with Apps Script.";
+      }
+    } else {
+      errorDiv.innerText = "script.js not loaded correctly.";
+    }
+  }
+
+  // Gukurikirana niba script.js yakiriye password neza ikerekanako panel ifunguye
+  setInterval(() => {
+    const panel = document.getElementById('admPanel');
+    if(panel && (panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block')) {
       document.body.classList.add('admin-ok');
-      errorDiv.innerText = "";
-    } else {
-      errorDiv.innerText = "Wrong password! Try 'admin' or 'KEYTUBE2026'";
     }
-  }
-
-  function switchTabContent(tabName) {
-    const buttons = document.querySelectorAll('.abar .atb');
-    buttons.forEach(btn => btn.classList.remove('act'));
-    event.currentTarget.classList.add('act');
-    
-    const panelBody = document.getElementById('localPanelBody');
-    
-    if (tabName === 'dash') {
-      panelBody.innerHTML = `
-        <div style="color: var(--text-dark);">
-          <h2 style="font-size: 1.8rem; font-weight: 700;">📊 Dashboard Overview</h2>
-          <p style="color: var(--text-muted); margin-top: 5px;">Welcome back, Administrator! Here is your live platform status.</p>
-          <div class="card-row">
-            <div class="stat-card"><h3>120</h3><p>TOTAL ITEMS LISTED</p></div>
-            <div class="stat-card"><h3>1,420</h3><p>TOTAL REGISTERED USERS</p></div>
-            <div class="stat-card"><h3>42</h3><p>PENDING NOTIFICATIONS</p></div>
-          </div>
-        </div>`;
-    } else {
-      panelBody.innerHTML = `
-        <div style="color: var(--text-dark);">
-          <h2 style="font-size: 1.8rem; font-weight: 700; text-transform: capitalize;">Control ${tabName}</h2>
-          <p style="color: var(--text-muted); margin-top: 5px;">Records management center for ${tabName}.</p>
-          <div style="margin-top: 30px; background: var(--bg-white); padding: 40px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; color: var(--text-muted);">
-            [ Data connection active. No data records found for ${tabName} ]
-          </div>
-        </div>`;
-    }
-  }
+  }, 3000);
 </script>
 
 </body>
