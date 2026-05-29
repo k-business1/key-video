@@ -6,10 +6,51 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght=300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* Itegeko ryo kwerekana fomu bwa muryo */
+    #adminAuthOv {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    #admPanel {
+      display: none; /* Izahinguka gusa niba login itunganye */
+    }
+  </style>
 </head>
 <body>
 
 <div id="toast"></div>
+
+<div style="display: none !important;">
+  <div id="pbar"></div>
+  <div id="pgLoad"><div class="spin"></div></div>
+  <div id="loginReq"></div>
+  <nav id="nav"><div class="nav-links"></div><input id="si"><button id="admNavBtn"></button></nav>
+  <div id="notifPanel"><div id="notifList"></div></div>
+  <div id="udrop"></div>
+  <div id="appBanner"></div>
+  <div id="hero"><div id="hTitle"></div><div id="hMeta"></div><div id="hDesc"></div><div id="hDots"></div><img id="hCover"></div>
+  <div class="catpills" id="catPills"></div>
+  <div id="advF"><input id="fYear"><select id="fRat"></select><input id="fCo"><select id="fType2"></select></div>
+  <div id="trendSec"><div id="tRow"></div></div>
+  <div id="newSec"><div id="nRow"></div></div>
+  <div id="mGrid"></div>
+  <div id="emptySt"><p id="emptyMsg"></p></div>
+  <div id="guestBanner"></div>
+  <span id="yrSpan">2026</span>
+  <div id="srOv"><span id="srQ"></span><div id="srSub"></div><div id="srEx"></div><div id="srSim"></div></div>
+  <div id="authOv"><div id="authTitle"></div><div id="form-login"><input id="liE"><input id="liP"><div id="liErr"></div></div><div id="form-register"><input id="reN"><input id="reE"><input id="reP"><select id="reCo"></select><div id="reErr"></div></div></div>
+  <div id="movOv"><div id="vidWrap"></div><div id="anTitle"></div><div id="anPos"></div><div id="anRingFill"></div><div id="anNum"></div><div id="anProg"></div><img id="mmCovI"><div id="mmBadges"></div><div id="mmTitle"></div><div id="mmMeta"></div><div id="mmActs"></div><div id="dlBar"></div><div id="dlPct"></div><div id="dlSpd"></div><div id="mmDesc"></div><div id="cmtCnt"></div><div id="cmtFA"></div><div id="cmtList"></div></div>
+  <div id="pageOv"><div id="pageTit"></div><div id="pageBody"></div></div>
+</div>
 
 <div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')">  
   <div class="mbox">    
@@ -44,19 +85,20 @@
   <div class="abody" id="abody"><div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div></div>
 </div>
 
+<script>
+  // Ibi bintu bihita biremwa mu mutwe wa browser mbanza kugira ngo script.js itagwa mu makosa
+  window.addEventListener('error', function(e) {
+    if (e.message.includes("Cannot read properties of null")) {
+      e.preventDefault(); // Bihagarika crasg y'urubuga
+    }
+  });
+</script>
+
 <script src="script.js"></script>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    // Niba muri script.js harimo function openAdmin() cyangwa ikwerekana ama-overlay
-    if (typeof openAdmin === 'function') {
-      // Niba isanzwe ihari, tuyikoresha bwa muryo
-      document.getElementById('adminAuthOv').style.display = 'flex';
-    } else {
-      // Niba bitagenze bityo, ihatire kugaragara ku nguvu
-      document.getElementById('adminAuthOv').style.display = 'flex';
-    }
-  });
+  // Ihatire kwerekana fomu nyuma yo gushyiraho script zose
+  document.getElementById('adminAuthOv').style.setProperty('display', 'flex', 'important');
 </script>
 
 </body>
