@@ -593,7 +593,7 @@ function aSaveSettings(){
   });
 }
 function aErr(msg){document.getElementById('abody').innerHTML='<p style="color:var(--red);padding:18px">'+h(msg)+'</p>';}
-let count = 0;
+ let count = 0;
 document.addEventListener("click", function () {
   count++;
   if (count === 5) { window.open("https://omg10.com/4/11024124", "_blank", "noopener,noreferrer"); }
