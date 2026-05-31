@@ -758,65 +758,114 @@ function destroyAllPlayers(){
    No cover:   autoplay=1, no poster shown
    End detect: onStateChange → goNext()
 ════════════════════════════════════════ */
-function createPlayer(idx, autoplay){
-  var m=S.list[idx];
-  if(!m)return;
-  var ytId=extractYT(m.videoURL);
-  if(!ytId)return;
+function createPlayer(idx, autoplay) {
 
-  var doCreate=function(){
-    var container=document.getElementById('svid-'+idx);
-    if(!container||S.players[idx])return;
+  var movie = S.list[idx];
+  if (!movie) return;
 
-    S.players[idx]=new YT.Player(container,{
-      width:'100%',
-      height:'100%',
-      videoId:ytId,
-      playerVars:{
-        autoplay   : autoplay?1:0,
-        controls   : 0,          /* ★ NO controls shown */
-        rel        : 0,
-        modestbranding:1,
-        playsinline:1,
-        iv_load_policy:3,        /* no annotations */
-        fs         : 0,          /* no fullscreen button */
-        disablekb  : 1,          /* no keyboard shortcuts on iframe */
-        cc_load_policy:0,
-        showinfo   : 0,
-        loop       : 0,
-        mute       : S.isMuted?1:0,
-        origin     : window.location.origin||'*'
+  var ytId = extractYT(movie.videoURL);
+  if (!ytId) {
+    console.error("Invalid YouTube URL:", movie.videoURL);
+    return;
+  }
+
+  function doCreate() {
+
+    var container = document.getElementById("svid-" + idx);
+
+    if (!container) {
+      console.error("Container not found:", "svid-" + idx);
+      return;
+    }
+
+    if (S.players[idx]) return;
+
+    S.players[idx] = new YT.Player(container, {
+
+      width: "100%",
+      height: "100%",
+      videoId: ytId,
+
+      playerVars: {
+        autoplay: autoplay ? 1 : 0,
+        controls: 0,
+        rel: 0,
+        modestbranding: 1,
+        playsinline: 1,
+        fs: 0,
+        disablekb: 1,
+        iv_load_policy: 3,
+        cc_load_policy: 0,
+        mute: 1
       },
-      events:{
-        onReady: function(e){
-          if(idx===S.cur){
-            e.target.playVideo();
-            /* Try to unmute (may be blocked on mobile) */
-            if(!S.isMuted){
-              try{e.target.unMute();}catch(err){}
+
+      events: {
+
+        onReady: function (event) {
+
+          event.target.mute();
+
+          if (autoplay && idx === S.cur) {
+            event.target.playVideo();
+          }
+
+          if (!S.isMuted) {
+            setTimeout(function () {
+              try {
+                event.target.unMute();
+              } catch (e) {}
+            }, 1000);
+          }
+        },
+
+        onStateChange: function (event) {
+
+          if (event.data === YT.PlayerState.ENDED) {
+            if (idx === S.cur) {
+              goNext();
             }
           }
-        },
-        onStateChange: function(e){
-          if(e.data===YT.PlayerState.ENDED){
-            /* ★ Auto-next when comedy ends (TikTok behaviour) */
-            if(idx===S.cur) goNext();
-          }
-          if(e.data===YT.PlayerState.PLAYING){
-            /* Hide unmute button if sound worked */
-            document.getElementById('unmuteBtn').style.display='none';
+
+          if (event.data === YT.PlayerState.PLAYING) {
+            var btn = document.getElementById("unmuteBtn");
+            if (btn) btn.style.display = "none";
           }
         },
-        onError: function(){
-          /* If video errors, skip to next */
-          if(idx===S.cur) setTimeout(goNext,800);
+
+        onError: function (event) {
+          console.error("YouTube Error:", event.data);
+
+          if (idx === S.cur) {
+            setTimeout(function () {
+              goNext();
+            }, 1000);
+          }
         }
       }
     });
-  };
+  }
 
-  if(YT_READY) doCreate();
-  else YT_Q.push(doCreate);
+  if (YT_READY) {
+    doCreate();
+  } else {
+    YT_Q.push(doCreate);
+  }
+}
+
+function goNext() {
+  if (S.cur < S.list.length - 1) {
+    activateVideo(S.cur + 1);
+  } else {
+    activateVideo(0);
+  }
+}
+
+function goPrev() {
+  if (S.cur > 0) {
+    activateVideo(S.cur - 1);
+  } else {
+    activateVideo(S.list.length - 1);
+  }
 }
 
 /* ════════════════════════════════════════
