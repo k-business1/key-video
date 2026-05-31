@@ -511,38 +511,65 @@ function updateUserUI(){
 /* ════════════════════════════════════════
    FETCH MOVIES
 ════════════════════════════════════════ */
-function fetchMovies(){
+function fetchMovies() {
   pStart();
-  fetch(API,{
-    method:'POST',
-    headers:{'Content-Type':'text/plain'},
-    body:JSON.stringify({action:'getMovies',isLoggedIn:!!S.user,category:'all',type:'all'}),
-    redirect:'follow'
+
+  fetch(API, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      action: 'getMovies',
+      isLoggedIn: !!S.user,
+      category: 'all',
+      type: 'all'
+    })
   })
-  .then(function(r){return r.json();})
-  .then(function(res){
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('HTTP Error: ' + response.status);
+    }
+    return response.json();
+  })
+  .then(res => {
     pDone();
-    document.getElementById('splash').style.display='none';
-    if(res.ok){
-      /* filter only movies that have a YouTube video URL */
-      var all=(res.movies||[]).filter(function(m){return m.videoURL&&extractYT(m.videoURL);});
-      /* sort: comedy first, then others */
-      var comedy=all.filter(function(m){return m.category==='comedy';});
-      var others=all.filter(function(m){return m.category!=='comedy';});
-      S.movies = comedy.concat(others);
-      applyFilter(S.cat);
+
+    const splash = document.getElementById('splash');
+    if (splash) splash.style.display = 'none';
+
+    if (res.ok && Array.isArray(res.movies)) {
+
+      const all = res.movies.filter(movie =>
+        movie.videoURL && extractYT(movie.videoURL)
+      );
+
+      const comedy = all.filter(movie =>
+        (movie.category || '').toLowerCase() === 'comedy'
+      );
+
+      const others = all.filter(movie =>
+        (movie.category || '').toLowerCase() !== 'comedy'
+      );
+
+      S.movies = [...comedy, ...others];
+
+      applyFilter(S.cat || 'all');
+
     } else {
-      document.getElementById('splash').style.display='none';
-      showError('Could not load videos.');
+      showError(res.msg || 'Could not load videos.');
     }
   })
-  .catch(function(){
+  .catch(error => {
     pDone();
-    document.getElementById('splash').style.display='none';
+
+    const splash = document.getElementById('splash');
+    if (splash) splash.style.display = 'none';
+
+    console.error('Fetch Error:', error);
     showError('Connection error. Please try again.');
   });
 }
-
 /* ════════════════════════════════════════
    CATEGORY FILTER
 ════════════════════════════════════════ */
