@@ -1,966 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="rw">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>KEYTUBE · Shorts</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --red:#ff0000;--r2:#cc0000;--w:#fff;--gold:#f5c518;
-  --nav:56px;--r:8px;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;background:#000;color:#fff;font-family:'Roboto',sans-serif;-webkit-tap-highlight-color:transparent}
-button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
-img{display:block}
-
-/* ══ NAVBAR ══ */
-#nav{
-  position:fixed;top:0;left:0;right:0;z-index:300;
-  height:var(--nav);
-  background:linear-gradient(to bottom,rgba(0,0,0,.78) 0%,rgba(0,0,0,.18) 80%,transparent);
-  display:flex;align-items:center;padding:0 14px;gap:10px;
-  backdrop-filter:blur(0px);
-}
-.logo{display:flex;align-items:center;gap:6px;cursor:pointer;flex-shrink:0;text-decoration:none}
-.logo img{height:26px;object-fit:contain;border-radius:3px}
-.logo-t{font-family:'Bebas Neue';font-size:19px;letter-spacing:1px;color:#fff}
-.n-sep{width:1px;height:16px;background:rgba(255,255,255,.25);flex-shrink:0}
-.n-label{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:1.5px;text-transform:uppercase;flex-shrink:0}
-.n-links{display:flex;gap:2px;flex-shrink:0}
-.nl{padding:5px 9px;border-radius:var(--r);font-size:.77rem;font-weight:500;color:rgba(255,255,255,.65);cursor:pointer;transition:all .15s;white-space:nowrap}
-.nl:hover{color:#fff;background:rgba(255,255,255,.12)}
-.n-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
-/* user chip */
-.u-chip{
-  display:none;align-items:center;gap:7px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:20px;padding:4px 11px;
-  cursor:pointer;font-size:.76rem;color:#fff;
-  backdrop-filter:blur(8px);
-  transition:background .15s;
-}
-.u-chip:hover{background:rgba(255,255,255,.2)}
-.u-av{
-  width:24px;height:24px;border-radius:50%;
-  background:var(--red);color:#fff;
-  display:grid;place-items:center;
-  font-size:.62rem;font-weight:700;flex-shrink:0;
-}
-.n-signin{
-  height:30px;padding:0 14px;border-radius:15px;
-  border:1.5px solid rgba(255,255,255,.55);
-  color:#fff;font-size:.75rem;font-weight:600;
-  transition:all .15s;background:transparent;
-}
-.n-signin:hover{background:rgba(255,255,255,.15);border-color:#fff}
-
-/* ══ FEED ══ */
-#feed{
-  width:100%;height:100vh;
-  overflow-y:scroll;overflow-x:hidden;
-  scroll-snap-type:y mandatory;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-}
-#feed::-webkit-scrollbar{display:none}
-
-/* ══ SINGLE SHORT ITEM ══ */
-.s-item{
-  position:relative;
-  width:100%;height:100vh;
-  scroll-snap-align:start;
-  scroll-snap-stop:always;
-  overflow:hidden;
-  background:#000;
-}
-
-/* Video fills entire item — NO controls visible */
-.s-vid{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  overflow:hidden;
-}
-.s-vid iframe{
-  /* YouTube: scale up to hide letterboxing + control bar */
-  width:calc(100% + 4px);
-  height:calc(100% + 100px);
-  margin-top:-50px;
-  margin-left:-2px;
-  border:none;
-  display:block;
-  pointer-events:none; /* prevent accidental iframe interactions */
-}
-/* Transparent cover over iframe (blocks YT control bar + logo) */
-.s-vid-cover{
-  position:absolute;inset:0;
-  z-index:2;
-  /* pass through clicks except when needed */
-  pointer-events:none;
-}
-/* Bottom strip that covers YT control bar */
-.s-ctrl-block{
-  position:absolute;bottom:0;left:0;right:0;
-  height:52px;background:#000;z-index:3;
-}
-/* Top strip covering YT logo */
-.s-top-block{
-  position:absolute;top:0;left:0;right:0;
-  height:48px;background:transparent;z-index:3;
-}
-
-/* ══ GRADIENT OVERLAY ══ */
-.s-grad{
-  position:absolute;inset:0;z-index:4;
-  background:
-    linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.5) 30%, transparent 55%),
-    linear-gradient(to right, transparent 62%, rgba(0,0,0,.55) 100%);
-  pointer-events:none;
-}
-
-/* ══ BOTTOM INFO (left) ══ */
-.s-info{
-  position:absolute;bottom:68px;left:0;
-  width:calc(100% - 82px);
-  padding:0 16px 16px;
-  z-index:10;
-}
-.s-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  background:var(--red);color:#fff;
-  font-size:.57rem;font-weight:700;letter-spacing:1.2px;
-  padding:2px 8px;border-radius:2px;text-transform:uppercase;
-  margin-bottom:7px;
-}
-.s-title{
-  font-family:'Bebas Neue';
-  font-size:clamp(2rem,7vw,3.2rem);
-  color:#fff;letter-spacing:1px;line-height:1;
-  margin-bottom:7px;
-  text-shadow:0 2px 12px rgba(0,0,0,.6);
-}
-.s-meta{
-  display:flex;align-items:center;gap:7px;
-  font-size:.74rem;color:rgba(255,255,255,.75);
-  margin-bottom:8px;flex-wrap:wrap;
-}
-.s-meta-rat{color:var(--gold);font-weight:700}
-.s-meta-tag{
-  padding:2px 9px;border-radius:14px;
-  border:1px solid rgba(255,255,255,.35);
-  color:rgba(255,255,255,.85);font-size:.68rem;
-  cursor:pointer;transition:all .15s;
-}
-.s-meta-tag:hover,.s-meta-tag.active{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.6)}
-.s-desc{
-  font-size:.76rem;color:rgba(255,255,255,.65);
-  line-height:1.5;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-  max-width:340px;
-}
-
-/* ══ RIGHT ACTION BUTTONS ══ */
-.s-actions{
-  position:absolute;right:12px;bottom:72px;
-  z-index:10;
-  display:flex;flex-direction:column;gap:14px;
-  align-items:center;
-}
-.s-btn{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  cursor:pointer;transition:transform .2s;
-  -webkit-tap-highlight-color:transparent;
-}
-.s-btn:active{transform:scale(.88)}
-.s-ic{
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(255,255,255,.14);
-  display:grid;place-items:center;
-  font-size:1.2rem;
-  border:1.5px solid rgba(255,255,255,.18);
-  backdrop-filter:blur(6px);
-  transition:background .15s,transform .15s;
-}
-.s-btn:hover .s-ic{background:rgba(255,255,255,.26)}
-.s-btn.liked .s-ic{background:rgba(255,0,0,.65);border-color:rgba(255,80,80,.7)}
-.s-btn.disliked .s-ic{background:rgba(0,0,0,.5);border-color:rgba(255,255,255,.3)}
-.s-btn span{
-  font-size:.64rem;color:rgba(255,255,255,.8);
-  font-weight:500;line-height:1;text-align:center;
-}
-
-/* ══ VERTICAL NAVIGATION (right middle) ══ */
-#navCtrl{
-  position:fixed;right:12px;top:50%;
-  transform:translateY(-50%);
-  z-index:20;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-}
-.n-arr{
-  width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,.15);
-  display:grid;place-items:center;
-  cursor:pointer;
-  font-size:1rem;color:#fff;
-  border:1.5px solid rgba(255,255,255,.22);
-  backdrop-filter:blur(6px);
-  transition:background .15s,transform .12s;
-}
-.n-arr:hover{background:rgba(255,255,255,.3);transform:scale(1.08)}
-.n-dots{display:flex;flex-direction:column;gap:5px;padding:3px 0}
-.n-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:rgba(255,255,255,.3);
-  transition:all .25s;cursor:pointer;
-}
-.n-dot.on{background:#fff;height:18px;border-radius:3px}
-
-/* ══ BOTTOM CATEGORY BAR ══ */
-#catBar{
-  position:fixed;bottom:0;left:0;right:0;
-  z-index:20;
-  padding:7px 14px 12px;
-  background:linear-gradient(transparent,rgba(0,0,0,.7));
-  display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;
-}
-#catBar::-webkit-scrollbar{display:none}
-.c-pill{
-  padding:5px 15px;border-radius:16px;
-  font-size:.73rem;font-weight:600;
-  background:rgba(255,255,255,.14);
-  color:rgba(255,255,255,.82);
-  border:1px solid rgba(255,255,255,.2);
-  cursor:pointer;white-space:nowrap;flex-shrink:0;
-  backdrop-filter:blur(5px);
-  transition:all .15s;
-}
-.c-pill:hover{background:rgba(255,255,255,.24)}
-.c-pill.on{background:var(--red);border-color:var(--red);color:#fff}
-
-/* ══ ONBOARDING HINT ══ */
-#hint{
-  position:fixed;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  z-index:400;
-  background:rgba(10,10,10,.88);
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:18px;padding:26px 30px;
-  text-align:center;
-  backdrop-filter:blur(16px);
-  max-width:280px;width:90%;
-  display:none;
-}
-.hint-arrows{font-size:2.2rem;margin-bottom:10px;animation:bounce 1.2s ease infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.hint-txt{font-size:.83rem;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:16px}
-.hint-btn{
-  background:var(--red);color:#fff;border:none;
-  padding:9px 28px;border-radius:20px;
-  font-size:.82rem;font-weight:700;cursor:pointer;
-  transition:background .15s;
-}
-.hint-btn:hover{background:var(--r2)}
-
-/* ══ LOADING SCREEN ══ */
-#splash{
-  position:fixed;inset:0;z-index:500;
-  background:#000;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:10px;
-}
-.sp-logo{font-family:'Bebas Neue';font-size:2.4rem;color:var(--red);letter-spacing:3px}
-.sp-sub{font-size:.76rem;color:rgba(255,255,255,.4);letter-spacing:.5px}
-.sp-spin{
-  width:26px;height:26px;margin-top:6px;
-  border:3px solid rgba(255,255,255,.1);
-  border-top-color:var(--red);border-radius:50%;
-  animation:spin .7s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ══ UNMUTE BUTTON ══ */
-#unmuteBtn{
-  position:fixed;bottom:90px;left:50%;
-  transform:translateX(-50%);
-  z-index:50;
-  background:rgba(0,0,0,.72);
-  border:1.5px solid rgba(255,255,255,.4);
-  color:#fff;border-radius:20px;
-  padding:8px 18px;font-size:.78rem;font-weight:600;
-  display:none;cursor:pointer;
-  backdrop-filter:blur(6px);
-  animation:fadeIn .3s ease;
-}
-@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-
-/* ══ EMPTY / ERROR ══ */
-.s-empty{
-  position:absolute;inset:0;display:flex;
-  flex-direction:column;align-items:center;
-  justify-content:center;gap:10px;
-  color:rgba(255,255,255,.4);
-}
-.s-empty .ei{font-size:2.5rem;opacity:.4}
-
-/* ══ PROGRESS BAR ══ */
-#pbar{position:fixed;top:0;left:0;z-index:999;height:2px;background:var(--red);width:0%;transition:width .3s;pointer-events:none}
-#pbar.done{opacity:0;transition:opacity .5s}
-
-/* ══ RESPONSIVE ══ */
-@media(max-width:540px){
-  .n-links{display:none}
-  .s-title{font-size:clamp(1.8rem,8vw,2.8rem)}
-  .s-info{width:calc(100% - 74px)}
-  .s-actions{right:8px}
-  .s-ic{width:40px;height:40px;font-size:1.1rem}
-}
-@media(min-width:768px){
-  /* wider screens: constrain feed to portrait width */
-  #feed{max-width:480px;margin:0 auto}
-  #feed::after{content:'';display:block}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>KEYTUBE - Admin Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">  
+    <style>
+        /* Ibi bituma login ipaji igaragara neza niyo haba hari ibyo style.css iyihisha */
+        .admin-login-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+        .admin-box {
+            background: #1e1e1e;
+            color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+    </style>
 </head>
 <body>
 
-<!-- ══ LOADING ══ -->
-<div id="splash">
-  <img src="logo.png" style="height:44px;object-fit:contain;margin-bottom:4px" onerror="this.style.display='none'">
-  <div class="sp-logo">SHORTS</div>
-  <div class="sp-sub">Loading comedy feed…</div>
-  <div class="sp-spin"></div>
-</div>
+    <div id="pbar"></div>
+    <div id="toast"></div>
 
-<!-- ══ PROGRESS ══ -->
-<div id="pbar"></div>
-
-<!-- ══ ONBOARDING HINT ══ -->
-<div id="hint">
-  <div class="hint-arrows">↕</div>
-  <div class="hint-txt">Scroll, use <strong>↑↓</strong> keys, or click the arrows on the right to browse your feed.</div>
-  <button class="hint-btn" onclick="dismissHint()">Got it</button>
-</div>
-
-<!-- ══ NAVBAR ══ -->
-<nav id="nav">
-  <!-- Logo → returns to dashboard -->
-  <a class="logo" id="dashLink" href="https://k-business1.github.io/key-video">
-    <img src="logo.png" alt="KEYTUBE" onerror="this.style.display='none'">
-    <span class="logo-t">KEYTUBE</span>
-  </a>
-  <div class="n-sep"></div>
-  <span class="n-label">Shorts</span>
-
-  <nav class="n-links">
-    <span class="nl" onclick="window.location.href='index.html'">Home</span>
-    <span class="nl" onclick="window.location.href='index.html'">Movies</span>
-    <span class="nl" onclick="window.location.href='index.html'">TV Shows</span>
-    <span class="nl" onclick="window.location.href='market.html'">Market</span>
-  </nav>
-
-  <div class="n-right">
-    <!-- User chip — shown when logged in -->
-    <div class="u-chip" id="uChip" onclick="window.location.href='https://k-business1.github.io/key-video'">
-      <div class="u-av" id="uAv">U</div>
-      <span id="uName">User</span>
+    <div id="adminAuthOv" class="admin-login-bg">
+      <div class="admin-box">
+        <div class="admin-auth-hd" style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 3rem; margin-bottom: 10px;">🔐</div>
+          <h2 style="font-family: 'Bebas Neue'; letter-spacing: 1px; font-size: 2.2rem; margin:0;">Admin Access</h2>
+          <p style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">Enter your admin credentials to continue</p>
+        </div>
+        <div class="aform">
+          <div class="fg" style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #ccc;">Admin Gmail</label>
+            <input class="fi" id="adEmail" type="email" placeholder="admin@keytube.com" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #444; background: #2b2b2b; color: #fff; box-sizing: border-box;">
+          </div>
+          <div class="fg" style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #ccc;">Admin Password</label>
+            <input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminAuth()" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #444; background: #2b2b2b; color: #fff; box-sizing: border-box;">
+          </div>
+          <div class="aerr" id="adErr" style="color: #ff4a4a; font-size: 0.85rem; margin-bottom: 10px; text-align: center;"></div>
+          <button class="abtn" style="background: #e50914; color: #fff; width: 100%; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem;" onclick="doAdminAuth()">Enter Admin Panel →</button>
+        </div>
+      </div>
     </div>
-    <!-- Sign in — shown when not logged in -->
-    <button class="n-signin" id="siBtn" onclick="window.location.href='https://k-business1.github.io/key-video'">Sign In</button>
-  </div>
-</nav>
 
-<!-- ══ VERTICAL NAV (right side) ══ -->
-<div id="navCtrl">
-  <div class="n-arr" onclick="goPrev()" title="Previous (↑)">↑</div>
-  <div class="n-dots" id="nDots"></div>
-  <div class="n-arr" onclick="goNext()" title="Next (↓)">↓</div>
-</div>
-
-<!-- ══ CATEGORY BAR ══ -->
-<div id="catBar">
-  <span class="c-pill on" onclick="setCat('all',this)">All</span>
-  <span class="c-pill"   onclick="setCat('comedy',this)">😂 Comedy</span>
-  <span class="c-pill"   onclick="setCat('cartoon',this)">🎨 Cartoon</span>
-  <span class="c-pill"   onclick="setCat('song',this)">🎵 Song</span>
-  <span class="c-pill"   onclick="setCat('english',this)">🇬🇧 English</span>
-  <span class="c-pill"   onclick="setCat('french',this)">🇫🇷 French</span>
-  <span class="c-pill"   onclick="setCat('indian',this)">🇮🇳 Indian</span>
-</div>
-
-<!-- ══ UNMUTE BUTTON ══ -->
-<button id="unmuteBtn" onclick="unmute()">🔇 Tap to Unmute</button>
-
-<!-- ══ FEED ══ -->
-<div id="feed"></div>
-
-<!-- ══ YOUTUBE API ══ -->
-<script>
-/* ════════════════════════════════════════
-   CONFIG
-════════════════════════════════════════ */
-var API  = 'https://script.google.com/macros/s/AKfycbxVdY-_WNOhxAEVqAMi2E1Q6R0KVBWnhq7EQGwNj21BWpbIOfi7phMt3y85qEhs9tXQ/exec';
-var DASH = 'https://k-business1.github.io/key-video';
-
-/* ════════════════════════════════════════
-   STATE
-════════════════════════════════════════ */
-var S = {
-  user    : null,
-  movies  : [],    /* all fetched */
-  list    : [],    /* filtered list shown in feed */
-  cur     : 0,     /* current index */
-  cat     : 'all',
-  players : {},    /* YT players keyed by index */
-  isMuted : false, /* global mute state */
-  moving  : false  /* debounce navigation */
-};
-
-/* ════════════════════════════════════════
-   YOUTUBE IFRAME API
-════════════════════════════════════════ */
-var YT_READY = false;
-var YT_Q = []; /* queue of createPlayer calls */
-
-function onYouTubeIframeAPIReady(){
-  YT_READY = true;
-  var fn; while((fn = YT_Q.shift())){ try{fn();}catch(e){} }
-}
-
-(function(){
-  var tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
-})();
-
-/* ════════════════════════════════════════
-   UTILS
-════════════════════════════════════════ */
-function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function cap(s){return s?String(s).charAt(0).toUpperCase()+String(s).slice(1):'';}
-
-function extractYT(url){
-  if(!url)return null;
-  var m=(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
-  return m?m[1]:null;
-}
-
-var pW=0,pT;
-function pStart(){pW=0;var e=document.getElementById('pbar');e.className='';e.style.width='0%';clearInterval(pT);pT=setInterval(function(){pW=Math.min(pW+Math.random()*8,88);e.style.width=pW+'%';},120);}
-function pDone(){clearInterval(pT);var e=document.getElementById('pbar');e.style.width='100%';setTimeout(function(){e.className='done';setTimeout(function(){e.style.width='0%';e.className='';},500);},280);}
-
-/* ════════════════════════════════════════
-   INIT
-════════════════════════════════════════ */
-window.onload = function(){
-  /* restore user from KEYTUBE session */
-  try{var u=sessionStorage.getItem('km_u');if(u){S.user=JSON.parse(u);}}catch(e){}
-  updateUserUI();
-
-  /* onboarding */
-  if(!localStorage.getItem('kt_s_hint')) showHint();
-
-  /* fetch movies */
-  fetchMovies();
-
-  /* keyboard */
-  document.addEventListener('keydown',function(e){
-    if(e.key==='ArrowDown'||e.key==='j') goNext();
-    if(e.key==='ArrowUp'  ||e.key==='k') goPrev();
-    if(e.key==='m') toggleMute();
-  });
-
-  /* touch swipe */
-  var ty=0;
-  document.addEventListener('touchstart',function(e){ty=e.touches[0].clientY;},{passive:true});
-  document.addEventListener('touchend',function(e){
-    var dy=ty-e.changedTouches[0].clientY;
-    if(Math.abs(dy)>55){if(dy>0)goNext();else goPrev();}
-  },{passive:true});
-
-  /* mouse wheel */
-  var wTimer;
-  document.addEventListener('wheel',function(e){
-    clearTimeout(wTimer);
-    wTimer=setTimeout(function(){
-      if(e.deltaY>0)goNext();else goPrev();
-    },80);
-  },{passive:true});
-};
-
-/* ════════════════════════════════════════
-   USER UI
-════════════════════════════════════════ */
-function updateUserUI(){
-  var u=S.user;
-  var chip=document.getElementById('uChip');
-  var si=document.getElementById('siBtn');
-  if(u){
-    chip.style.display='flex';
-    si.style.display='none';
-    document.getElementById('uAv').textContent=(u.name||u.gmail||'U')[0].toUpperCase();
-    document.getElementById('uName').textContent=u.name||u.gmail;
-  } else {
-    chip.style.display='none';
-    si.style.display='block';
-  }
-}
-
-/* ════════════════════════════════════════
-   FETCH MOVIES
-════════════════════════════════════════ */
-function fetchMovies() {
-  pStart();
-
-  fetch(API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/plain"
-    },
-    body: JSON.stringify({
-      action: "getMovies",
-      isLoggedIn: !!S.user,
-      category: "all",
-      type: "all"
-    })
-  })
-  .then(function(response) {
-    console.log("Status:", response.status);
-
-    if (!response.ok) {
-      throw new Error("HTTP " + response.status);
-    }
-
-    return response.text();
-  })
-  .then(function(text) {
-    console.log("Raw Response:", text);
-
-    var res = JSON.parse(text);
-
-    pDone();
-
-    var splash = document.getElementById("splash");
-    if (splash) splash.style.display = "none";
-
-    if (res.ok) {
-
-      S.movies = (res.movies || []).filter(function(m) {
-        return m.videoURL;
-      });
-
-      applyFilter(S.cat);
-
-    } else {
-      showError(res.msg || "Failed to load videos");
-    }
-  })
-  .catch(function(err) {
-    pDone();
-
-    console.error("FETCH ERROR:", err);
-
-    showError("Connection error: " + err.message);
-  });
-}
-/* ════════════════════════════════════════
-   CATEGORY FILTER
-════════════════════════════════════════ */
-function setCat(cat,btn){
-  S.cat=cat;
-  document.querySelectorAll('.c-pill').forEach(function(b){b.classList.remove('on');});
-  if(btn)btn.classList.add('on');
-  applyFilter(cat);
-}
-
-function applyFilter(cat){
-  destroyAllPlayers();
-  if(cat==='all'){
-    S.list=S.movies.slice();
-  } else {
-    S.list=S.movies.filter(function(m){return (m.category||'').toLowerCase()===cat;});
-    if(!S.list.length) S.list=S.movies.slice(); /* fallback to all */
-  }
-  S.cur=0;
-  buildFeed();
-}
-
-/* ════════════════════════════════════════
-   BUILD FEED (DOM)
-════════════════════════════════════════ */
-function buildFeed(){
-  var feed=document.getElementById('feed');
-  feed.innerHTML='';
-  feed.scrollTop=0;
-
-  if(!S.list.length){
-    feed.innerHTML='<div class="s-item"><div class="s-empty"><div class="ei">🎬</div><p>No videos available.</p></div></div>';
-    buildDots(0);return;
-  }
-
-  S.list.forEach(function(m,i){
-    var el=document.createElement('div');
-    el.className='s-item';
-    el.id='si-'+i;
-    el.dataset.idx=i;
-
-    el.innerHTML=
-      /* Video layer */
-      '<div class="s-vid" id="svid-'+i+'"></div>'+
-      /* Block YT logo at bottom */
-      '<div class="s-ctrl-block"></div>'+
-      /* Gradient overlay */
-      '<div class="s-grad"></div>'+
-      /* Bottom info */
-      '<div class="s-info">'+
-        '<span class="s-badge">'+(m.isNew?'🆕 New':'⭐ '+cap(m.category||'Comedy'))+'</span>'+
-        '<div class="s-title">'+h(m.name)+'</div>'+
-        '<div class="s-meta">'+
-          '<span class="s-meta-rat">⭐ '+(m.rating||'?')+'</span>'+
-          (m.year?'<span class="s-meta-tag">'+h(m.year)+'</span>':'')+
-          (m.category?'<span class="s-meta-tag" onclick="setCatFromTag(\''+h(m.category||'')+'\')">'+cap(m.category)+'</span>':'')+
-          (m.type==='series'?'<span class="s-meta-tag">📺 Series</span>':'')+
-        '</div>'+
-        (m.description?'<div class="s-desc">'+h(m.description)+'</div>':'')+
-      '</div>'+
-      /* Right action buttons */
-      '<div class="s-actions">'+
-        /* Like */
-        '<div class="s-btn" id="lb-'+i+'" onclick="toggleLike('+i+')">'+
-          '<div class="s-ic">👍</div>'+
-          '<span id="lc-'+i+'">Like</span>'+
-        '</div>'+
-        /* Dislike */
-        '<div class="s-btn" id="db-'+i+'" onclick="toggleDislike('+i+')">'+
-          '<div class="s-ic">👎</div>'+
-          '<span>Dislike</span>'+
-        '</div>'+
-        /* Mute toggle */
-        '<div class="s-btn" onclick="toggleMute()">'+
-          '<div class="s-ic" id="muteIc">🔊</div>'+
-          '<span id="muteLbl">Mute</span>'+
-        '</div>'+
-        /* Share */
-        '<div class="s-btn" onclick="shareVid('+i+')">'+
-          '<div class="s-ic">➤</div>'+
-          '<span>Share</span>'+
-        '</div>'+
-        /* Next skip */
-        '<div class="s-btn" onclick="goNext()">'+
-          '<div class="s-ic">⏭</div>'+
-          '<span>Next</span>'+
-        '</div>'+
-      '</div>';
-
-    feed.appendChild(el);
-  });
-
-  buildDots(S.list.length);
-
-  /* IntersectionObserver for scroll detection */
-  setupObserver();
-
-  /* Activate first */
-  activateVideo(0);
-}
-
-/* ════════════════════════════════════════
-   DOTS NAV
-════════════════════════════════════════ */
-function buildDots(total){
-  var box=document.getElementById('nDots');
-  box.innerHTML='';
-  var show=Math.min(total,10);
-  for(var i=0;i<show;i++){
-    var d=document.createElement('div');
-    d.className='n-dot'+(i===0?' on':'');
-    d.id='nd-'+i;
-    (function(idx){d.onclick=function(){activateVideo(idx);};})(i);
-    box.appendChild(d);
-  }
-}
-
-function updateDots(idx){
-  var max=Math.min(S.list.length,10);
-  for(var i=0;i<max;i++){
-    var d=document.getElementById('nd-'+i);
-    if(d)d.classList.toggle('on',i===idx);
-  }
-}
-
-/* ════════════════════════════════════════
-   INTERSECTION OBSERVER
-════════════════════════════════════════ */
-function setupObserver(){
-  if(!window.IntersectionObserver)return;
-  var obs=new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(entry.isIntersecting&&entry.intersectionRatio>=0.65){
-        var idx=parseInt(entry.target.dataset.idx);
-        if(idx!==S.cur) activateVideo(idx);
-      }
-    });
-  },{threshold:0.65});
-  document.querySelectorAll('.s-item').forEach(function(el){obs.observe(el);});
-}
-
-/* ════════════════════════════════════════
-   ACTIVATE / DEACTIVATE VIDEO
-════════════════════════════════════════ */
-function activateVideo(idx){
-  if(idx<0||idx>=S.list.length||S.moving)return;
-  S.moving=true;
-  setTimeout(function(){S.moving=false;},600);
-
-  /* Pause current */
-  pausePlayer(S.cur);
-  S.cur=idx;
-  updateDots(idx);
-
-  /* Scroll item into view */
-  var el=document.getElementById('si-'+idx);
-  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-
-  /* Create or play */
-  if(S.players[idx]){
-    try{
-      S.players[idx].playVideo();
-      if(!S.isMuted) S.players[idx].unMute();
-    }catch(e){}
-  } else {
-    createPlayer(idx, true);
-  }
-
-  /* Preload neighbours */
-  [idx-1,idx+1].forEach(function(ni){
-    if(ni>=0&&ni<S.list.length&&!S.players[ni]) createPlayer(ni,false);
-  });
-}
-
-function pausePlayer(idx){
-  if(S.players[idx]){
-    try{S.players[idx].pauseVideo();}catch(e){}
-  }
-}
-
-function destroyAllPlayers(){
-  Object.keys(S.players).forEach(function(k){
-    try{S.players[k].destroy();}catch(e){}
-  });
-  S.players={};
-}
-
-/* ════════════════════════════════════════
-   CREATE YOUTUBE PLAYER
-   controls=0  → hide control bar
-   No cover:   autoplay=1, no poster shown
-   End detect: onStateChange → goNext()
-════════════════════════════════════════ */
-function createPlayer(idx, autoplay) {
-
-  var movie = S.list[idx];
-  if (!movie) return;
-
-  var ytId = extractYT(movie.videoURL);
-  if (!ytId) {
-    console.error("Invalid YouTube URL:", movie.videoURL);
-    return;
-  }
-
-  function doCreate() {
-
-    var container = document.getElementById("svid-" + idx);
-
-    if (!container) {
-      console.error("Container not found:", "svid-" + idx);
-      return;
-    }
-
-    if (S.players[idx]) return;
-
-    S.players[idx] = new YT.Player(container, {
-
-      width: "100%",
-      height: "100%",
-      videoId: ytId,
-
-      playerVars: {
-        autoplay: autoplay ? 1 : 0,
-        controls: 0,
-        rel: 0,
-        modestbranding: 1,
-        playsinline: 1,
-        fs: 0,
-        disablekb: 1,
-        iv_load_policy: 3,
-        cc_load_policy: 0,
-        mute: 1
-      },
-
-      events: {
-
-        onReady: function (event) {
-
-          event.target.mute();
-
-          if (autoplay && idx === S.cur) {
-            event.target.playVideo();
-          }
-
-          if (!S.isMuted) {
-            setTimeout(function () {
-              try {
-                event.target.unMute();
-              } catch (e) {}
-            }, 1000);
-          }
-        },
-
-        onStateChange: function (event) {
-
-          if (event.data === YT.PlayerState.ENDED) {
-            if (idx === S.cur) {
-              goNext();
-            }
-          }
-
-          if (event.data === YT.PlayerState.PLAYING) {
-            var btn = document.getElementById("unmuteBtn");
-            if (btn) btn.style.display = "none";
-          }
-        },
-
-        onError: function (event) {
-          console.error("YouTube Error:", event.data);
-
-          if (idx === S.cur) {
-            setTimeout(function () {
-              goNext();
-            }, 1000);
-          }
+    <div id="admPanel" style="display:none; height: 100vh; width: 100vw; flex-direction: row;">
+      <div class="abar" style="width: 250px; background: #111; height: 100vh; display: flex; flex-direction: column;">
+        <div class="alogo" style="font-family: 'Bebas Neue'; font-size: 1.8rem; letter-spacing: 1px; padding: 20px; text-align: center; color: #e50914;"> KEYTUBE </div>
+        <button class="atb act" onclick="aTab('dash')">📊 Dashboard</button>
+        <button class="atb" onclick="aTab('movies')">🎬 Movies</button>
+        <button class="atb" onclick="aTab('users')">👥 Users</button>
+        <button class="atb" onclick="aTab('comments')">💬 Comments</button>
+        <button class="atb" onclick="aTab('notif')">🔔 Notifications</button>
+        <button class="atb" onclick="aTab('pages')">📄 Pages</button>
+        <button class="atb" onclick="aTab('traffic')">📈 Traffic</button>
+        <button class="atb" onclick="aTab('settings')">⚙️ Settings</button>
+        <div style="flex-grow: 1;"></div>
+        <button class="atb atb-logout" onclick="adminLogout()" style="color: #ff4a4a; border-top: 1px solid #222;">🚪 Logout</button>
+      </div>
+      
+      <div class="abody" id="abody" style="flex: 1; padding: 20px; overflow-y: auto; background: #1a1a1a; color: #fff;">
+        <h2>Dashboard</h2>
+        <p>Welcome to the KeyTube Admin Panel.</p>
+        <div style="display:grid;place-items:center;padding:80px">
+            <div class="spin"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Kora login (Ugerageze niba bikora)
+      function doAdminAuth() {
+        var email = document.getElementById('adEmail').value;
+        var pass = document.getElementById('adP').value;
+        var err = document.getElementById('adErr');
+
+        // Aha ushobora n'akahindura bitewe n'ijambo ry'ibanga ushaka
+        if(pass === "admin123") { 
+          // Hisha login, fungura admin panel
+          document.getElementById('adminAuthOv').style.display = 'none';
+          document.getElementById('admPanel').style.display = 'flex';
+        } else {
+          err.innerText = "Password cyangwa Email si byo!";
         }
       }
-    });
-  }
 
-  if (YT_READY) {
-    doCreate();
-  } else {
-    YT_Q.push(doCreate);
-  }
-}
+      // Kora logout
+      function adminLogout() {
+        document.getElementById('admPanel').style.display = 'none';
+        document.getElementById('adminAuthOv').style.display = 'flex';
+        document.getElementById('adP').value = ""; // Siba password yari rimo
+      }
 
-function goNext() {
-  if (S.cur < S.list.length - 1) {
-    activateVideo(S.cur + 1);
-  } else {
-    activateVideo(0);
-  }
-}
-
-function goPrev() {
-  if (S.cur > 0) {
-    activateVideo(S.cur - 1);
-  } else {
-    activateVideo(S.list.length - 1);
-  }
-}
-
-/* ════════════════════════════════════════
-   NAVIGATION
-════════════════════════════════════════ */
-function goNext(){
-  if(S.cur < S.list.length-1) activateVideo(S.cur+1);
-  else activateVideo(0); /* ★ loop back to start */
-}
-function goPrev(){
-  if(S.cur>0) activateVideo(S.cur-1);
-  else activateVideo(S.list.length-1);
-}
-
-/* ════════════════════════════════════════
-   MUTE TOGGLE
-════════════════════════════════════════ */
-function toggleMute(){
-  S.isMuted=!S.isMuted;
-  var ic=document.getElementById('muteIc');
-  var lbl=document.getElementById('muteLbl');
-  if(ic) ic.textContent=S.isMuted?'🔇':'🔊';
-  if(lbl) lbl.textContent=S.isMuted?'Unmute':'Mute';
-  /* apply to active player */
-  if(S.players[S.cur]){
-    try{
-      if(S.isMuted) S.players[S.cur].mute();
-      else{S.players[S.cur].unMute();document.getElementById('unmuteBtn').style.display='none';}
-    }catch(e){}
-  }
-}
-function unmute(){
-  S.isMuted=false;
-  if(S.players[S.cur]){try{S.players[S.cur].unMute();}catch(e){}}
-  document.getElementById('unmuteBtn').style.display='none';
-  var ic=document.getElementById('muteIc');var lbl=document.getElementById('muteLbl');
-  if(ic)ic.textContent='🔊';if(lbl)lbl.textContent='Mute';
-}
-
-/* ════════════════════════════════════════
-   INTERACTIONS
-════════════════════════════════════════ */
-function toggleLike(idx){
-  var btn=document.getElementById('lb-'+idx);
-  if(!btn)return;
-  var liked=btn.classList.toggle('liked');
-  var lbl=document.getElementById('lc-'+idx);
-  if(lbl) lbl.textContent=liked?'Liked! ❤':'Like';
-  /* remove dislike if liked */
-  if(liked){var db=document.getElementById('db-'+idx);if(db)db.classList.remove('disliked');}
-}
-function toggleDislike(idx){
-  var btn=document.getElementById('db-'+idx);
-  if(!btn)return;
-  btn.classList.toggle('disliked');
-  if(btn.classList.contains('disliked')){var lb=document.getElementById('lb-'+idx);if(lb){lb.classList.remove('liked');var lc=document.getElementById('lc-'+idx);if(lc)lc.textContent='Like';}}
-}
-function shareVid(idx){
-  var m=S.list[idx];if(!m)return;
-  var url=m.videoURL||window.location.href;
-  if(navigator.share){
-    navigator.share({title:m.name,url:url}).catch(function(){});
-  } else {
-    try{navigator.clipboard.writeText(url);}catch(e){}
-    alert('Link copied to clipboard!');
-  }
-}
-function setCatFromTag(cat){
-  document.querySelectorAll('.c-pill').forEach(function(b){
-    if(b.textContent.toLowerCase().includes(cat.toLowerCase())){setCat(cat,b);}
-  });
-}
-
-/* ════════════════════════════════════════
-   ONBOARDING
-════════════════════════════════════════ */
-function showHint(){
-  document.getElementById('hint').style.display='block';
-}
-function dismissHint(){
-  document.getElementById('hint').style.display='none';
-  localStorage.setItem('kt_s_hint','1');
-}
-
-/* ════════════════════════════════════════
-   ERROR
-════════════════════════════════════════ */
-function showError(msg){
-  document.getElementById('feed').innerHTML=
-    '<div class="s-item"><div class="s-empty">'+
-      '<div class="ei">😕</div>'+
-      '<p>'+msg+'</p>'+
-      '<button onclick="fetchMovies()" style="margin-top:12px;padding:8px 18px;border-radius:20px;background:var(--red);color:#fff;border:none;cursor:pointer;font-size:.78rem">Retry</button>'+
-    '</div></div>';
-}
-</script>
+      // Tab switch (Guhinduranya ibice)
+      function aTab(tabName) {
+        var abody = document.getElementById('abody');
+        // Guhindura ibiri muri Dashboard bitewe n'icyo ukanze
+        abody.innerHTML = "<h2>" + tabName.toUpperCase() + " Panel</h2><p>Ibi bice biri gushakishwa...</p>";
+      }
+    </script>
 </body>
 </html>
