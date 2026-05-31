@@ -515,59 +515,54 @@ function fetchMovies() {
   pStart();
 
   fetch(API, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "text/plain"
     },
     body: JSON.stringify({
-      action: 'getMovies',
+      action: "getMovies",
       isLoggedIn: !!S.user,
-      category: 'all',
-      type: 'all'
+      category: "all",
+      type: "all"
     })
   })
-  .then(response => {
+  .then(function(response) {
+    console.log("Status:", response.status);
+
     if (!response.ok) {
-      throw new Error('HTTP Error: ' + response.status);
+      throw new Error("HTTP " + response.status);
     }
-    return response.json();
+
+    return response.text();
   })
-  .then(res => {
+  .then(function(text) {
+    console.log("Raw Response:", text);
+
+    var res = JSON.parse(text);
+
     pDone();
 
-    const splash = document.getElementById('splash');
-    if (splash) splash.style.display = 'none';
+    var splash = document.getElementById("splash");
+    if (splash) splash.style.display = "none";
 
-    if (res.ok && Array.isArray(res.movies)) {
+    if (res.ok) {
 
-      const all = res.movies.filter(movie =>
-        movie.videoURL && extractYT(movie.videoURL)
-      );
+      S.movies = (res.movies || []).filter(function(m) {
+        return m.videoURL;
+      });
 
-      const comedy = all.filter(movie =>
-        (movie.category || '').toLowerCase() === 'comedy'
-      );
-
-      const others = all.filter(movie =>
-        (movie.category || '').toLowerCase() !== 'comedy'
-      );
-
-      S.movies = [...comedy, ...others];
-
-      applyFilter(S.cat || 'all');
+      applyFilter(S.cat);
 
     } else {
-      showError(res.msg || 'Could not load videos.');
+      showError(res.msg || "Failed to load videos");
     }
   })
-  .catch(error => {
+  .catch(function(err) {
     pDone();
 
-    const splash = document.getElementById('splash');
-    if (splash) splash.style.display = 'none';
+    console.error("FETCH ERROR:", err);
 
-    console.error('Fetch Error:', error);
-    showError('Connection error. Please try again.');
+    showError("Connection error: " + err.message);
   });
 }
 /* ════════════════════════════════════════
