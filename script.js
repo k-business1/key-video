@@ -467,7 +467,7 @@ function aDash(){
   });
 }
 var editId=null;
-var ALL_CATS=['Movies','Hghligt','drama','chinese','indian','cartoon','comedy','song','news'];
+var ALL_CATS=['Movies','Highligt','drama','chinese','indian','cartoon','comedy','song','news'];
 var ALL_TYPES=['movie','series','song','news'];
 function aMovies(){
   api('getMovies',{isLoggedIn:true,category:'all',type:'all'},function(r){
