@@ -135,3 +135,51 @@ table.dt tr:hover td{background:var(--bg)}
   .abar{padding:0 10px;gap:4px}
 }
 .hidden{display:none!important}
+/* Panel */
+#admPanel{
+    width:100%;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* Top bar */
+.abar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap; /* Bituma buttons zimanuka aho kurenga hanze */
+    padding:10px;
+    background:#222;
+}
+
+.abar-sp{
+    flex:1;
+}
+
+/* Buttons */
+.atb{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* Responsive */
+@media (max-width:768px){
+    .abar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .atb{
+        width:100%;
+    }
+
+    .abar-logo{
+        justify-content:center;
+    }
+
+    .abar-user{
+        text-align:center;
+    }
+}
