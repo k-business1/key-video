@@ -131,7 +131,7 @@ function aDash(){
    MOVIES
 ════════════════════════════ */
 var editId=null;
-var ALL_CATS=['english','french','drama','chinese','indian','cartoon','comedy','song','news'];
+var ALL_CATS=['movies','highlight','drama','chinese','indian','cartoon','comedy','song','news'];
 var ALL_TYPES=['movie','series','song','news'];
 
 function aMovies(){
