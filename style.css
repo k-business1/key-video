@@ -141,9 +141,7 @@ input,select,textarea{font-family:inherit}
 .ci{padding:5px 0}.ctit{font-size:.79rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .csub{font-size:.7rem;color:var(--t2);margin-top:2px;display:flex;gap:5px}.crat{color:#e67e00;font-weight:600}
 
-/* ══════════════════════════════════════════
-   ★ v4 COMEDY AUTO-NEXT BANNER (TikTok style)
-══════════════════════════════════════════ */
+/* ── v4 COMEDY AUTO-NEXT BANNER ── */
 #autoNextBanner{
   background:#111;color:#fff;padding:0;
   display:none;flex-direction:column;flex-shrink:0;
@@ -264,7 +262,7 @@ input,select,textarea{font-family:inherit}
 /* ── ADMIN PANEL ── */
 #admPanel{position:fixed;inset:0;z-index:2000;background:var(--bg);display:none;flex-direction:column}
 #admPanel.open{display:flex}
-.abar{height:49px;background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 16px;gap:7px;overflow-x:auto;flex-shrink:0}
+.abar{height:49px;background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 166px;gap:7px;overflow-x:auto;flex-shrink:0}
 .alogo{font-family:'Bebas Neue';font-size:1.1rem;color:var(--red);letter-spacing:1px;flex-shrink:0;margin-right:4px}
 .atb{padding:5px 11px;border-radius:var(--r);font-size:.77rem;font-weight:500;color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
 .atb:hover,.atb.act{background:rgba(255,0,0,.08);color:var(--red);font-weight:700}
@@ -286,7 +284,7 @@ table.dt{width:100%;border-collapse:collapse}
 table.dt th{padding:7px 11px;font-size:.67rem;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;text-align:left;border-bottom:1px solid var(--brd);background:var(--bg)}
 table.dt td{padding:7px 11px;font-size:.79rem;color:var(--t2);border-bottom:1px solid var(--bg2);vertical-align:middle}
 table.dt tr:last-child td{border-bottom:none}table.dt tr:hover td{background:var(--bg)}
-.s-ok{color:var(--green);font-weight:600}.s-bl{color:var(--red);font-weight:600}
+.s-ok{color:var(--green);font-weight:600} .s-bl{color:var(--red);font-weight:600}
 .aform2{background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:16px;margin-bottom:16px}
 .aform2 h3{font-size:.83rem;font-weight:700;margin-bottom:13px}
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.fgrid .full{grid-column:1/-1}
@@ -316,19 +314,66 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 .foot-bot p{font-size:.71rem;color:var(--t2)}
 .yr{cursor:default;user-select:none}
 
+/* ── MEDIA QUERY YA MOBILE IKOSOYE ── */
 @media(max-width:620px){
-  .nav-links{display:none}.section{padding:12px 12px}.catpills{padding:7px 12px}
-  .adslot{margin:5px 12px}#guestBanner{margin:0 12px 12px}.mmbody{padding:11px 13px 18px}
-  .mm-title{font-size:1rem}.fgrid{grid-template-columns:1fr}
-  footer{padding:18px 12px 12px}.fg2{gap:14px}.adv-filters{padding:7px 12px 9px}
-  #appBanner{padding:9px 12px}#notifPanel{right:8px;width:calc(100vw - 16px)}
+  .nav-links{display:none}
+  .section{padding:12px 12px}
+  .catpills{padding:7px 12px}
+  .adslot{margin:5px 12px}
+  #guestBanner{margin:0 12px 12px}
+  .mmbody{padding:11px 13px 18px}
+  .mm-title{font-size:1rem}
+  .fgrid{grid-template-columns:1fr}
+  footer{padding:18px 12px 12px}
+  .fg2{gap:14px}
+  .adv-filters{padding:7px 12px 9px}
+  #appBanner{padding:9px 12px}
+  #notifPanel{right:8px;width:calc(100vw - 16px)}
+
+  /* ── IGICE GIKOSORA NAVBAR KU TELEPHONE ── */
+  #nav {
+    gap: 4px !important;            /* Gabanya gap hagati y'ibintu muri Navbar */
+    padding: 0 6px !important;       /* Gabanya padding ku mpande zombi */
+    justify-content: space-between !important;
+  }
+  .logo {
+    gap: 3px !important;            /* Gabanya umwanya hagati ya logo n'izina */
+  }
+  .logo-t {
+    font-size: 15px !important;     /* Gabanya size y'izina "KEYTUBE" */
+  }
+  .kb {
+    width: 26px !important;         /* Gabanya uburebure bw'agasanduku ka logo */
+    height: 22px !important;
+    font-size: 14px !important;
+  }
+  .sbar {
+    max-width: 120px !important;    /* Gabanya uburebure bwa search bar ngo itatwara umwanya munini */
+    margin: 0 !important;           /* Kukuraho margin auto kugira ngo yegere iburyo */
+  }
+  .sbar input {
+    height: 30px !important;        /* Gabanya uburebure bw'agakuru (height) */
+    padding: 0 8px !important;      /* Gabanya padding imbere */
+    font-size: .75rem !important;
+  }
+  .sbar button {
+    height: 30px !important;
+    width: 36px !important;         /* Gabanya ubugari bw'agapira gashakisha */
+  }
+  .nav-r {
+    margin-left: 2px !important;    /* Gabanya margin-left */
+    gap: 3px !important;
+  }
+  .nb {
+    height: 30px !important;        /* Gabanya height ya Sign In na Sign Up buttons */
+    padding: 0 8px !important;      /* Gabanya padding ngo zibe ntoya */
+    font-size: .72rem !important;   /* Gabanya font-size ngo amagambo adasohoka */
+  }
 }
+
 .hidden{display:none!important}
 .empty-st{text-align:center;padding:40px 18px;color:var(--t2)}
 .empty-st .ei{font-size:2rem;margin-bottom:7px;opacity:.35}.empty-st p{font-size:.81rem}
 
-/* ══ LOGO IMAGE — replaces text "K" in all .kb elements ══
-   Place logo.png in the same folder as this HTML file.
-   The image is fitted inside the existing .kb box — no layout change.       */
 .kb-logo{background:transparent!important;padding:0!important;overflow:hidden}
 .kb-logo img{width:100%;height:100%;object-fit:contain;display:block;border-radius:3px}
