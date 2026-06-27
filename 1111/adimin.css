@@ -52,23 +52,41 @@ input,select,textarea{font-family:inherit}
   position:fixed;inset:0;
   display:none;flex-direction:column;
   background:var(--bg);
+  width:100%;
+  min-height:100vh;
+  overflow-x:hidden;
 }
 #admPanel.open{display:flex}
 
 /* Admin bar */
 .abar{
-  height:50px;background:var(--w);border-bottom:1px solid var(--brd);
-  display:flex;align-items:center;padding:0 16px;gap:7px;
-  overflow-x:auto;flex-shrink:0;
-  scrollbar-width:none;
+  background:#222;
+  border-bottom:1px solid var(--brd);
+  display:flex;
+  align-items:center;
+  padding:10px 16px;
+  gap:10px;
+  flex-shrink:0;
+  flex-wrap:wrap;
 }
-.abar::-webkit-scrollbar{display:none}
 .abar-logo{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-right:6px}
 .abar-kb{width:26px;height:22px;background:var(--red);border-radius:3px;display:grid;place-items:center;overflow:hidden}
 .abar-kb img{width:100%;height:100%;object-fit:contain}
 .abar-kb span{font-family:'Bebas Neue';font-size:14px;color:#fff}
 .abar-title{font-family:'Bebas Neue';font-size:1rem;color:var(--red);letter-spacing:1px;white-space:nowrap}
-.atb{padding:5px 11px;border-radius:var(--r);font-size:.76rem;font-weight:500;color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+
+.atb{
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  font-size:.76rem;
+  font-weight:500;
+  color:var(--t2);
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .15s;
+  flex-shrink:0;
+}
 .atb:hover,.atb.act{background:rgba(255,0,0,.08);color:var(--red);font-weight:700}
 .abar-sp{flex:1;min-width:8px}
 .atb-logout{color:var(--red)!important;border:1px solid rgba(255,0,0,.2)}
@@ -129,57 +147,41 @@ table.dt tr:hover td{background:var(--bg)}
 /* Empty */
 .aerr-box{color:var(--red);padding:18px;font-size:.82rem}
 
+.hidden{display:none!important}
+
+/* ── RESPONSIVE MEDIA QUERIES ── */
 @media(max-width:620px){
   .fgrid{grid-template-columns:1fr}
   .abody{padding:12px}
-  .abar{padding:0 10px;gap:4px}
-}
-.hidden{display:none!important}
-/* Panel */
-#admPanel{
-    width:100%;
-    min-height:100vh;
-    overflow-x:hidden;
 }
 
-/* Top bar */
-.abar{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap; /* Bituma buttons zimanuka aho kurenga hanze */
-    padding:10px;
-    background:#222;
-}
-
-.abar-sp{
-    flex:1;
-}
-
-/* Buttons */
-.atb{
-    padding:8px 14px;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-/* Responsive */
 @media (max-width:768px){
-    .abar{
-        flex-direction:column;
-        align-items:stretch;
-    }
+  .abar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:8px;
+    height:auto;
+  }
 
-    .atb{
-        width:100%;
-    }
+  .atb{
+    flex: 1 1 auto;
+    min-width: fit-content;
+    text-align: center;
+    padding: 6px 10px;
+  }
 
-    .abar-logo{
-        justify-content:center;
-    }
+  .abar-logo{
+    justify-content:center;
+    width: 100%;
+  }
 
-    .abar-user{
-        text-align:center;
-    }
+  .abar-user{
+    text-align:center;
+    width: 100%;
+  }
+
+  .abar-sp {
+    display: none;
+  }
 }
