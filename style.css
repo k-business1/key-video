@@ -21,6 +21,8 @@ input,select,textarea{font-family:inherit}
 .nav-links{display:flex;gap:2px;flex-shrink:0}
 .nl{padding:6px 10px;border-radius:var(--r);font-size:.8rem;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
 .nl:hover,.nl.act{background:var(--bg2);color:var(--txt)}
+
+/* SEARCH BAR: Ku ruziga rwa mudasobwa (Desktop) */
 .sbar{flex:1;max-width:540px;display:flex;margin:0 auto}
 .sbar input{flex:1;height:36px;border:1.5px solid var(--brd);border-right:none;border-radius:20px 0 0 20px;padding:0 15px;font-size:.85rem;outline:none;background:var(--w);color:var(--txt)}
 .sbar input:focus{border-color:#1a73e8}
@@ -139,7 +141,7 @@ input,select,textarea{font-family:inherit}
 .chov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 55%);opacity:0;transition:opacity .2s;border-radius:var(--r);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px}
 .cpl{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--red);font-size:.95rem}
 .ci{padding:5px 0}.ctit{font-size:.79rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.csub{font-size:.7 roll;color:var(--t2);margin-top:2px;display:flex;gap:5px}.crat{color:#e67e00;font-weight:600}
+.csub{font-size:.7rem;color:var(--t2);margin-top:2px;display:flex;gap:5px}.crat{color:#e67e00;font-weight:600}
 
 /* ── v4 COMEDY AUTO-NEXT BANNER ── */
 #autoNextBanner{
@@ -316,7 +318,6 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 
 /* ── MEDIA QUERY YA MOBILE IKOSOYE ── */
 @media(max-width:620px){
-  /* .nav-links{display:none} <-- HANO HAKUWEHO KUGIRA NGO BUTTONS ZIGUMEHO MURI RESIZE */
   .section{padding:12px 12px}
   .catpills{padding:7px 12px}
   .adslot{margin:5px 12px}
@@ -330,55 +331,65 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   #appBanner{padding:9px 12px}
   #notifPanel{right:8px;width:calc(100vw - 16px)}
 
-  /* ── IGICE GIKOSORA NAVBAR KU TELEPHONE ── */
+  /* ── NAVBAR YA MOBILE IKOSOYE NEZA ── */
   #nav {
-    gap: 4px !important;            
+    gap: 0 !important; /* Dukuyeho gap rusange ngo dukoreshe uburyo bwa space-between */
     padding: 0 6px !important;       
     justify-content: space-between !important;
   }
   .logo {
-    gap: 3px !important;            
+    gap: 2px !important;            
+    flex-shrink: 0 !important; 
   }
   .logo-t {
-    font-size: 15px !important;     
+    font-size: 14px !important;     
   }
   .kb {
-    width: 26px !important;         
-    height: 22px !important;
-    font-size: 14px !important;
+    width: 24px !important;         
+    height: 20px !important;
+    font-size: 12px !important;
   }
   
-  /* Gufasha Home na Playlist kugaragara neza no kuri screen ntoya */
+  /* Home na Playlist (nav-links) ntabwo zikora resize cyangwa kwihisha */
   .nav-links {
     display: flex !important; 
-    gap: 1px !important;
+    gap: 2px !important;
+    flex-shrink: 0 !important; 
+    margin-right: auto !important; /* Ibi biha umwanya uri hagati ya Playlist na Search kugenda ugabanuka gusa */
+    margin-left: 4px !important;
   }
   .nl {
     padding: 4px 6px !important;
-    font-size: .7rem !important;
+    font-size: .68rem !important;
   }
 
+  /* SEARCH BAR: Izajya igororoka mu mwanya isigiwe kandi ntabwo izigera yubakana na Sign In */
   .sbar {
-    max-width: 100px !important;    /* Yagabanutshwemo gake ngo hahe umwanya nav-links */
-    margin: 0 !important;           
+    flex: 1 !important;
+    max-width: 105px !important; 
+    min-width: 55px !important; 
+    margin: 0 4px 0 auto !important; /* Isiga umwanya upfuye ihamye ku mfuruka y'iburyo */
   }
   .sbar input {
-    height: 30px !important;        
+    height: 28px !important;        
     padding: 0 6px !important;      
-    font-size: .72rem !important;
+    font-size: .7rem !important;
   }
   .sbar button {
-    height: 30px !important;
-    width: 32px !important;         
+    height: 28px !important;
+    width: 28px !important;         
   }
+
+  /* NAV RIGHT (Sign In): Iguma ihamye ku ruhande kandi ntihinduka */
   .nav-r {
-    margin-left: 2px !important;    
-    gap: 3px !important;
+    margin-left: 0 !important;    
+    gap: 2px !important;
+    flex-shrink: 0 !important; 
   }
   .nb {
-    height: 30px !important;        
-    padding: 0 6px !important;      
-    font-size: .7rem !important;   
+    height: 28px !important;        
+    padding: 0 5px !important;      
+    font-size: .68rem !important;   
   }
 }
 
