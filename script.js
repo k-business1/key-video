@@ -522,76 +522,7 @@ function aComments(){
     var rows=list.map(function(c){return'<tr><td>'+h(c.name||c.gmail)+'</td><td style="font-size:.7rem;color:var(--t2)">'+h(c.movieId)+'</td><td>'+h(c.emoji||'💬')+' '+h(c.comment.substring(0,60))+'</td><td style="font-size:.7rem">'+fmtDate(c.date)+'</td><td><button class="ab2 ab2-red" onclick="admDelCmt(\''+c.id+'\')">Del</button></td></tr>';}).join('');
     document.getElementById('abody').innerHTML='<div class="atw"><div class="ath"><h3>💬 Comments ('+list.length+')</h3></div><div style="overflow-x:auto"><table class="dt"><thead><tr><th>User</th><th>Movie</th><th>Comment</th><th>Date</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
   });
-}
-function admDelCmt(id){if(!confirm('Delete?'))return;api('deleteComment',{token:S.adminToken,id:id},function(r){if(r.ok){toast('Deleted','tok');aComments();if(S.curMovie)loadComments(S.curMovie.id);}else toast(r.msg,'terr');});}
-function aNotif(){
-  api('getNotifications',{gmail:''},function(r){
-    var list=r.notifications||[];
-    var rows=list.map(function(n){return'<tr><td>'+h(n.title)+'</td><td>'+h(n.message.substring(0,50))+'</td><td>'+h(n.type)+'</td><td style="font-size:.7rem">'+fmtDate(n.date)+'</td><td><button class="ab2 ab2-red" onclick="aDelNotif(\''+n.id+'\')">Del</button></td></tr>';}).join('');
-    document.getElementById('abody').innerHTML=
-      '<div class="aform2"><h3>🔔 Send Notification to All Users</h3>'+
-      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Title</label><input class="af2" id="ntT" placeholder="e.g. New Movies Added!"></div>'+
-      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Message</label><textarea class="af2" id="ntM" rows="3" placeholder="Your message…"></textarea></div>'+
-      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Type</label><select class="af2" id="ntTy"><option value="info">ℹ️ Info</option><option value="download">📱 App Download</option><option value="new">✨ New Content</option></select></div>'+
-      '<div class="fa-row"><button class="ab2 ab2-red" onclick="aSendNotif()">📤 Send to All Users</button></div></div>'+
-      '<div class="atw"><div class="ath"><h3>Sent Notifications ('+list.length+')</h3></div><div style="overflow-x:auto"><table class="dt"><thead><tr><th>Title</th><th>Message</th><th>Type</th><th>Date</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
-  });
-}
-function aSendNotif(){
-  var t=document.getElementById('ntT').value.trim(),m=document.getElementById('ntM').value.trim(),ty=document.getElementById('ntTy').value;
-  if(!t||!m){toast('Fill title and message','terr');return;}
-  api('addNotification',{token:S.adminToken,title:t,message:m,type:ty},function(r){if(r.ok){toast('Notification sent! 🔔','tok');document.getElementById('ntT').value='';document.getElementById('ntM').value='';aNotif();}else toast(r.msg,'terr');});
-}
-function aDelNotif(id){if(!confirm('Delete?'))return;api('deleteNotification',{token:S.adminToken,id:id},function(r){if(r.ok){toast('Deleted','tok');aNotif();}else toast(r.msg,'terr');});}
-function aPages(){
-  api('getPages',{},function(r){
-    var pages=r.pages||{};
-    document.getElementById('abody').innerHTML='<div class="aform2"><h3>📄 Edit Pages</h3>'+
-      ['contact','about','follow'].map(function(key){
-        var pg=pages[key]||{title:cap(key)+' Us',content:''};
-        return'<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--brd)">'+
-          '<p style="font-size:.8rem;font-weight:700;margin-bottom:8px">📌 '+cap(key)+' Page</p>'+
-          '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Title</label><input class="af2" id="pt-'+key+'" value="'+h(pg.title)+'"></div>'+
-          '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Content</label><textarea class="af2" id="pc-'+key+'" rows="4" placeholder="Page text…">'+h(pg.content)+'</textarea></div>'+
-          '<button class="ab2 ab2-red" onclick="aSavePage(\''+key+'\')">💾 Save</button></div>';
-      }).join('')+'</div>';
-  });
-}
-function aSavePage(key){
-  api('savePage',{token:S.adminToken,key:key,title:document.getElementById('pt-'+key).value.trim(),content:document.getElementById('pc-'+key).value.trim()},function(r){
-    if(r.ok){toast(r.msg,'tok');api('getPages',{},function(pr){if(pr.ok)S.pages=pr.pages||{};});}else toast(r.msg,'terr');
-  });
-}
-function aTraffic(){
-  api('getTraffic',{token:S.adminToken},function(r){
-    if(!r.ok){aErr(r.msg);return;}var list=r.traffic||[];
-    var items=list.map(function(t){return'<div class="tf"><span class="tf-t">'+fmtDate(t.timestamp)+'</span><span class="tf-u">'+h(t.user)+'</span><span class="tf-a">'+h(t.action)+'</span><span style="color:var(--t2);font-size:.71rem">'+h(t.country||'—')+'</span><span style="color:var(--t3);font-size:.69rem">'+h(t.details||'')+'</span></div>';}).join('');
-    document.getElementById('abody').innerHTML='<div class="atw"><div class="ath"><h3>📈 Traffic Log ('+list.length+')</h3></div><div style="padding:0 14px 14px">'+(items||'<p style="padding:18px;color:var(--t2)">No data yet.</p>')+'</div></div>';
-  });
-}
-function aSettings(){
-  api('getSettings',{},function(r){
-    var s=r.settings||{};
-    document.getElementById('abody').innerHTML=
-      '<div class="aform2"><h3>⚙️ Site Settings</h3><div class="fgrid">'+
-      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">Site Name</label><input class="af2" id="ss-n" value="'+h(s['site_name']||'KEYTUBE')+'"></div>'+
-      '<div class="fg"><label style="font-size:.7rem;color:var(--t2)">New Admin Password (blank = keep)</label><input class="af2" type="password" id="ss-p" placeholder="Leave blank to keep"></div>'+
-      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">🌐 Favicon URL (leave blank to keep default)</label><input class="af2" id="ss-fav" value="'+h(s['favicon_url']||'')+'" placeholder="https://…/icon.png"></div>'+
-      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">🖼 Background Image URL</label><input class="af2" id="ss-bg" value="'+h(s['background_url']||'')+'" placeholder="https://…/bg.jpg"></div>'+
-      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">📱 Mobile App Download URL</label><input class="af2" id="ss-app" value="'+h(s['app_download_url']||'')+'" placeholder="https://…/keytube.apk"></div>'+
-      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">📢 Ads Top</label><textarea class="af2" id="ss-at" rows="3">'+h(s['ads_top']||'')+'</textarea></div>'+
-      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">📢 Ads Middle</label><textarea class="af2" id="ss-am" rows="3">'+h(s['ads_middle']||'')+'</textarea></div>'+
-      '<div class="fg full"><label style="font-size:.7rem;color:var(--t2)">📢 Ads Bottom</label><textarea class="af2" id="ss-ab" rows="3">'+h(s['ads_bottom']||'')+'</textarea></div>'+
-      '</div><div class="fa-row" style="margin-top:11px"><button class="ab2 ab2-red" onclick="aSaveSettings()">💾 Save All Settings</button></div></div>';
-  });
-}
-function aSaveSettings(){
-  var sett={'site_name':document.getElementById('ss-n').value.trim(),'favicon_url':document.getElementById('ss-fav').value.trim(),'background_url':document.getElementById('ss-bg').value.trim(),'app_download_url':document.getElementById('ss-app').value.trim(),'ads_top':document.getElementById('ss-at').value,'ads_middle':document.getElementById('ss-am').value,'ads_bottom':document.getElementById('ss-ab').value};
-  var np=document.getElementById('ss-p').value;if(np)sett['admin_password']=np;
-  api('updateSettings',{token:S.adminToken,settings:sett},function(r){
-    if(r.ok){toast(r.msg,'tok');api('getSettings',{},function(g){if(g.ok){S.settings=g.settings;applySettings();}});}else toast(r.msg,'terr');
-  });
-}
+
 function aErr(msg){document.getElementById('abody').innerHTML='<p style="color:var(--red);padding:18px">'+h(msg)+'</p>';}
  let count = 0;
 document.addEventListener("click", function () {
