@@ -139,7 +139,7 @@ input,select,textarea{font-family:inherit}
 .chov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 55%);opacity:0;transition:opacity .2s;border-radius:var(--r);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px}
 .cpl{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--red);font-size:.95rem}
 .ci{padding:5px 0}.ctit{font-size:.79rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.csub{font-size:.7rem;color:var(--t2);margin-top:2px;display:flex;gap:5px}.crat{color:#e67e00;font-weight:600}
+.csub{font-size:.7 roll;color:var(--t2);margin-top:2px;display:flex;gap:5px}.crat{color:#e67e00;font-weight:600}
 
 /* ── v4 COMEDY AUTO-NEXT BANNER ── */
 #autoNextBanner{
@@ -316,7 +316,7 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 
 /* ── MEDIA QUERY YA MOBILE IKOSOYE ── */
 @media(max-width:620px){
-  .nav-links{display:none}
+  /* .nav-links{display:none} <-- HANO HAKUWEHO KUGIRA NGO BUTTONS ZIGUMEHO MURI RESIZE */
   .section{padding:12px 12px}
   .catpills{padding:7px 12px}
   .adslot{margin:5px 12px}
@@ -332,42 +332,53 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 
   /* ── IGICE GIKOSORA NAVBAR KU TELEPHONE ── */
   #nav {
-    gap: 4px !important;            /* Gabanya gap hagati y'ibintu muri Navbar */
-    padding: 0 6px !important;       /* Gabanya padding ku mpande zombi */
+    gap: 4px !important;            
+    padding: 0 6px !important;       
     justify-content: space-between !important;
   }
   .logo {
-    gap: 3px !important;            /* Gabanya umwanya hagati ya logo n'izina */
+    gap: 3px !important;            
   }
   .logo-t {
-    font-size: 15px !important;     /* Gabanya size y'izina "KEYTUBE" */
+    font-size: 15px !important;     
   }
   .kb {
-    width: 26px !important;         /* Gabanya uburebure bw'agasanduku ka logo */
+    width: 26px !important;         
     height: 22px !important;
     font-size: 14px !important;
   }
+  
+  /* Gufasha Home na Playlist kugaragara neza no kuri screen ntoya */
+  .nav-links {
+    display: flex !important; 
+    gap: 1px !important;
+  }
+  .nl {
+    padding: 4px 6px !important;
+    font-size: .7rem !important;
+  }
+
   .sbar {
-    max-width: 120px !important;    /* Gabanya uburebure bwa search bar ngo itatwara umwanya munini */
-    margin: 0 !important;           /* Kukuraho margin auto kugira ngo yegere iburyo */
+    max-width: 100px !important;    /* Yagabanutshwemo gake ngo hahe umwanya nav-links */
+    margin: 0 !important;           
   }
   .sbar input {
-    height: 30px !important;        /* Gabanya uburebure bw'agakuru (height) */
-    padding: 0 8px !important;      /* Gabanya padding imbere */
-    font-size: .75rem !important;
+    height: 30px !important;        
+    padding: 0 6px !important;      
+    font-size: .72rem !important;
   }
   .sbar button {
     height: 30px !important;
-    width: 36px !important;         /* Gabanya ubugari bw'agapira gashakisha */
+    width: 32px !important;         
   }
   .nav-r {
-    margin-left: 2px !important;    /* Gabanya margin-left */
+    margin-left: 2px !important;    
     gap: 3px !important;
   }
   .nb {
-    height: 30px !important;        /* Gabanya height ya Sign In na Sign Up buttons */
-    padding: 0 8px !important;      /* Gabanya padding ngo zibe ntoya */
-    font-size: .72rem !important;   /* Gabanya font-size ngo amagambo adasohoka */
+    height: 30px !important;        
+    padding: 0 6px !important;      
+    font-size: .7rem !important;   
   }
 }
 
