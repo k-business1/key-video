@@ -439,4 +439,445 @@ function resetForm(){
 }
 </script>
 </body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KEYTUBE Upload Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{
+  --w:#fff;--bg:#f9f9f9;--bg2:#f2f2f2;--brd:#e5e5e5;--txt:#0f0f0f;--t2:#606060;--t3:#aaa;
+  --red:#ff0000;--r2:#cc0000;--blue:#065fd4;--green:#2ba640;--r:10px;--r2px:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif;}
+body{background:var(--bg);color:var(--txt);min-height:100vh;}
+
+/* ===== TOP BAR (matches admin panel) ===== */
+header{
+  height:60px;background:var(--w);display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;box-shadow:0 2px 10px rgba(0,0,0,.06);position:sticky;top:0;z-index:999;
+}
+.logo{display:flex;align-items:center;gap:8px;}
+.logo-kb{width:34px;height:28px;background:var(--red);border-radius:5px;display:grid;place-items:center;overflow:hidden;flex-shrink:0;}
+.logo-kb img{width:100%;height:100%;object-fit:cover;}
+.logo-kb span{font-family:'Bebas Neue';font-size:17px;color:#fff;}
+.logo-title{font-family:'Bebas Neue';font-size:20px;letter-spacing:1px;color:var(--red);}
+.hdr-user{font-size:.78rem;color:var(--t2);display:flex;align-items:center;gap:10px;}
+.hdr-back{font-size:.78rem;color:var(--blue);cursor:pointer;text-decoration:none;}
+
+/* ===== GATE SCREEN ===== */
+#gate{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px;z-index:2000;}
+.gate-card{background:var(--w);border:1px solid var(--brd);border-radius:14px;padding:34px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.08);}
+.gate-card h2{font-size:1rem;margin-bottom:8px;}
+.gate-card p{font-size:.82rem;color:var(--t2);margin-bottom:20px;line-height:1.5;}
+.gate-btn{padding:11px 22px;border-radius:var(--r2px);background:var(--red);color:#fff;font-weight:700;font-size:.85rem;border:none;cursor:pointer;}
+.gate-btn:hover{background:var(--r2);}
+
+/* ===== CONTAINER ===== */
+.container{max-width:1100px;margin:auto;padding:24px 18px;}
+.card{background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:24px;box-shadow:0 3px 14px rgba(0,0,0,.05);margin-bottom:22px;}
+.card-title{font-size:1.05rem;font-weight:700;margin-bottom:18px;color:var(--red);display:flex;align-items:center;gap:8px;}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.input{margin-bottom:16px;}
+.input label{display:block;font-size:.72rem;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px;}
+.input input,.input textarea,.input select{
+  width:100%;padding:11px 12px;border:1.5px solid var(--brd);border-radius:var(--r2px);
+  font-size:.88rem;color:var(--txt);outline:none;background:var(--bg);transition:.15s;
+}
+.input input:focus,.input textarea:focus,.input select:focus{border-color:var(--red);background:var(--w);}
+.input textarea{resize:none;height:110px;}
+.checks{display:flex;gap:22px;margin-top:6px;flex-wrap:wrap;}
+.checks label{display:flex;align-items:center;gap:7px;font-size:.82rem;cursor:pointer;}
+
+/* ===== UPLOAD BOXES ===== */
+.uploadBox{
+  border:2px dashed var(--red);border-radius:var(--r);padding:30px 16px;text-align:center;
+  cursor:pointer;transition:.2s;background:#fff8f8;
+}
+.uploadBox:hover{background:#ffeaea;}
+.uploadBox .ic{font-size:30px;margin-bottom:6px;}
+.uploadBox p{font-size:.82rem;color:var(--t2);}
+.uploadBox .fname{font-size:.78rem;color:var(--red);font-weight:700;margin-top:6px;word-break:break-all;}
+
+.progress{width:100%;height:9px;background:var(--bg2);border-radius:20px;overflow:hidden;margin-top:12px;display:none;}
+.bar{height:100%;width:0%;background:var(--red);transition:.2s;}
+.pct{font-size:.72rem;color:var(--t2);margin-top:4px;text-align:right;display:none;}
+
+.preview{margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;}
+.preview img{width:140px;border-radius:8px;display:none;border:1px solid var(--brd);}
+.preview video{width:240px;border-radius:8px;display:none;border:1px solid var(--brd);}
+
+button.main-btn{
+  width:100%;padding:14px;border:none;background:var(--red);color:#fff;border-radius:var(--r2px);
+  font-size:.92rem;cursor:pointer;font-weight:700;transition:.2s;margin-top:6px;
+}
+button.main-btn:hover{background:var(--r2);}
+button.main-btn:disabled{background:#e2a3a3;cursor:not-allowed;}
+
+.urlBox{margin-top:16px;background:var(--bg);padding:14px;border-radius:var(--r2px);border:1px solid var(--brd);font-size:.78rem;}
+.urlBox b{font-size:.7rem;text-transform:uppercase;color:var(--t2);letter-spacing:.3px;}
+.urlBox div{word-break:break-all;color:var(--blue);margin-bottom:8px;}
+
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--txt);color:#fff;
+  border-radius:var(--r2px);padding:10px 20px;font-size:.82rem;font-weight:500;opacity:0;transition:.22s;z-index:9999;pointer-events:none;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.tok{background:#2e7d32;}
+#toast.terr{background:#d32f2f;}
+
+@media(max-width:800px){.grid{grid-template-columns:1fr;}.preview img,.preview video{width:100%;}}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ===== ACCESS GATE ===== -->
+<div id="gate">
+  <div class="gate-card">
+    <h2>🔒 Sign-in required</h2>
+    <p>Ugomba kuba winjiye (admin cyangwa user) kugira ngo ubone iyi page yo gushyiraho movies/videos.</p>
+    <button class="gate-btn" onclick="window.location.href='index.html'">← Subira ku rubuga / Sign in</button>
+  </div>
+</div>
+
+<!-- ===== TOP BAR ===== -->
+<header>
+  <div class="logo">
+    <div class="logo-kb"><img src="logo.png" alt="K" onerror="this.parentNode.innerHTML='<span>K</span>'"></div>
+    <span class="logo-title">KEYTUBE UPLOAD</span>
+  </div>
+  <div class="hdr-user">
+    <span id="whoami"></span>
+    <a class="hdr-back" onclick="window.location.href='index.html'">← Back to site</a>
+  </div>
+</header>
+
+<div class="container">
+  <div class="card">
+    <div class="card-title">🎬 Add Movie / Series / Song / News</div>
+
+    <div class="grid">
+      <div>
+        <div class="input">
+          <label>Title *</label>
+          <input type="text" id="movieName" placeholder="Enter title">
+        </div>
+
+        <div class="input">
+          <label>Description</label>
+          <textarea id="description" placeholder="Synopsis / description"></textarea>
+        </div>
+
+        <div class="grid" style="gap:14px;grid-template-columns:1fr 1fr;">
+          <div class="input">
+            <label>Type</label>
+            <select id="type">
+              <option value="movie">Movie</option>
+              <option value="series">Series</option>
+              <option value="song">Song</option>
+              <option value="news">News</option>
+            </select>
+          </div>
+          <div class="input">
+            <label>Category</label>
+            <select id="category">
+              <option value="english">English</option>
+              <option value="french">French</option>
+              <option value="indian">Indian</option>
+              <option value="chinese">Chinese</option>
+              <option value="drama">Drama</option>
+              <option value="comedy">Comedy</option>
+              <option value="cartoon">Cartoon</option>
+              <option value="news">News</option>
+              <option value="song">Song</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid" style="gap:14px;grid-template-columns:1fr 1fr;">
+          <div class="input">
+            <label>Country</label>
+            <input type="text" id="country" placeholder="Country">
+          </div>
+          <div class="input">
+            <label>Year</label>
+            <input type="number" id="year" value="2026">
+          </div>
+        </div>
+
+        <div class="grid" style="gap:14px;grid-template-columns:1fr 1fr 1fr;">
+          <div class="input">
+            <label>Rating</label>
+            <input type="text" id="rating" placeholder="8.5">
+          </div>
+          <div class="input">
+            <label>Season</label>
+            <input type="number" id="season" value="1">
+          </div>
+          <div class="input">
+            <label>Episode</label>
+            <input type="number" id="episode" value="1">
+          </div>
+        </div>
+
+        <div class="checks">
+          <label><input type="checkbox" id="featured"> Hero Banner / Featured</label>
+          <label><input type="checkbox" id="newRelease"> New Release</label>
+        </div>
+      </div>
+
+      <div>
+        <div class="input">
+          <label>Cover Image</label>
+          <div class="uploadBox" id="coverBox" onclick="document.getElementById('cover').click()">
+            <div class="ic">📷</div>
+            <p>Click to select cover image</p>
+            <div class="fname" id="coverName"></div>
+            <input type="file" id="cover" accept="image/*" hidden>
+          </div>
+          <div class="progress" id="coverProgWrap"><div id="coverBar" class="bar"></div></div>
+          <div class="pct" id="coverPct">0%</div>
+          <div class="preview"><img id="coverPreview"></div>
+        </div>
+
+        <div class="input">
+          <label>Movie / Video File</label>
+          <div class="uploadBox" id="videoBox" onclick="document.getElementById('video').click()">
+            <div class="ic">🎬</div>
+            <p>Click to select video file</p>
+            <div class="fname" id="videoName"></div>
+            <input type="file" id="video" accept="video/*" hidden>
+          </div>
+          <div class="progress" id="videoProgWrap"><div id="videoBar" class="bar"></div></div>
+          <div class="pct" id="videoPct">0%</div>
+          <div class="preview"><video id="videoPreview" controls></video></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="urlBox">
+      <b>Cover URL</b>
+      <div id="coverURL">Waiting upload...</div>
+      <b>Video URL</b>
+      <div id="videoURL">Waiting upload...</div>
+    </div>
+
+    <button class="main-btn" id="uploadBtn" onclick="uploadEverything()">⬆ UPLOAD &amp; SAVE MOVIE</button>
+  </div>
+</div>
+
+<script>
+/* ════════ CONFIG ════════ */
+const API = "https://script.google.com/macros/s/AKfycbxVdY-_WNOhxAEVqAMi2E1Q6R0KVBWnhq7EQGwNj21BWpbIOfi7phMt3y85qEhs9tXQ/exec";
+const CLOUD_NAME = "dajgyzx3c";
+const UPLOAD_PRESET = "keytube";
+const FOLDER = "keytube";
+
+/* ════════ ACCESS GATE ════════ */
+(function checkAccess(){
+  const adminToken = sessionStorage.getItem("km_a");
+  const userSession = sessionStorage.getItem("km_u");
+  if(!adminToken && !userSession){
+    document.getElementById("gate").style.display = "flex";
+    return;
+  }
+  try{
+    if(userSession){
+      const u = JSON.parse(userSession);
+      document.getElementById("whoami").textContent = u.name || u.gmail || "";
+    } else if(adminToken){
+      document.getElementById("whoami").textContent = "Admin";
+    }
+  }catch(e){}
+})();
+
+/* ════════ TOAST ════════ */
+function toast(msg, type){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "show" + (type ? " " + type : "");
+  clearTimeout(t._tt);
+  t._tt = setTimeout(()=>{ t.className=""; }, 3200);
+}
+
+/* ════════ FILE PREVIEWS ════════ */
+const coverInput = document.getElementById("cover");
+const videoInput = document.getElementById("video");
+
+coverInput.addEventListener("change", function(){
+  const f = this.files[0];
+  if(!f) return;
+  document.getElementById("coverName").textContent = f.name;
+  const img = document.getElementById("coverPreview");
+  img.src = URL.createObjectURL(f);
+  img.style.display = "block";
+});
+
+videoInput.addEventListener("change", function(){
+  const f = this.files[0];
+  if(!f) return;
+  document.getElementById("videoName").textContent = f.name;
+  const vid = document.getElementById("videoPreview");
+  vid.src = URL.createObjectURL(f);
+  vid.style.display = "block";
+});
+
+/* ════════ CLOUDINARY UPLOAD (with progress) ════════ */
+function uploadToCloudinary(file, resourceType, barId, pctId){
+  return new Promise((resolve, reject)=>{
+    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`;
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", UPLOAD_PRESET);
+    fd.append("folder", FOLDER);
+
+    const wrap = document.getElementById(barId + "Wrap") || document.getElementById(barId.replace("Bar","ProgWrap"));
+    const barEl = document.getElementById(barId);
+    const pctEl = document.getElementById(pctId);
+    if(barEl.parentElement) barEl.parentElement.style.display = "block";
+    if(pctEl) pctEl.style.display = "block";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+
+    xhr.upload.onprogress = function(e){
+      if(e.lengthComputable){
+        const percent = Math.round((e.loaded / e.total) * 100);
+        barEl.style.width = percent + "%";
+        if(pctEl) pctEl.textContent = percent + "%";
+      }
+    };
+
+    xhr.onload = function(){
+      if(xhr.status >= 200 && xhr.status < 300){
+        try{
+          const data = JSON.parse(xhr.responseText);
+          resolve(data);
+        }catch(err){
+          reject(new Error("Invalid response from Cloudinary"));
+        }
+      } else {
+        reject(new Error("Cloudinary upload failed (status " + xhr.status + ")"));
+      }
+    };
+    xhr.onerror = function(){ reject(new Error("Network error during upload")); };
+    xhr.send(fd);
+  });
+}
+
+async function uploadRetry(file, resourceType, barId, pctId, retries){
+  retries = retries === undefined ? 2 : retries;
+  let lastErr;
+  for(let i = 0; i <= retries; i++){
+    try{
+      return await uploadToCloudinary(file, resourceType, barId, pctId);
+    }catch(err){
+      lastErr = err;
+      if(i < retries) await new Promise(r => setTimeout(r, 800));
+    }
+  }
+  throw lastErr;
+}
+
+/* ════════ SAVE TO BACKEND ════════ */
+async function saveMovie(coverURL, videoURL){
+  const movie = {
+    action: "addMovie",
+    token: sessionStorage.getItem("km_a") || "",
+    name: document.getElementById("movieName").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    category: document.getElementById("category").value.toLowerCase(),
+    type: document.getElementById("type").value,
+    country: document.getElementById("country").value.trim(),
+    year: document.getElementById("year").value,
+    rating: document.getElementById("rating").value,
+    season: document.getElementById("season").value,
+    episode: document.getElementById("episode").value,
+    featured: document.getElementById("featured").checked,
+    isNew: document.getElementById("newRelease").checked,
+    cover: coverURL,
+    videoURL: videoURL,
+    downloadURL: videoURL
+  };
+
+  const res = await fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(movie)
+  });
+  return await res.json();
+}
+
+/* ════════ MAIN UPLOAD FLOW ════════ */
+async function uploadEverything(){
+  const name = document.getElementById("movieName").value.trim();
+  if(!name){ toast("Enter a title first", "terr"); return; }
+
+  const coverFile = coverInput.files[0];
+  const videoFile = videoInput.files[0];
+  if(!coverFile){ toast("Select a cover image", "terr"); return; }
+  if(!videoFile){ toast("Select a video file", "terr"); return; }
+
+  const btn = document.getElementById("uploadBtn");
+  btn.disabled = true;
+  btn.textContent = "Uploading...";
+
+  try{
+    // Upload cover
+    btn.textContent = "Uploading cover...";
+    const cover = await uploadRetry(coverFile, "image", "coverBar", "coverPct");
+    document.getElementById("coverURL").textContent = cover.secure_url;
+
+    // Upload video
+    btn.textContent = "Uploading video...";
+    const video = await uploadRetry(videoFile, "video", "videoBar", "videoPct");
+    document.getElementById("videoURL").textContent = video.secure_url;
+
+    // Save to backend
+    btn.textContent = "Saving...";
+    const save = await saveMovie(cover.secure_url, video.secure_url);
+
+    if(save.ok){
+      toast("✅ Uploaded and saved successfully", "tok");
+      resetForm();
+    } else {
+      toast("❌ " + (save.msg || "Could not save movie"), "terr");
+    }
+  }catch(err){
+    console.error(err);
+    toast("❌ Upload failed: " + err.message, "terr");
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "⬆ UPLOAD & SAVE MOVIE";
+  }
+}
+
+function resetForm(){
+  ["movieName","description","country","rating"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("year").value = 2026;
+  document.getElementById("season").value = 1;
+  document.getElementById("episode").value = 1;
+  document.getElementById("featured").checked = false;
+  document.getElementById("newRelease").checked = false;
+  coverInput.value = "";
+  videoInput.value = "";
+  document.getElementById("coverName").textContent = "";
+  document.getElementById("videoName").textContent = "";
+  document.getElementById("coverPreview").style.display = "none";
+  document.getElementById("videoPreview").style.display = "none";
+  document.getElementById("coverBar").style.width = "0%";
+  document.getElementById("videoBar").style.width = "0%";
+  document.getElementById("coverPct").textContent = "0%";
+  document.getElementById("videoPct").textContent = "0%";
+  document.getElementById("coverProgWrap").style.display = "none";
+  document.getElementById("videoProgWrap").style.display = "none";
+  document.getElementById("coverURL").textContent = "Waiting upload...";
+  document.getElementById("videoURL").textContent = "Waiting upload...";
+}
+</script>
+</body>
 </html>
