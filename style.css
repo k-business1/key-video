@@ -13,8 +13,8 @@ input,select,textarea{font-family:inherit}
 #pbar{position:fixed;top:0;left:0;z-index:9999;height:3px;background:var(--red);width:0%;transition:width .3s;pointer-events:none}
 #pbar.done{opacity:0;transition:opacity .5s}
 
-/* ── NAVBAR ── */
-#nav{position:fixed;top:3px;left:0;right:0;z-index:900;height:var(--nav);background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 14px;gap:8px}
+/* ── NAVBAR (DESKTOP & GENERAL) ── */
+#nav{position:fixed;top:3px;left:0;right:0;z-index:900;height:var(--nav);background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 20px;gap:15px}
 .logo{display:flex;align-items:center;gap:5px;cursor:pointer;flex-shrink:0}
 .kb{background:var(--red);color:#fff;font-family:'Bebas Neue';font-size:18px;width:32px;height:26px;display:grid;place-items:center;border-radius:3px;flex-shrink:0}
 .logo-t{font-family:'Bebas Neue';font-size:18px;letter-spacing:1px;color:var(--txt)}
@@ -22,13 +22,13 @@ input,select,textarea{font-family:inherit}
 .nl{padding:6px 10px;border-radius:var(--r);font-size:.8rem;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
 .nl:hover,.nl.act{background:var(--bg2);color:var(--txt)}
 
-/* SEARCH BAR (DESKTOP) - Gushyira search bar rwagati neza */
-.sbar{flex:1;max-width:540px;display:flex;margin:0 auto;padding:0 15px}
+/* SEARCH BAR (DESKTOP) - Yakosowe ngo itazigera yegera cyangwa ngo ikore ku bindi bice */
+.sbar{flex:1;max-width:540px;display:flex;margin:0 30px}
 .sbar input{flex:1;height:36px;border:1.5px solid var(--brd);border-right:none;border-radius:20px 0 0 20px;padding:0 15px;font-size:.85rem;outline:none;background:var(--w);color:var(--txt)}
 .sbar input:focus{border-color:#1a73e8}
 .sbar button{height:36px;width:50px;background:var(--bg2);border:1.5px solid var(--brd);border-left:none;border-radius:0 20px 20px 0;display:grid;place-items:center}
 .sbar button:hover{background:var(--brd)}
-.nav-r{display:flex;align-items:center;gap:5px;margin-left:6px;flex-shrink:0}
+.nav-r{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .nb{height:34px;padding:0 13px;border-radius:var(--r);font-size:.81rem;font-weight:500;display:flex;align-items:center;gap:5px;transition:all .15s;cursor:pointer;white-space:nowrap}
 .nb:hover{background:rgba(0,0,0,.06)}.nb-red{background:var(--red);color:#fff}.nb-red:hover{background:var(--r2)}
 .nb-out{border:1.5px solid var(--brd);color:var(--blue)}.nb-out:hover{background:rgba(6,95,212,.06)}
@@ -331,10 +331,10 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   #appBanner{padding:9px 12px}
   #notifPanel{right:8px;width:calc(100vw - 16px)}
 
-  /* ── NAVBAR MOBILE ── */
+  /* ── NAVBAR MOBILE - YAKOSOWE NEZA BY'AKAME ── */
   #nav {
-    gap: 0 !important;              
-    padding: 0 6px !important;       
+    gap: 4px !important;              
+    padding: 0 8px !important;       
     justify-content: space-between !important;
   }
   .logo {
@@ -350,7 +350,6 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
     font-size: 11px !important;
   }
   
-  /* Izumvisha nav-links ibumoso zifite flex-shrink:0 */
   .nav-links {
     display: flex !important; 
     gap: 2px !important;
@@ -361,17 +360,17 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
     font-size: .68rem !important;
   }
 
-  /* SEARCH BAR RWAGATI: Ubu ifite `margin: 0 auto` n'izindi mbibi ziyirinda kwegera log in */
+  /* SEARCH BAR MOBILE: Ifite margin ihamye iburyo n'ibumoso (margin: 0 10px), ikaguma rwagati neza kandi ntikore ku gice cy'ibirango cyangwa icyo kwinjira */
   .sbar {
     flex: 1 !important;             
-    max-width: 140px !important;    
-    min-width: 45px !important;     
-    margin: 0 auto !important;       /* Ibi bituma isanga mu rwagati neza mu buryo buringaniye */
-    padding: 0 4px !important;
+    max-width: 150px !important;    
+    min-width: 50px !important;     
+    margin: 0 10px !important;       /* Bituma isiga umwanya ufatika ku mpande zombi, ntizigera zikorana */
+    padding: 0 !important;
   }
   .sbar input {
     height: 28px !important;        
-    padding: 0 5px !important;      
+    padding: 0 6px !important;      
     font-size: .68rem !important;
   }
   .sbar button {
@@ -379,15 +378,15 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
     width: 26px !important;         
   }
 
-  /* NAV RIGHT: Zifite umwanya wazo zihamye iburyo neza nta gukorana na search bar */
+  /* NAV RIGHT MOBILE */
   .nav-r {
     margin-left: 0 !important;    
-    gap: 2px !important;
+    gap: 3px !important;
     flex-shrink: 0 !important;      
   }
   .nb {
     height: 28px !important;        
-    padding: 0 4px !important;      
+    padding: 0 5px !important;      
     font-size: .66rem !important;   
   }
 }
