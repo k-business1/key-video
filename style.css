@@ -13,7 +13,7 @@ input,select,textarea{font-family:inherit}
 #pbar{position:fixed;top:0;left:0;z-index:9999;height:3px;background:var(--red);width:0%;transition:width .3s;pointer-events:none}
 #pbar.done{opacity:0;transition:opacity .5s}
 
-/* ── NAVBAR ── */
+/* ── NAVBAR (DESKTOP & GENERAL) ── */
 #nav{position:fixed;top:3px;left:0;right:0;z-index:900;height:var(--nav);background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 14px;gap:8px}
 .logo{display:flex;align-items:center;gap:5px;cursor:pointer;flex-shrink:0}
 .kb{background:var(--red);color:#fff;font-family:'Bebas Neue';font-size:18px;width:32px;height:26px;display:grid;place-items:center;border-radius:3px;flex-shrink:0}
@@ -22,7 +22,7 @@ input,select,textarea{font-family:inherit}
 .nl{padding:6px 10px;border-radius:var(--r);font-size:.8rem;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
 .nl:hover,.nl.act{background:var(--bg2);color:var(--txt)}
 
-/* SEARCH BAR: Ku ruziga rwa mudasobwa (Desktop) */
+/* SEARCH BAR (DESKTOP) */
 .sbar{flex:1;max-width:540px;display:flex;margin:0 auto}
 .sbar input{flex:1;height:36px;border:1.5px solid var(--brd);border-right:none;border-radius:20px 0 0 20px;padding:0 15px;font-size:.85rem;outline:none;background:var(--w);color:var(--txt)}
 .sbar input:focus{border-color:#1a73e8}
@@ -138,7 +138,7 @@ input,select,textarea{font-family:inherit}
 .cb-comedy{background:linear-gradient(135deg,#ff6b35,#f7931e);color:#fff}
 .cb-song{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
 .cb-news{background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff}
-.chov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 55%);opacity:0;transition:opacity .2s;border-radius:var(--r);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px}
+.chov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 55%);opacity:0;transition:opacity .22s;border-radius:var(--r);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px}
 .cpl{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--red);font-size:.95rem}
 .ci{padding:5px 0}.ctit{font-size:.79rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .csub{font-size:.7rem;color:var(--t2);margin-top:2px;display:flex;gap:5px}.crat{color:#e67e00;font-weight:600}
@@ -316,7 +316,7 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 .foot-bot p{font-size:.71rem;color:var(--t2)}
 .yr{cursor:default;user-select:none}
 
-/* ── MEDIA QUERY YA MOBILE IKOSOYE NEZA (620PX) ── */
+/* ── MEDIA QUERY YA MOBILE IKOSOYE NEZA (MAX-WIDTH: 620PX) ── */
 @media(max-width:620px){
   .section{padding:12px 12px}
   .catpills{padding:7px 12px}
@@ -331,63 +331,65 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   #appBanner{padding:9px 12px}
   #notifPanel{right:8px;width:calc(100vw - 16px)}
 
-  /* ── IGICE GIKOSORA NAVBAR KU MA TELEPHONE ── */
+  /* ── NAVBAR MOBILE CONFIGURATION ── */
   #nav {
-    gap: 0 !important;              /* Dukuyeho gap ngo dukoreshe space-between neza */
-    padding: 0 6px !important;       
-    justify-content: space-between !important;
+    gap: 0 !important;              
+    padding: 0 4px !important;       
+    justify-content: flex-start !important; /* Ituma ibintu bikurikirana neza kuva ibumoso */
   }
   .logo {
     gap: 2px !important;            
-    flex-shrink: 0 !important;      /* Birinda logo kuba ntoya cyane */
+    flex-shrink: 0 !important;      
   }
   .logo-t {
-    font-size: 14px !important;     
+    font-size: 13px !important;     
   }
   .kb {
-    width: 24px !important;         
-    height: 20px !important;
-    font-size: 12px !important;
+    width: 22px !important;         
+    height: 18px !important;
+    font-size: 11px !important;
   }
   
-  /* .nav-links (Home na Playlist): Ntizishobora kugabanuka cyangwa kwihisha */
+  /* Home na Playlist (nav-links) zizaguma zihamye nta guhindura ubugari */
   .nav-links {
     display: flex !important; 
-    gap: 3px !important;
-    flex-shrink: 0 !important;      /* Birinda izi button guhoma/kugabanuka bunini */
+    gap: 2px !important;
+    flex-shrink: 0 !important;      
+    margin-right: auto !important;  /* Ibi nibyo bituma umwanya uri hagati ya Playlist na Search uba ari wo ugabanuka gusa! */
+    margin-left: 2px !important;
   }
   .nl {
-    padding: 4px 6px !important;
+    padding: 4px 5px !important;
     font-size: .68rem !important;
   }
 
-  /* SEARCH BAR: Izafata umwanya usigaye, ariko ihabwe max-width kugira ngo isige gap */
+  /* SEARCH BAR: Ubu ifite uburenganzira bwo kugabanuka neza bitewe n'umwanya uhari */
   .sbar {
-    flex: 1 !important;             /* Ifata umwanya usigaye hagati */
-    max-width: 135px !important;    /* Urubibi rwa nyuma rurinda kwaguka ngo yubakane na Sign In */
-    min-width: 60px !important;     /* Ntishobora kuba ntoya cyane ngo isenyuke */
-    margin: 0 6px 0 auto !important; /* Margin-left auto ikora umwanya (space) hagati ya Playlist na Search */
+    flex: 1 !important;             
+    max-width: 140px !important;    
+    min-width: 45px !important;     /* Noneho ishobora kuba ntoya cyane mu gihe ecran yabaye agasate */
+    margin: 0 4px !important;       
   }
   .sbar input {
     height: 28px !important;        
-    padding: 0 6px !important;      
-    font-size: .7rem !important;
+    padding: 0 5px !important;      
+    font-size: .68rem !important;
   }
   .sbar button {
     height: 28px !important;
-    width: 28px !important;         
+    width: 26px !important;         
   }
 
-  /* NAV RIGHT: Sign In na Sign Up ziri ihamye zifite umwanya wazo badakomanyiriza */
+  /* NAV RIGHT: Sign in na Sign up buttons ziguma zihamye iburyo neza zifite umwanya upfuye */
   .nav-r {
     margin-left: 0 !important;    
     gap: 2px !important;
-    flex-shrink: 0 !important;      /* Birinda Sign In guhindura imiterere */
+    flex-shrink: 0 !important;      /* Birinda Sign In na Sign Up kwitsindagira cyangwa kwihisha */
   }
   .nb {
     height: 28px !important;        
-    padding: 0 5px !important;      
-    font-size: .68rem !important;   
+    padding: 0 4px !important;      
+    font-size: .66rem !important;   
   }
 }
 
