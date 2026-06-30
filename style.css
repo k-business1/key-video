@@ -13,7 +13,7 @@ input,select,textarea{font-family:inherit}
 #pbar{position:fixed;top:0;left:0;z-index:9999;height:3px;background:var(--red);width:0%;transition:width .3s;pointer-events:none}
 #pbar.done{opacity:0;transition:opacity .5s}
 
-/* ── NAVBAR (DESKTOP & GENERAL) ── */
+/* ── NAVBAR ── */
 #nav{position:fixed;top:3px;left:0;right:0;z-index:900;height:var(--nav);background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 14px;gap:8px}
 .logo{display:flex;align-items:center;gap:5px;cursor:pointer;flex-shrink:0}
 .kb{background:var(--red);color:#fff;font-family:'Bebas Neue';font-size:18px;width:32px;height:26px;display:grid;place-items:center;border-radius:3px;flex-shrink:0}
@@ -22,8 +22,8 @@ input,select,textarea{font-family:inherit}
 .nl{padding:6px 10px;border-radius:var(--r);font-size:.8rem;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
 .nl:hover,.nl.act{background:var(--bg2);color:var(--txt)}
 
-/* SEARCH BAR (DESKTOP) */
-.sbar{flex:1;max-width:540px;display:flex;margin:0 auto}
+/* SEARCH BAR (DESKTOP) - Gushyira search bar rwagati neza */
+.sbar{flex:1;max-width:540px;display:flex;margin:0 auto;padding:0 15px}
 .sbar input{flex:1;height:36px;border:1.5px solid var(--brd);border-right:none;border-radius:20px 0 0 20px;padding:0 15px;font-size:.85rem;outline:none;background:var(--w);color:var(--txt)}
 .sbar input:focus{border-color:#1a73e8}
 .sbar button{height:36px;width:50px;background:var(--bg2);border:1.5px solid var(--brd);border-left:none;border-radius:0 20px 20px 0;display:grid;place-items:center}
@@ -316,7 +316,7 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 .foot-bot p{font-size:.71rem;color:var(--t2)}
 .yr{cursor:default;user-select:none}
 
-/* ── MEDIA QUERY YA MOBILE IKOSOYE NEZA (MAX-WIDTH: 620PX) ── */
+/* ── MEDIA QUERY YA MOBILE (MAX-WIDTH: 620PX) ── */
 @media(max-width:620px){
   .section{padding:12px 12px}
   .catpills{padding:7px 12px}
@@ -331,11 +331,11 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   #appBanner{padding:9px 12px}
   #notifPanel{right:8px;width:calc(100vw - 16px)}
 
-  /* ── NAVBAR MOBILE CONFIGURATION ── */
+  /* ── NAVBAR MOBILE ── */
   #nav {
     gap: 0 !important;              
-    padding: 0 4px !important;       
-    justify-content: flex-start !important; /* Ituma ibintu bikurikirana neza kuva ibumoso */
+    padding: 0 6px !important;       
+    justify-content: space-between !important;
   }
   .logo {
     gap: 2px !important;            
@@ -350,25 +350,24 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
     font-size: 11px !important;
   }
   
-  /* Home na Playlist (nav-links) zizaguma zihamye nta guhindura ubugari */
+  /* Izumvisha nav-links ibumoso zifite flex-shrink:0 */
   .nav-links {
     display: flex !important; 
     gap: 2px !important;
     flex-shrink: 0 !important;      
-    margin-right: auto !important;  /* Ibi nibyo bituma umwanya uri hagati ya Playlist na Search uba ari wo ugabanuka gusa! */
-    margin-left: 2px !important;
   }
   .nl {
     padding: 4px 5px !important;
     font-size: .68rem !important;
   }
 
-  /* SEARCH BAR: Ubu ifite uburenganzira bwo kugabanuka neza bitewe n'umwanya uhari */
+  /* SEARCH BAR RWAGATI: Ubu ifite `margin: 0 auto` n'izindi mbibi ziyirinda kwegera log in */
   .sbar {
     flex: 1 !important;             
     max-width: 140px !important;    
-    min-width: 45px !important;     /* Noneho ishobora kuba ntoya cyane mu gihe ecran yabaye agasate */
-    margin: 0 4px !important;       
+    min-width: 45px !important;     
+    margin: 0 auto !important;       /* Ibi bituma isanga mu rwagati neza mu buryo buringaniye */
+    padding: 0 4px !important;
   }
   .sbar input {
     height: 28px !important;        
@@ -380,11 +379,11 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
     width: 26px !important;         
   }
 
-  /* NAV RIGHT: Sign in na Sign up buttons ziguma zihamye iburyo neza zifite umwanya upfuye */
+  /* NAV RIGHT: Zifite umwanya wazo zihamye iburyo neza nta gukorana na search bar */
   .nav-r {
     margin-left: 0 !important;    
     gap: 2px !important;
-    flex-shrink: 0 !important;      /* Birinda Sign In na Sign Up kwitsindagira cyangwa kwihisha */
+    flex-shrink: 0 !important;      
   }
   .nb {
     height: 28px !important;        
