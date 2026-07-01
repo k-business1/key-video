@@ -94,12 +94,20 @@ button.main-btn:disabled{background:#e2a3a3;cursor:not-allowed;}
 
 <div id="toast"></div>
 
-<!-- ===== ACCESS GATE ===== -->
+<!-- ===== ACCESS GATE (Admin password required to save) ===== -->
 <div id="gate">
   <div class="gate-card">
-    <h2>🔒 Sign-in required</h2>
-    <p>Ugomba kuba winjiye (admin cyangwa user) kugira ngo ubone iyi page yo gushyiraho movies/videos.</p>
-    <button class="gate-btn" onclick="window.location.href='index.html'">← Subira ku rubuga / Sign in</button>
+    <h2>🔐 Admin Access Required</h2>
+    <p>Kubika movie kuri Sheet bisaba uburenganzira bwa admin. Injiza password ya admin.</p>
+    <div style="text-align:left;margin-bottom:10px">
+      <label style="display:block;font-size:.68rem;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Admin Password</label>
+      <input id="gatePw" type="password" placeholder="••••••••"
+             style="width:100%;padding:11px 12px;border:1.5px solid var(--brd);border-radius:6px;font-size:.88rem;outline:none;"
+             onkeydown="if(event.key==='Enter')doGateLogin()">
+    </div>
+    <div id="gateErr" style="font-size:.73rem;color:var(--red);min-height:14px;margin-bottom:8px;text-align:left"></div>
+    <button class="gate-btn" id="gateBtn" onclick="doGateLogin()">→ Enter</button>
+    <div style="margin-top:14px;font-size:.76rem;color:var(--t2)">← <a style="color:var(--blue);cursor:pointer" onclick="window.location.href='index.html'">Back to KEYTUBE</a></div>
   </div>
 </div>
 
@@ -236,23 +244,56 @@ const CLOUD_NAME = "dajgyzx3c";
 const UPLOAD_PRESET = "keytube";
 const FOLDER = "keytube";
 
-/* ════════ ACCESS GATE ════════ */
+/* ════════ ACCESS GATE (requires admin token, since addMovie needs it) ════════ */
 (function checkAccess(){
   const adminToken = sessionStorage.getItem("km_a");
-  const userSession = sessionStorage.getItem("km_u");
-  if(!adminToken && !userSession){
-    document.getElementById("gate").style.display = "flex";
+  if(adminToken){
+    document.getElementById("whoami").textContent = "Admin";
+    try{
+      const u = JSON.parse(sessionStorage.getItem("km_u") || "{}");
+      if(u.gmail) document.getElementById("whoami").textContent = u.name || u.gmail;
+    }catch(e){}
     return;
   }
-  try{
-    if(userSession){
-      const u = JSON.parse(userSession);
-      document.getElementById("whoami").textContent = u.name || u.gmail || "";
-    } else if(adminToken){
-      document.getElementById("whoami").textContent = "Admin";
-    }
-  }catch(e){}
+  document.getElementById("gate").style.display = "flex";
 })();
+
+function doGateLogin(){
+  const pw = document.getElementById("gatePw").value;
+  const err = document.getElementById("gateErr");
+  const btn = document.getElementById("gateBtn");
+  if(!pw){ err.textContent = "Enter your password"; return; }
+  err.textContent = "";
+  btn.textContent = "Checking…";
+  btn.disabled = true;
+
+  fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify({ action: "adminLogin", password: pw })
+  })
+  .then(r => r.json())
+  .then(r => {
+    btn.textContent = "→ Enter";
+    btn.disabled = false;
+    if(r.ok){
+      sessionStorage.setItem("km_a", r.token);
+      document.getElementById("gate").style.display = "none";
+      document.getElementById("whoami").textContent = "Admin";
+      toast("Admin access granted ✓", "tok");
+    } else {
+      err.textContent = r.msg || "Wrong password";
+      document.getElementById("gatePw").value = "";
+      document.getElementById("gatePw").focus();
+    }
+  })
+  .catch(e => {
+    btn.textContent = "→ Enter";
+    btn.disabled = false;
+    err.textContent = "Connection error";
+    console.error(e);
+  });
+}
 
 /* ════════ TOAST ════════ */
 function toast(msg, type){
