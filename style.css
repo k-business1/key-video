@@ -22,7 +22,7 @@ input,select,textarea{font-family:inherit}
 .nl{padding:6px 10px;border-radius:var(--r);font-size:.8rem;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
 .nl:hover,.nl.act{background:var(--bg2);color:var(--txt)}
 
-/* SEARCH BAR (DESKTOP) - Yakosowe ngo itazigera yegera cyangwa ngo ikore ku bindi bice */
+/* SEARCH BAR (DESKTOP) */
 .sbar{flex:1;max-width:540px;display:flex;margin:0 30px}
 .sbar input{flex:1;height:36px;border:1.5px solid var(--brd);border-right:none;border-radius:20px 0 0 20px;padding:0 15px;font-size:.85rem;outline:none;background:var(--w);color:var(--txt)}
 .sbar input:focus{border-color:#1a73e8}
@@ -331,63 +331,71 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   #appBanner{padding:9px 12px}
   #notifPanel{right:8px;width:calc(100vw - 16px)}
 
-  /* ── NAVBAR MOBILE - YAKOSOWE NEZA BY'AKAME ── */
+  /* ── NAVBAR MOBILE - YAKOSOWE BURUNDU ── */
   #nav {
     gap: 4px !important;              
-    padding: 0 8px !important;       
+    padding: 0 6px !important;       
+    display: flex !important;
+    align-items: center !important;
     justify-content: space-between !important;
   }
   .logo {
     gap: 2px !important;            
-    flex-shrink: 0 !important;      
+    flex-shrink: 1 !important; /* Bituma igabanuka gake mu bugari niba ecran ari nto cyane */
   }
   .logo-t {
-    font-size: 13px !important;     
+    font-size: 11px !important;     
+    letter-spacing: 0.5px !important;
   }
   .kb {
-    width: 22px !important;         
-    height: 18px !important;
-    font-size: 11px !important;
+    width: 20px !important;         
+    height: 16px !important;
+    font-size: 10px !important;
   }
   
   .nav-links {
     display: flex !important; 
-    gap: 2px !important;
-    flex-shrink: 0 !important;      
+    gap: 1px !important;
+    flex-shrink: 1 !important; /* Kuguza ubugari niba umwanya uba muto */     
   }
   .nl {
-    padding: 4px 5px !important;
-    font-size: .68rem !important;
+    padding: 3px 4px !important;
+    font-size: .63rem !important;
   }
 
-  /* SEARCH BAR MOBILE: Ifite margin ihamye iburyo n'ibumoso (margin: 0 10px), ikaguma rwagati neza kandi ntikore ku gice cy'ibirango cyangwa icyo kwinjira */
+  /* SEARCH BAR MOBILE - Fluid and Flexible Layout */
   .sbar {
     flex: 1 !important;             
-    max-width: 150px !important;    
-    min-width: 50px !important;     
-    margin: 0 10px !important;       /* Bituma isiga umwanya ufatika ku mpande zombi, ntizigera zikorana */
+    min-width: 60px !important; /* Ikumira ko yakwiganda munsi y'uyu mupaka */   
+    max-width: 140px !important;    
+    margin: 0 6px !important;       /* Isiga umwanya ufatika ku mpande nta guhubirana */
     padding: 0 !important;
+    display: flex !important;
   }
   .sbar input {
-    height: 28px !important;        
+    height: 26px !important;        
     padding: 0 6px !important;      
-    font-size: .68rem !important;
+    font-size: .65rem !important;
   }
   .sbar button {
-    height: 28px !important;
-    width: 26px !important;         
+    height: 26px !important;
+    width: 24px !important;         
+  }
+  .sbar button svg, .sbar button img {
+    transform: scale(0.8);
   }
 
   /* NAV RIGHT MOBILE */
   .nav-r {
     margin-left: 0 !important;    
     gap: 3px !important;
-    flex-shrink: 0 !important;      
+    flex-shrink: 1 !important; /* Ikumira kwisunika kuri search bar */     
   }
   .nb {
-    height: 28px !important;        
-    padding: 0 5px !important;      
-    font-size: .66rem !important;   
+    height: 26px !important;        
+    padding: 0 4px !important;      
+    font-size: .63rem !important;   
+    white-space: nowrap !important;
   }
 }
 
