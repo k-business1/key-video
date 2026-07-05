@@ -25,27 +25,6 @@ input,select,textarea{font-family:inherit}
 #toast.tok{background:#2e7d32}
 #toast.terr{background:#d32f2f}
 
-/* ── LOGIN SCREEN ── */
-#loginScreen{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-.ls-card{background:var(--w);border:1px solid var(--brd);border-radius:12px;padding:32px 28px;width:100%;max-width:360px;box-shadow:0 4px 20px rgba(0,0,0,.08);text-align:center}
-.ls-logo{display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:20px}
-.ls-kb{width:40px;height:32px;background:var(--red);border-radius:4px;display:grid;place-items:center;overflow:hidden;flex-shrink:0}
-.ls-kb img{width:100%;height:100%;object-fit:cover}
-.ls-kb span{font-family:'Bebas Neue';font-size:20px;color:#fff}
-.ls-brand{font-family:'Bebas Neue';font-size:22px;letter-spacing:1px}
-.ls-title{font-size:.9rem;font-weight:700;margin-bottom:4px}
-.ls-sub{font-size:.77rem;color:var(--t2);margin-bottom:20px}
-.ls-fg{margin-bottom:12px;text-align:left}
-.ls-fg label{display:block;font-size:.68rem;font-weight:600;color:var(--t2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
-.ls-fi{width:100%;border:1.5px solid var(--brd);border-radius:var(--r2px);padding:9px 12px;font-size:.85rem;color:var(--txt);outline:none;transition:.15s;background:var(--bg)}
-.ls-fi:focus{border-color:var(--red)}
-.ls-err{font-size:.73rem;color:var(--red);min-height:13px;margin-bottom:5px;text-align:left}
-.ls-btn{width:100%;padding:10px;border-radius:var(--r2px);font-size:.85rem;font-weight:700;background:#222;color:#fff;border:none;cursor:pointer;transition:.15s;margin-top:4px}
-.ls-back{margin-top:14px;font-size:.76rem;color:var(--t2)}
-.ls-back a{color:var(--blue);cursor:pointer}
-.spin-sm{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:inline-block;margin-right:5px;vertical-align:middle}
-@keyframes sp{to{transform:rotate(360deg)}}
-
 /* ── ADMIN PANEL ── */
 #admPanel{position:fixed;inset:0;display:none;flex-direction:column;background:var(--bg)}
 #admPanel.open{display:flex}
@@ -114,6 +93,7 @@ table.dt tr:hover td{background:var(--bg)}
 
 /* Spinner */
 .spin{width:22px;height:22px;border:3px solid var(--bg2);border-top-color:var(--red);border-radius:50%;animation:sp .7s linear infinite;margin:60px auto;display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
 
 /* Empty */
 .aerr-box{color:var(--red);padding:18px;font-size:.82rem}
@@ -127,24 +107,8 @@ table.dt tr:hover td{background:var(--bg)}
 <div id="pbar"></div>
 <div id="toast"></div>
 
-<!-- ══ LOGIN SCREEN ══ -->
-<div id="loginScreen">
-  <div class="ls-card">
-    <div class="ls-logo">
-      <div class="ls-kb"><img src="logo.png" alt="K" onerror="this.parentNode.innerHTML='<span>K</span>'"></div>
-      <span class="ls-brand">KEYTUBE</span>
-    </div>
-    <div class="ls-title">🔐 Admin Panel</div>
-    <div class="ls-sub">Enter your admin password to continue</div>
-    <div class="ls-fg">
-      <label>Admin Password</label>
-      <input class="ls-fi" id="adPw" type="password" placeholder="••••••••"
-             onkeydown="if(event.key==='Enter')doAdminLogin()">
-    </div>
-    <div class="ls-err" id="adErr"></div>
-    <button class="ls-btn" id="loginBtn" onclick="doAdminLogin()">→ Enter Admin Panel</button>
-    <div class="ls-back">← <a onclick="window.location.href='index.html'">Back to KEYTUBE</a></div>
-  </div>
+<div id="globalLoader" style="position:fixed;inset:0;background:#f9f9f9;display:flex;align-items:center;justify-content:center;z-index:2000">
+  <div class="spin"></div>
 </div>
 
 <!-- ══ ADMIN PANEL ══ -->
@@ -172,7 +136,7 @@ table.dt tr:hover td{background:var(--bg)}
 
 <script>
 /* ════════════════════════════ CONFIG ════════════════════════════ */
-var API   = 'https://script.google.com/macros/s/AKfycbxkCdezfDfsaQY2rYP1Nbl46G1XFOkrzQQx4aFeSt6u1BNyKj5k4RAKrl3VAA6hQsdLcw/exec';
+var API   = 'https://script.google.com/macros/s/AKfycbxVdY-_WNOhxAEVqAMi2E1Q6R0KVBWnhq7EQGwNj21BWpbIOfi7phMt3y85qEhs9tXQ/exec';
 var TOKEN = '';
 
 /* ════════════════════════════ UTILS ════════════════════════════ */
@@ -202,48 +166,37 @@ function api(action,data,cb){
 /* ════════════════════════════ INIT ════════════════════════════ */
 window.onload = function(){
   var saved = sessionStorage.getItem('km_a');
-  if(saved){TOKEN=saved;openPanel();}
+  if(saved){
+    TOKEN = saved;
+    openPanel();
+    return;
+  }
+  // No password screen — silently open an admin session.
+  api('openAdminSession', {}, function(r){
+    if(r.ok){
+      TOKEN = r.token;
+      sessionStorage.setItem('km_a', TOKEN);
+      openPanel();
+    } else {
+      document.body.innerHTML = '<div style="padding:40px;text-align:center;font-family:Roboto,sans-serif;color:#d32f2f">❌ Could not open admin session: ' + (r.msg || 'Unknown error') + '</div>';
+    }
+  });
 };
 
 /* ════════════════════════════ LOGIN ════════════════════════════ */
-function doAdminLogin(){
-  var pw=document.getElementById('adPw').value;
-  var er=document.getElementById('adErr');
-  var btn=document.getElementById('loginBtn');
-  if(!pw){er.textContent='Enter your password';return;}
-  er.textContent='';
-  btn.innerHTML='<span class="spin-sm"></span> Checking…';
-  btn.disabled=true;
-  api('adminLogin',{password:pw},function(r){
-    btn.innerHTML='→ Enter Admin Panel';btn.disabled=false;
-    if(r.ok){
-      TOKEN=r.token;
-      sessionStorage.setItem('km_a',TOKEN);
-      openPanel();
-      toast('Admin access granted ✓','tok');
-    } else {
-      er.textContent=r.msg||'Wrong password';
-      document.getElementById('adPw').value='';
-      document.getElementById('adPw').focus();
-    }
-  });
-}
-
 function openPanel(){
-  document.getElementById('loginScreen').style.display='none';
+  var loader = document.getElementById('globalLoader');
+  if(loader) loader.remove();
   document.getElementById('admPanel').classList.add('open');
   try{var u=JSON.parse(sessionStorage.getItem('km_u')||'{}');if(u.gmail)document.getElementById('abarUser').textContent=u.name||u.gmail;}catch(e){}
   aTab('dash');
 }
 
 function doLogout(){
-  if(!confirm('Log out of admin panel?'))return;
+  if(!confirm('Clear this admin session? A new one will be opened automatically.'))return;
   TOKEN='';sessionStorage.removeItem('km_a');
-  document.getElementById('admPanel').classList.remove('open');
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('adPw').value='';
-  document.getElementById('adErr').textContent='';
-  toast('Logged out');
+  toast('Session cleared — reopening…');
+  setTimeout(function(){ window.location.reload(); }, 600);
 }
 
 /* ════════════════════════════ TAB ROUTER ════════════════════════════ */
