@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KEYTUBE Help Manager</title>
+<title>Help Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
@@ -28,15 +28,10 @@ input,select,textarea{font-family:inherit}
 #toast.terr{background:#d32f2f}
 
 .abar{height:50px;background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 16px;gap:7px;overflow-x:auto;flex-shrink:0}
-.abar-logo{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-right:6px}
-.abar-kb{width:26px;height:22px;background:var(--red);border-radius:3px;display:grid;place-items:center;overflow:hidden}
-.abar-kb img{width:100%;height:100%;object-fit:cover}
-.abar-kb span{font-family:'Bebas Neue';font-size:14px;color:#fff}
-.abar-title{font-family:'Bebas Neue';font-size:1rem;color:var(--red);letter-spacing:1px;white-space:nowrap}
+.abar-title{font-family:'Bebas Neue';font-size:1.1rem;color:var(--red);letter-spacing:1px;white-space:nowrap;margin-right:10px}
 .atb{padding:5px 11px;border-radius:var(--r);font-size:.76rem;font-weight:500;color:var(--t2);cursor:pointer;white-space:nowrap;transition:.15s;flex-shrink:0}
 .atb.act{background:rgba(255,0,0,.08);color:var(--red);font-weight:700}
 .abar-sp{flex:1;min-width:8px}
-.atb-back{color:var(--blue)!important}
 
 .abody{max-width:900px;margin:0 auto;padding:20px}
 
@@ -51,7 +46,6 @@ input,select,textarea{font-family:inherit}
 .a2btn:hover{background:var(--brd)}
 .a2btn-red{color:var(--red);border-color:rgba(255,0,0,.25);background:rgba(255,0,0,.06)}
 .a2btn-gr{color:var(--green);border-color:rgba(43,166,64,.25);background:rgba(43,166,64,.06)}
-.a2btn-bl{color:var(--blue);border-color:rgba(6,95,212,.25);background:rgba(6,95,212,.06)}
 
 .live-badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:4px 11px;font-size:.75rem;font-weight:700}
 .badge-open{background:#fff3e0;color:#e65100;border:1px solid rgba(230,81,0,.25)}
@@ -71,21 +65,20 @@ input,select,textarea{font-family:inherit}
 <div id="globalLoader"><div class="spin"></div></div>
 
 <div class="abar">
-  <div class="abar-logo">
-    <div class="abar-kb"><img src="logo.png" alt="K" onerror="this.parentNode.innerHTML='<span>K</span>'"></div>
-    <span class="abar-title">HELP MANAGER</span>
-  </div>
+  <span class="abar-title">HELP MANAGER</span>
   <button class="atb act" id="tab-suggest" onclick="hmTab('suggest')">🗨️ Suggestions</button>
   <button class="atb"     id="tab-about"   onclick="hmTab('about')">📝 About Website</button>
   <div class="abar-sp"></div>
-  <button class="atb atb-back" onclick="window.location.href='admin.html'">← Admin Panel</button>
 </div>
 
 <div class="abody" id="hmBody"><div class="spin-inline"></div></div>
 
 <script>
-/* ════════════════════════════ CONFIG ════════════════════════════ */
-var API   = 'https://script.google.com/macros/s/AKfycbxgzFZsHbSDtXnykjTRgdq6B3m1I0DVQj378hU26RG9YWmqvxr_HQ3LX1SiAl6zH3hQPg/exec';
+/* ════════════════════════════ CONFIG ════════════════════════════
+   Paste the /exec URL from YOUR independent Apps Script deployment
+   here — the SAME one used in standalone_help.html and standalone_Code.gs.
+   This page does not depend on any other project. */
+var API = "https://script.google.com/macros/s/AKfycbxR890lj04ubTRpt1Ef-u3p4pDiNjpcXoBz_xNpvZGpqjAeoNroqZ2lSUovUMaFZJIElA/exec";
 var TOKEN = '';
 
 /* ════════════════════════════ UTILS ════════════════════════════ */
@@ -111,9 +104,9 @@ function api(action,data,cb){
   .catch(function(e){pDone();toast('Connection error','terr');console.error(e);});
 }
 
-/* ════════════════════════════ INIT (passwordless session, same as admin.html) ════════════════════════════ */
+/* ════════════════════════════ INIT (passwordless session) ════════════════════════════ */
 window.onload = function(){
-  var saved = sessionStorage.getItem('km_a');
+  var saved = sessionStorage.getItem('hm_token');
   if(saved){
     TOKEN = saved;
     startPanel();
@@ -122,7 +115,7 @@ window.onload = function(){
   api('openAdminSession', {}, function(r){
     if(r.ok){
       TOKEN = r.token;
-      sessionStorage.setItem('km_a', TOKEN);
+      sessionStorage.setItem('hm_token', TOKEN);
       startPanel();
     } else {
       document.body.innerHTML = '<div class="aerr-box">❌ Could not open session: ' + h(r.msg || 'Unknown error') + '</div>';
@@ -202,7 +195,7 @@ function hmAbout(){
     document.getElementById('hmBody').innerHTML=
       '<div class="aform">'+
         '<h3>📝 About Website</h3>'+
-        '<p style="font-size:.78rem;color:var(--t2);margin-bottom:16px">This text appears on the site\'s About page — describe what KEYTUBE is, what it offers, and anything else visitors should know.</p>'+
+        '<p style="font-size:.78rem;color:var(--t2);margin-bottom:16px">This text appears on the public help page — describe what this website is, what it offers, and anything else visitors should know.</p>'+
         '<div class="fg-row"><label>Title</label><input class="af" id="abTitle" value="'+h(pg.title)+'"></div>'+
         '<div class="fg-row"><label>Content</label><textarea class="af" id="abContent" rows="10" placeholder="Write about your website…">'+h(pg.content)+'</textarea></div>'+
         '<button class="a2btn a2btn-red" onclick="hmSaveAbout()">💾 Save About Page</button>'+
