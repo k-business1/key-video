@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KeyTube Ads</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:url("image.png") center/cover no-repeat fixed;
+    color:white;
+}
+
+.overlay{
+    height:100vh;
+    background:rgba(0,0,0,0.75);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.card{
+    width:100%;
+    max-width:420px;
+    background:#111827;
+    border-radius:14px;
+    padding:20px;
+    text-align:center;
+    position:relative;
+}
+
+.logo{
+    width:80px;
+    margin-bottom:10px;
+}
+
+.ad-box{
+    background:#1f2937;
+    padding:15px;
+    border-radius:10px;
+    position:relative;
+}
+
+.btn{
+    display:block;
+    margin-top:15px;
+    padding:12px;
+    background:#2196F3;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.timer{
+    margin-top:10px;
+    color:#4FC3F7;
+}
+
+.skip{
+    display:none;
+    margin-top:10px;
+    color:#aaa;
+    cursor:pointer;
+}
+
+.cancel-btn{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:red;
+    color:white;
+    border:none;
+    padding:6px 10px;
+    border-radius:6px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+<div class="card">
+
+    <img src="logo.png" class="logo">
+    <h1>KeyTube Sponsored Ads</h1>
+
+    <div class="ad-box">
+
+        <button class="cancel-btn" onclick="cancelAd()">✖</button>
+
+        <div id="adTitle">Loading...</div>
+        <p id="adText">Please wait...</p>
+
+        <div class="timer">
+            Redirect in <span id="time">7</span>s
+        </div>
+
+        <a id="adLink" class="btn" href="#" target="_blank">
+            Visit Now
+        </a>
+
+        <div class="skip" id="skip" onclick="skipAd()">
+            ⛔ Skip Ad
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+<script>
+
+/* 🔗 ADS WITH REAL LINKS */
+const ads = [
+    {
+        title: "🎬 Ad 1 - Watch Movies",
+        text: "Stream latest movies and series for free.",
+        link: "https://omg10.com/4/11024124"
+    },
+    {
+        title: "🔥 Ad 2 - Premium Entertainment",
+        text: "Get exclusive video content and offers.",
+        link: "https://omg10.com/4/11024393"
+    },
+    {
+        title: "⭐ Ad 3 - Bonus Streaming",
+        text: "Unlock extra movies and VIP content.",
+        link: "https://example.com"
+    }
+];
+
+let currentAd = 0;
+let timeLeft = 7;
+
+function loadAd(i){
+    document.getElementById("adTitle").innerText = ads[i].title;
+    document.getElementById("adText").innerText = ads[i].text;
+    document.getElementById("adLink").href = ads[i].link;
+}
+
+loadAd(currentAd);
+
+let timer = document.getElementById("time");
+let skipBtn = document.getElementById("skip");
+
+let countdown = setInterval(() => {
+    timeLeft--;
+    timer.innerText = timeLeft;
+
+    if(timeLeft === 3){
+        skipBtn.style.display = "block";
+    }
+
+    if(timeLeft <= 0){
+        nextAd();
+    }
+}, 1000);
+
+function nextAd(){
+    currentAd++;
+
+    if(currentAd >= ads.length){
+        window.location.href = ads[ads.length - 1].link;
+        return;
+    }
+
+    timeLeft = 7;
+    skipBtn.style.display = "none";
+    loadAd(currentAd);
+}
+
+function skipAd(){
+    window.location.href = ads[currentAd].link;
+}
+
+function cancelAd(){
+    window.location.href = "https://www.keytube.work.gd";
+}
+</script>
+
+</body>
+</html>
