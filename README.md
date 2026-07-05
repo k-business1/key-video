@@ -1,57 +1,47 @@
-<style>
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
+<div align="center">
 
-body {
-    background: url("image.png") no-repeat center center fixed;
-    background-size: cover;
-    font-family: Arial, sans-serif;
-    color: white;
-}
+<img src="logo.png" width="140">
 
-.overlay {
-    min-height: 100vh;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
+# <span style="color:#ffffff;">🎬 Key</span><span style="color:#4FC3F7;">Tube</span>
 
-.content {
-    padding: 20px;
-}
+### <span style="color:#E3F2FD;">The Best Place to Watch Movies & Video Streaming</span>
 
-.logo {
-    width: 150px;
-}
+<img src="image.png" width="100%">
 
-.button {
-    display: inline-block;
-    background: #e50914;
-    color: white;
-    text-decoration: none;
-    padding: 16px 32px;
-    border-radius: 8px;
-    font-size: 22px;
-}
-</style>
+<br>
 
-<div class="overlay">
-  <div class="content">
-
-<img src="logo.png" class="logo" alt="KeyTube Logo">
-
-# 🎬 KeyTube
-
-### Watch Movies & Video Streaming
-
-<a class="button" href="https://www.keytube.work.gd">
-▶️ Click Here to Watch
+<a href="https://www.keytube.work.gd">
+<img src="https://img.shields.io/badge/▶%20CLICK%20HERE%20TO%20WATCH-2196F3?style=for-the-badge&logo=youtube&logoColor=white">
 </a>
 
-  </div>
+---
+
+## 💙 <span style="color:#4FC3F7;">Unlimited Entertainment</span>
+
+🤍 Movies  
+💙 TV Shows  
+🤍 Series  
+💙 Latest Releases  
+🤍 Stream Anywhere
+
+---
+
+## ⭐ <span style="color:#4FC3F7;">Why Choose KeyTube?</span>
+
+🤍 Fast Streaming  
+💙 HD Quality  
+🤍 Easy to Use  
+💙 Mobile Friendly  
+🤍 New Movies Every Day
+
+---
+
+# <span style="color:#ffffff;">🎬 Start Watching Today!</span>
+
+### <span style="color:#4FC3F7;">https://www.keytube.work.gd</span>
+
+---
+
+<sub><span style="color:#B3E5FC;">© 2026 KeyTube. All Rights Reserved.</span></sub>
+
 </div>
