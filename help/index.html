@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KEYTUBE Help Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{
+  --w:#fff;--bg:#f9f9f9;--bg2:#f2f2f2;--brd:#e5e5e5;--txt:#0f0f0f;--t2:#606060;--t3:#aaa;
+  --red:#ff0000;--r2:#cc0000;--blue:#065fd4;--green:#2ba640;--r:10px;--r2px:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif;}
+body{background:var(--bg);color:var(--txt);min-height:100vh;}
+
+header{
+  height:60px;background:var(--w);display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;box-shadow:0 2px 10px rgba(0,0,0,.06);position:sticky;top:0;z-index:999;
+}
+.logo{display:flex;align-items:center;gap:8px;}
+.logo-kb{width:34px;height:28px;background:var(--red);border-radius:5px;display:grid;place-items:center;overflow:hidden;flex-shrink:0;}
+.logo-kb img{width:100%;height:100%;object-fit:cover;}
+.logo-kb span{font-family:'Bebas Neue';font-size:17px;color:#fff;}
+.logo-title{font-family:'Bebas Neue';font-size:20px;letter-spacing:1px;color:var(--red);}
+.hdr-back{font-size:.78rem;color:var(--blue);cursor:pointer;text-decoration:none;}
+
+.hero{
+  background:var(--w);border-bottom:1px solid var(--brd);padding:40px 20px 34px;text-align:center;
+}
+.hero h1{font-family:'Bebas Neue';font-size:2.1rem;letter-spacing:1px;margin-bottom:8px;}
+.hero p{font-size:.9rem;color:var(--t2);margin-bottom:22px;}
+.hero-search{max-width:480px;margin:0 auto;position:relative;}
+.hero-search input{
+  width:100%;padding:13px 16px;border:1.5px solid var(--brd);border-radius:24px;font-size:.9rem;outline:none;
+  background:var(--bg);transition:.15s;
+}
+.hero-search input:focus{border-color:var(--red);background:var(--w);}
+
+.container{max-width:900px;margin:auto;padding:30px 18px 60px;}
+
+.quick-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:34px;}
+.ql-card{
+  background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:18px;text-align:center;
+  cursor:pointer;transition:.2s;
+}
+.ql-card:hover{border-color:var(--red);box-shadow:0 4px 14px rgba(255,0,0,.08);transform:translateY(-2px);}
+.ql-card .ic{font-size:26px;margin-bottom:8px;}
+.ql-card h4{font-size:.82rem;font-weight:700;margin-bottom:4px;}
+.ql-card p{font-size:.72rem;color:var(--t2);}
+
+.section{margin-bottom:30px;}
+.section-title{
+  font-size:1.05rem;font-weight:700;color:var(--red);margin-bottom:14px;display:flex;align-items:center;gap:8px;
+  scroll-margin-top:80px;
+}
+
+.faq-item{
+  background:var(--w);border:1px solid var(--brd);border-radius:var(--r2px);margin-bottom:10px;overflow:hidden;
+}
+.faq-q{
+  padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+  font-size:.86rem;font-weight:600;transition:.15s;
+}
+.faq-q:hover{background:var(--bg);}
+.faq-q .arrow{font-size:.75rem;color:var(--t2);transition:transform .2s;flex-shrink:0;margin-left:12px;}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg);}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .25s ease;font-size:.82rem;color:var(--t2);line-height:1.6;
+}
+.faq-item.open .faq-a{max-height:400px;}
+.faq-a-inner{padding:0 16px 16px;}
+.faq-a-inner code{background:var(--bg2);padding:2px 6px;border-radius:4px;font-size:.78rem;color:var(--red);}
+
+.faq-item.hidden{display:none;}
+.no-match{display:none;text-align:center;padding:30px;color:var(--t2);font-size:.85rem;}
+.no-match.show{display:block;}
+
+.contact-card{
+  background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:24px;text-align:center;
+}
+.contact-card h3{font-size:1rem;margin-bottom:8px;}
+.contact-card p{font-size:.83rem;color:var(--t2);margin-bottom:18px;}
+.contact-btn{
+  display:inline-block;padding:11px 24px;background:var(--red);color:#fff;border-radius:var(--r2px);
+  font-size:.85rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;transition:.15s;
+}
+.contact-btn:hover{background:var(--r2);}
+.contact-btn:disabled{background:#e2a3a3;cursor:not-allowed;}
+
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.cf-input{
+  width:100%;padding:11px 12px;border:1.5px solid var(--brd);border-radius:var(--r2px);font-size:.85rem;
+  outline:none;background:var(--bg);font-family:'Roboto',sans-serif;transition:.15s;
+}
+.cf-input:focus{border-color:var(--red);background:var(--w);}
+@media(max-width:500px){.cf-row{grid-template-columns:1fr;}}
+
+footer{text-align:center;padding:24px;font-size:.72rem;color:var(--t3);}
+
+@media(max-width:600px){.hero h1{font-size:1.6rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-kb"><img src="logo.png" alt="K" onerror="this.parentNode.innerHTML='<span>K</span>'"></div>
+    <span class="logo-title">KEYTUBE HELP</span>
+  </div>
+  <a class="hdr-back" onclick="window.location.href='index.html'">← Back to site</a>
+</header>
+
+<div class="hero">
+  <h1>How can we help?</h1>
+  <p>Search for answers or browse topics below</p>
+  <div class="hero-search">
+    <input type="text" id="helpSearch" placeholder="Search help topics… e.g. 'how to search', 'upload'">
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="quick-links">
+    <div class="ql-card" onclick="scrollToSection('sec-search')">
+      <div class="ic">🔍</div>
+      <h4>Searching</h4>
+      <p>Finding movies & shows</p>
+    </div>
+    <div class="ql-card" onclick="scrollToSection('sec-watch')">
+      <div class="ic">🎬</div>
+      <h4>Watching</h4>
+      <p>Playback & quality</p>
+    </div>
+    <div class="ql-card" onclick="scrollToSection('sec-account')">
+      <div class="ic">👤</div>
+      <h4>Account</h4>
+      <p>Sign in & profile</p>
+    </div>
+    <div class="ql-card" onclick="scrollToSection('sec-upload')">
+      <div class="ic">⬆️</div>
+      <h4>Uploading</h4>
+      <p>Admin content tools</p>
+    </div>
+  </div>
+
+  <div class="section" id="sec-search">
+    <div class="section-title">🔍 Searching</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I search for a movie or show?</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Type a title into the search bar at the top of the page. Results appear automatically as you type — no need to press Enter.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>I typed the wrong spelling and got no results</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        KEYTUBE automatically corrects small typos and matches the closest title in our library, so keep typing — it usually finds what you meant.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Can I filter by category or country?</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Yes — use the category menu on the main page (English, French, Indian, Chinese, Drama, Comedy, Cartoon, News, Song) to browse by type.
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-watch">
+    <div class="section-title">🎬 Watching</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>The video won't play or keeps buffering</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Check your internet connection first. If the issue continues, try refreshing the page or switching to a lower video quality from the player settings.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How does the Comedy Shorts (swipe) player work?</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Swipe up or down to move to the next clip, just like short-video apps. The next video loads automatically when the current one ends.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Can I download videos?</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Where available, a download button appears on the movie's details page below the player.
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-account">
+    <div class="section-title">👤 Account</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I sign in?</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Click the Sign In button on the homepage and enter your Gmail address to create or access your account.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Why was my account blocked?</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Accounts are blocked for violating community guidelines (spam, abusive comments, etc). Contact support below if you believe this was a mistake.
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-upload">
+    <div class="section-title">⬆️ Uploading (Admin)</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I add new movies to KEYTUBE?</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Admin access is required. Open <code>upload.html</code>, sign in with the admin password, then fill in the movie details and upload the cover image and video file.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>My upload says "Unauthorized"</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        This means you're not signed in as admin. Re-enter the admin password on the upload page to get a valid session token before saving.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Where can I manage existing content?</span><span class="arrow">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        Use the Admin Panel (<code>admin.html</code>) — the Movies tab lets you edit or delete any title, and the Dashboard shows overall stats.
+      </div></div>
+    </div>
+  </div>
+
+  <div class="no-match" id="noMatch">No help topics match your search.</div>
+
+  <div class="contact-card" id="contactCard">
+    <h3>Still need help?</h3>
+    <p>Can't find what you're looking for? Send us a message and we'll get back to you.</p>
+
+    <div class="cf-row">
+      <input type="text" id="cfName" class="cf-input" placeholder="Your name">
+      <input type="email" id="cfEmail" class="cf-input" placeholder="Your email / Gmail">
+    </div>
+    <input type="text" id="cfSubject" class="cf-input" style="margin-bottom:10px" placeholder="Subject (e.g. Video not playing)">
+    <textarea id="cfMessage" class="cf-input" rows="4" placeholder="Describe your issue…" style="margin-bottom:12px;resize:none"></textarea>
+
+    <div id="cfErr" style="font-size:.75rem;color:var(--red);min-height:14px;margin-bottom:6px"></div>
+    <button class="contact-btn" id="cfBtn" onclick="submitSupportRequest()">✉ Send Request</button>
+  </div>
+
+</div>
+
+<footer>© 2026 KEYTUBE. All rights reserved.</footer>
+
+<script>
+var HELP_API = "https://script.google.com/macros/s/AKfycbxVdY-_WNOhxAEVqAMi2E1Q6R0KVBWnhq7EQGwNj21BWpbIOfi7phMt3y85qEhs9tXQ/exec";
+
+function submitSupportRequest(){
+  var name = document.getElementById("cfName").value.trim();
+  var email = document.getElementById("cfEmail").value.trim();
+  var subject = document.getElementById("cfSubject").value.trim();
+  var message = document.getElementById("cfMessage").value.trim();
+  var err = document.getElementById("cfErr");
+  var btn = document.getElementById("cfBtn");
+
+  err.textContent = "";
+  if(!name || !email || !subject || !message){
+    err.textContent = "Please fill in all fields";
+    return;
+  }
+
+  var payload = {
+    action: "addSupportRequest",
+    name: name,
+    email: email,
+    subject: subject,
+    message: message,
+    page: "help.html",
+    userAgent: navigator.userAgent,
+    date: new Date().toISOString()
+  };
+
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+
+  fetch(HELP_API, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(payload)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(res){
+    btn.disabled = false;
+    btn.textContent = "✉ Send Request";
+    if(res.ok){
+      showToast("✅ Request sent! We'll get back to you soon.");
+      document.getElementById("cfName").value = "";
+      document.getElementById("cfEmail").value = "";
+      document.getElementById("cfSubject").value = "";
+      document.getElementById("cfMessage").value = "";
+    } else {
+      err.textContent = res.msg || "Could not send request. Try again.";
+    }
+  })
+  .catch(function(e){
+    btn.disabled = false;
+    btn.textContent = "✉ Send Request";
+    err.textContent = "Connection error. Please try again.";
+    console.error(e);
+  });
+}
+
+function showToast(msg){
+  var t = document.createElement("div");
+  t.textContent = msg;
+  t.style.cssText = "position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;"
+    + "padding:12px 22px;border-radius:8px;font-size:.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);"
+    + "opacity:0;transition:.25s;";
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){ t.style.opacity = "1"; });
+  setTimeout(function(){
+    t.style.opacity = "0";
+    setTimeout(function(){ t.remove(); }, 300);
+  }, 3200);
+}
+
+function toggleFaq(el){
+  var item = el.parentElement;
+  var wasOpen = item.classList.contains("open");
+  document.querySelectorAll(".faq-item.open").forEach(function(i){
+    if(i !== item) i.classList.remove("open");
+  });
+  item.classList.toggle("open", !wasOpen);
+}
+
+function scrollToSection(id){
+  var el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+document.getElementById("helpSearch").addEventListener("input", function(){
+  var query = this.value.trim().toLowerCase();
+  var items = document.querySelectorAll(".faq-item");
+  var visibleCount = 0;
+
+  items.forEach(function(item){
+    var text = item.textContent.toLowerCase();
+    var matches = !query || text.indexOf(query) !== -1;
+    item.classList.toggle("hidden", !matches);
+    if(matches) visibleCount++;
+  });
+
+  document.querySelectorAll(".section").forEach(function(sec){
+    var visibleInSection = sec.querySelectorAll(".faq-item:not(.hidden)").length;
+    sec.style.display = (query && visibleInSection === 0) ? "none" : "";
+  });
+
+  document.getElementById("noMatch").classList.toggle("show", query.length > 0 && visibleCount === 0);
+});
+</script>
+
+</body>
+</html>
