@@ -2,36 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KEYTUBE Admin Panel</title>
+<title>KEYTUBE Help Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 :root{--w:#fff;--bg:#f9f9f9;--bg2:#f2f2f2;--brd:#e5e5e5;--txt:#0f0f0f;--t2:#606060;--t3:#aaa;
-  --red:#ff0000;--r2:#cc0000;--gold:#f5c518;--blue:#065fd4;--green:#2ba640;--r:8px;--r2px:4px;}
+  --red:#ff0000;--r2:#cc0000;--blue:#065fd4;--green:#2ba640;--r:8px;--r2px:4px;}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'Roboto',sans-serif;overflow:hidden}
+html,body{min-height:100%;background:var(--bg);color:var(--txt);font-family:'Roboto',sans-serif}
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
 input,select,textarea{font-family:inherit}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
 
-/* ── PROGRESS ── */
+#globalLoader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:2000}
+.spin{width:22px;height:22px;border:3px solid var(--bg2);border-top-color:var(--red);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
 #pbar{position:fixed;top:0;left:0;right:0;z-index:9999;height:3px;background:var(--red);width:0%;transition:width .3s;pointer-events:none}
 #pbar.done{opacity:0;transition:opacity .5s}
 
-/* ── TOAST ── */
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--txt);color:#fff;border-radius:var(--r);padding:8px 18px;font-size:.8rem;font-weight:500;opacity:0;transition:.22s;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.15)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.tok{background:#2e7d32}
 #toast.terr{background:#d32f2f}
 
-/* ── ADMIN PANEL ── */
-#admPanel{position:fixed;inset:0;display:none;flex-direction:column;background:var(--bg)}
-#admPanel.open{display:flex}
-
-/* Admin bar */
-.abar{height:50px;background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 16px;gap:7px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
-.abar::-webkit-scrollbar{display:none}
+.abar{height:50px;background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 16px;gap:7px;overflow-x:auto;flex-shrink:0}
 .abar-logo{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-right:6px}
 .abar-kb{width:26px;height:22px;background:var(--red);border-radius:3px;display:grid;place-items:center;overflow:hidden}
 .abar-kb img{width:100%;height:100%;object-fit:cover}
@@ -40,108 +36,60 @@ input,select,textarea{font-family:inherit}
 .atb{padding:5px 11px;border-radius:var(--r);font-size:.76rem;font-weight:500;color:var(--t2);cursor:pointer;white-space:nowrap;transition:.15s;flex-shrink:0}
 .atb.act{background:rgba(255,0,0,.08);color:var(--red);font-weight:700}
 .abar-sp{flex:1;min-width:8px}
-.atb-logout{color:var(--red)!important;border:1px solid rgba(255,0,0,.2);background:rgba(255,0,0,.07)!important}
-.abar-user{font-size:.72rem;color:var(--t3);white-space:nowrap;flex-shrink:0}
+.atb-back{color:var(--blue)!important}
 
-/* Admin body */
-.abody{flex:1;overflow-y:auto;padding:20px}
+.abody{max-width:900px;margin:0 auto;padding:20px}
 
-/* Stats */
-.stats-r{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:20px}
-.sc{background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:14px;text-align:center}
-.sc-i{font-size:1.3rem;margin-bottom:4px}
-.sc-n{font-family:'Bebas Neue';font-size:1.9rem;color:var(--red);line-height:1}
-.sc-l{font-size:.68rem;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
-
-/* Live badge */
-.live-badge{display:inline-flex;align-items:center;gap:4px;background:#e8f5e9;color:var(--green);border:1px solid rgba(43,166,64,.25);border-radius:20px;padding:3px 9px;font-size:.72rem;font-weight:700}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* Cards / forms */
 .aform{background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:16px;margin-bottom:16px}
-.aform h3,.aform h4{font-size:.83rem;font-weight:700;margin-bottom:13px}
-.atw{background:var(--w);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;margin-bottom:18px}
-.ath{display:flex;align-items:center;padding:11px 15px;border-bottom:1px solid var(--brd);gap:7px}
-.ath h3{font-size:.83rem;font-weight:700;flex:1}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.fgrid .full{grid-column:1/-1}
-.af{width:100%;border:1.5px solid var(--brd);border-radius:var(--r2px);padding:7px 9px;font-size:.79rem;color:var(--txt);outline:none;background:var(--w)}
+.aform h3,.aform h4{font-size:.9rem;font-weight:700;margin-bottom:13px}
+.af{width:100%;border:1.5px solid var(--brd);border-radius:var(--r2px);padding:9px 11px;font-size:.83rem;color:var(--txt);outline:none;background:var(--w)}
 .af:focus{border-color:var(--blue)}
-.fa-row{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
-.a2btn{padding:4px 10px;border-radius:var(--r2px);font-size:.73rem;font-weight:600;cursor:pointer;border:1px solid var(--brd);background:var(--bg2);transition:.15s}
+.fg-row{margin-bottom:12px}
+.fg-row label{display:block;font-size:.68rem;font-weight:600;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+
+.a2btn{padding:6px 14px;border-radius:var(--r2px);font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--brd);background:var(--bg2);transition:.15s}
 .a2btn:hover{background:var(--brd)}
 .a2btn-red{color:var(--red);border-color:rgba(255,0,0,.25);background:rgba(255,0,0,.06)}
 .a2btn-gr{color:var(--green);border-color:rgba(43,166,64,.25);background:rgba(43,166,64,.06)}
 .a2btn-bl{color:var(--blue);border-color:rgba(6,95,212,.25);background:rgba(6,95,212,.06)}
-.fg-row{margin-bottom:10px}
-.fg-row label{display:block;font-size:.68rem;font-weight:600;color:var(--t2);margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
 
-/* Table */
-table.dt{width:100%;border-collapse:collapse}
-table.dt th{padding:7px 11px;font-size:.67rem;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;text-align:left;border-bottom:1px solid var(--brd);background:var(--bg)}
-table.dt td{padding:7px 11px;font-size:.79rem;color:var(--t2);border-bottom:1px solid var(--bg2);vertical-align:middle}
-table.dt tr:hover td{background:var(--bg)}
+.live-badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:4px 11px;font-size:.75rem;font-weight:700}
+.badge-open{background:#fff3e0;color:#e65100;border:1px solid rgba(230,81,0,.25)}
+.badge-resolved{background:#e8f5e9;color:var(--green);border:1px solid rgba(43,166,64,.25)}
+
 .s-ok{color:var(--green);font-weight:600}
 .s-bl{color:var(--red);font-weight:600}
+.spin-inline{width:22px;height:22px;border:3px solid var(--bg2);border-top-color:var(--red);border-radius:50%;animation:sp .7s linear infinite;margin:60px auto;display:block}
 
-/* Traffic */
-.tf{display:flex;gap:7px;align-items:center;padding:6px 0;border-bottom:1px solid var(--bg2);font-size:.75rem;flex-wrap:wrap}
-.tf-t{color:var(--t3);min-width:115px;font-size:.68rem}
-.tf-u{color:var(--blue);font-weight:600}
-.tf-a{background:var(--bg2);border-radius:3px;padding:1px 5px;font-size:.66rem}
-
-/* Spinner */
-.spin{width:22px;height:22px;border:3px solid var(--bg2);border-top-color:var(--red);border-radius:50%;animation:sp .7s linear infinite;margin:60px auto;display:block}
-@keyframes sp{to{transform:rotate(360deg)}}
-
-/* Empty */
 .aerr-box{color:var(--red);padding:18px;font-size:.82rem}
-
-@media(max-width:620px){.fgrid{grid-template-columns:1fr}.abody{padding:12px}.abar{padding:0 10px;gap:4px}}
-.hidden{display:none!important}
 </style>
 </head>
 <body>
 
 <div id="pbar"></div>
 <div id="toast"></div>
+<div id="globalLoader"><div class="spin"></div></div>
 
-<div id="globalLoader" style="position:fixed;inset:0;background:#f9f9f9;display:flex;align-items:center;justify-content:center;z-index:2000">
-  <div class="spin"></div>
-</div>
-
-<!-- ══ ADMIN PANEL ══ -->
-<div id="admPanel">
-  <div class="abar">
-    <div class="abar-logo">
-      <div class="abar-kb"><img src="logo.png" alt="K" onerror="this.parentNode.innerHTML='<span>K</span>'"></div>
-      <span class="abar-title">KEYTUBE ADMIN</span>
-    </div>
-    <button class="atb act" id="tab-dash"     onclick="aTab('dash')">📊 Dashboard</button>
-    <button class="atb"     id="tab-movies"   onclick="aTab('movies')">🎬 Movies</button>
-    <button class="atb"     id="tab-users"    onclick="aTab('users')">👥 Users</button>
-    <button class="atb"     id="tab-comments" onclick="aTab('comments')">💬 Comments</button>
-    <button class="atb"     id="tab-suggest"  onclick="aTab('suggest')">🗨️ Suggestions</button>
-    <button class="atb"     id="tab-notif"    onclick="aTab('notif')">🔔 Notifications</button>
-    <button class="atb"     id="tab-pages"    onclick="aTab('pages')">📄 Pages</button>
-    <button class="atb"     id="tab-traffic"  onclick="aTab('traffic')">📈 Traffic</button>
-    <button class="atb"     id="tab-settings" onclick="aTab('settings')">⚙️ Settings</button>
-    <div class="abar-sp"></div>
-    <span class="abar-user" id="abarUser"></span>
-    <button class="atb atb-logout" onclick="doLogout()">🚪 Logout</button>
+<div class="abar">
+  <div class="abar-logo">
+    <div class="abar-kb"><img src="logo.png" alt="K" onerror="this.parentNode.innerHTML='<span>K</span>'"></div>
+    <span class="abar-title">HELP MANAGER</span>
   </div>
-  <div class="abody" id="aBody"><div class="spin"></div></div>
+  <button class="atb act" id="tab-suggest" onclick="hmTab('suggest')">🗨️ Suggestions</button>
+  <button class="atb"     id="tab-about"   onclick="hmTab('about')">📝 About Website</button>
+  <div class="abar-sp"></div>
+  <button class="atb atb-back" onclick="window.location.href='admin.html'">← Admin Panel</button>
 </div>
+
+<div class="abody" id="hmBody"><div class="spin-inline"></div></div>
 
 <script>
 /* ════════════════════════════ CONFIG ════════════════════════════ */
-var API   = 'https://script.google.com/macros/s/AKfycbxVdY-_WNOhxAEVqAMi2E1Q6R0KVBWnhq7EQGwNj21BWpbIOfi7phMt3y85qEhs9tXQ/exec';
+var API   = 'https://script.google.com/macros/s/AKfycbxgzFZsHbSDtXnykjTRgdq6B3m1I0DVQj378hU26RG9YWmqvxr_HQ3LX1SiAl6zH3hQPg/exec';
 var TOKEN = '';
 
 /* ════════════════════════════ UTILS ════════════════════════════ */
 function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function cap(s){return s?String(s).charAt(0).toUpperCase()+String(s).slice(1):'';}
 function fmtDate(d){var dt=new Date(d);return isNaN(dt)?d:dt.toLocaleDateString();}
 
 function toast(msg,type){
@@ -163,264 +111,43 @@ function api(action,data,cb){
   .catch(function(e){pDone();toast('Connection error','terr');console.error(e);});
 }
 
-/* ════════════════════════════ INIT ════════════════════════════ */
+/* ════════════════════════════ INIT (passwordless session, same as admin.html) ════════════════════════════ */
 window.onload = function(){
   var saved = sessionStorage.getItem('km_a');
   if(saved){
     TOKEN = saved;
-    openPanel();
+    startPanel();
     return;
   }
-  // No password screen — silently open an admin session.
   api('openAdminSession', {}, function(r){
     if(r.ok){
       TOKEN = r.token;
       sessionStorage.setItem('km_a', TOKEN);
-      openPanel();
+      startPanel();
     } else {
-      document.body.innerHTML = '<div style="padding:40px;text-align:center;font-family:Roboto,sans-serif;color:#d32f2f">❌ Could not open admin session: ' + (r.msg || 'Unknown error') + '</div>';
+      document.body.innerHTML = '<div class="aerr-box">❌ Could not open session: ' + h(r.msg || 'Unknown error') + '</div>';
     }
   });
 };
 
-/* ════════════════════════════ LOGIN ════════════════════════════ */
-function openPanel(){
+function startPanel(){
   var loader = document.getElementById('globalLoader');
   if(loader) loader.remove();
-  document.getElementById('admPanel').classList.add('open');
-  try{var u=JSON.parse(sessionStorage.getItem('km_u')||'{}');if(u.gmail)document.getElementById('abarUser').textContent=u.name||u.gmail;}catch(e){}
-  aTab('dash');
-}
-
-function doLogout(){
-  if(!confirm('Clear this admin session? A new one will be opened automatically.'))return;
-  TOKEN='';sessionStorage.removeItem('km_a');
-  toast('Session cleared — reopening…');
-  setTimeout(function(){ window.location.reload(); }, 600);
+  hmTab('suggest');
 }
 
 /* ════════════════════════════ TAB ROUTER ════════════════════════════ */
-function aTab(tab){
+function hmTab(tab){
   document.querySelectorAll('.atb').forEach(function(b){b.classList.remove('act');});
   var el=document.getElementById('tab-'+tab);if(el)el.classList.add('act');
-  document.getElementById('aBody').innerHTML='<div class="spin"></div>';
-  ({dash:aDash,movies:aMovies,users:aUsers,comments:aComments,suggest:aSuggest,
-    notif:aNotif,pages:aPages,traffic:aTraffic,settings:aSettings})[tab]();
+  document.getElementById('hmBody').innerHTML='<div class="spin-inline"></div>';
+  (tab==='suggest'?hmSuggest:hmAbout)();
 }
 
-/* ════════════════════════════ DASHBOARD ════════════════════════════ */
-function aDash(){
-  api('getStats',{token:TOKEN},function(r){
-    if(!r.ok){aErr(r.msg);return;}
-    var s=r.stats;
-    api('getOnlineUsers',{token:TOKEN},function(lo){
-      var lc=lo.ok?lo.count:0, lu=lo.ok?lo.users:[];
-      document.getElementById('aBody').innerHTML=
-        '<div class="stats-r">'+
-        [['👥','Users',s.users],['🎬','Movies',s.movies],['💬','Comments',s.comments],
-         ['📈','Visits',s.traffic],['⬇','Downloads',s.downloads||0],['📋','Playlists',s.playlist||0]]
-        .map(function(x){return'<div class="sc"><div class="sc-i">'+x[0]+'</div><div class="sc-n">'+x[2]+'</div><div class="sc-l">'+x[1]+'</div></div>';}).join('')+
-        '</div>'+
-        '<div class="aform" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">'+
-          '<span class="live-badge"><span class="live-dot"></span>'+lc+' online now</span>'+
-          '<button class="a2btn" onclick="aDash()">🔄 Refresh</button>'+
-          '<button class="a2btn a2btn-bl" onclick="window.location.href=\'index.html\'">← Back to Site</button>'+
-        '</div>'+
-        '<div class="aform"><h4 style="margin-bottom:10px">Quick Actions</h4><div class="fa-row">'+
-          '<button class="a2btn a2btn-red" onclick="aTab(\'movies\')">+ Add Movie</button>'+
-          '<button class="a2btn a2btn-bl" onclick="aTab(\'users\')">Manage Users</button>'+
-          '<button class="a2btn a2btn-red" onclick="aTab(\'suggest\')">View Suggestions</button>'+
-          '<button class="a2btn a2btn-red" onclick="aTab(\'notif\')">Send Notification</button>'+
-          '<button class="a2btn" onclick="aTab(\'settings\')">Settings</button>'+
-        '</div></div>'+
-        '<div class="aform"><h4 style="margin-bottom:10px">🟢 Live Users ('+lc+')</h4>'+
-          (lu.length?lu.map(function(u){return'<div class="tf"><span class="tf-u">'+h(u.gmail)+'</span><span class="tf-a">online</span><span style="color:var(--t2);font-size:.71rem">'+h(u.country||'—')+'</span><span class="tf-t">'+fmtDate(u.lastSeen)+'</span></div>';}).join('')
-          :'<p style="font-size:.8rem;color:var(--t2)">No users online right now.</p>')+
-        '</div>';
-    });
-  });
-}
-
-/* ════════════════════════════ MOVIES ════════════════════════════ */
-var editId=null;
-var ALL_CATS=['english','french','drama','chinese','indian','cartoon','comedy','song','news'];
-var ALL_TYPES=['movie','series','song','news'];
-
-function aMovies(){
-  api('getMovies',{isLoggedIn:true,category:'all',type:'all'},function(r){
-    if(!r.ok){aErr(r.msg);return;}
-    var movies=r.movies||[];
-    var sorted=movies.slice().reverse();
-    var rows=sorted.map(function(m){
-      return'<tr>'+
-        '<td><img src="'+h(m.cover)+'" style="width:32px;height:44px;object-fit:cover;border-radius:3px;background:var(--bg2)" onerror="this.style.display=\'none\'"></td>'+
-        '<td><strong style="font-size:.8rem">'+h(m.name)+'</strong></td>'+
-        '<td>'+cap(m.type)+'</td>'+
-        '<td>'+cap(m.category)+'</td>'+
-        '<td>'+h(m.year)+'</td>'+
-        '<td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.69rem;color:var(--blue)">'+h(m.videoURL||'—')+'</td>'+
-        '<td>'+(m.isNew?'<span class="s-ok">New</span>':'Old')+'</td>'+
-        '<td style="display:flex;gap:3px;padding:7px 11px">'+
-          '<button class="a2btn a2btn-bl" onclick="aEdit(\''+m.id+'\')">Edit</button>'+
-          '<button class="a2btn a2btn-red" onclick="aDel(\''+m.id+'\',\''+h(m.name)+'\')">Del</button>'+
-        '</td></tr>';
-    }).join('');
-    document.getElementById('aBody').innerHTML=
-      '<div class="aform" id="mfw">'+mFH(null)+'</div>'+
-      '<div class="atw">'+
-        '<div class="ath"><h3>🎬 All Content ('+movies.length+') — Newest First</h3></div>'+
-        '<div style="overflow-x:auto">'+
-          '<table class="dt"><thead><tr>'+
-            '<th>Cover</th><th>Name</th><th>Type</th><th>Category</th><th>Year</th><th>Video URL</th><th>Status</th><th>Actions</th>'+
-          '</tr></thead><tbody>'+rows+'</tbody></table>'+
-        '</div>'+
-      '</div>';
-  });
-}
-
-function mFH(m){
-  var lb=function(t){return'<label style="display:block;font-size:.68rem;color:var(--t2);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.3px">'+t+'</label>';};
-  return'<h3 style="margin-bottom:13px">'+(m?'✏️ Edit: '+h(m.name):'➕ Add New Movie / Song / News')+'</h3>'+
-    '<div class="fgrid">'+
-    '<div class="fg-row">'+lb('Name *')+'<input class="af" id="mfN" value="'+h(m?m.name:'')+'" placeholder="Title"></div>'+
-    '<div class="fg-row">'+lb('Year')+'<input class="af" id="mfY" type="number" value="'+(m?h(m.year):new Date().getFullYear())+'"></div>'+
-    '<div class="fg-row">'+lb('Type')+'<select class="af" id="mfT">'+ALL_TYPES.map(function(t){return'<option value="'+t+'"'+(m&&m.type===t?' selected':'')+'>'+cap(t)+'</option>';}).join('')+'</select></div>'+
-    '<div class="fg-row">'+lb('Category')+'<select class="af" id="mfC">'+ALL_CATS.map(function(c){return'<option value="'+c+'"'+(m&&m.category===c?' selected':'')+'>'+cap(c)+'</option>';}).join('')+'</select></div>'+
-    '<div class="fg-row full">'+lb('Cover Image URL')+'<input class="af" id="mfCov" value="'+h(m?m.cover:'')+'" placeholder="https://…/poster.jpg"></div>'+
-    '<div class="fg-row full">'+lb('🎬 Video URL (YouTube / Drive / MP4 / Vimeo)')+'<input class="af" id="mfVid" value="'+h(m?m.videoURL:'')+'" placeholder="https://youtube.com/watch?v=…"></div>'+
-    '<div class="fg-row full">'+lb('⬇ Download URL')+'<input class="af" id="mfDl" value="'+h(m?m.downloadURL:'')+'" placeholder="https://…/file.mp4"></div>'+
-    '<div class="fg-row full">'+lb('Description')+'<textarea class="af" id="mfDesc" rows="3" placeholder="Synopsis…">'+h(m?m.description:'')+'</textarea></div>'+
-    '<div class="fg-row">'+lb('Country')+'<input class="af" id="mfCo" value="'+h(m?m.country:'')+'" placeholder="USA"></div>'+
-    '<div class="fg-row">'+lb('Rating (e.g. 8.2)')+'<input class="af" id="mfRat" value="'+h(m?m.rating:'')+'" placeholder="7.5"></div>'+
-    '<div class="fg-row">'+lb('Season')+'<input class="af" id="mfSeas" value="'+h(m?m.season:'')+'" placeholder="1"></div>'+
-    '<div class="fg-row">'+lb('Episode')+'<input class="af" id="mfEp" value="'+h(m?m.episode:'')+'" placeholder="1"></div>'+
-    '<div class="fg-row full" style="display:flex;gap:20px;flex-wrap:wrap">'+
-      '<label style="display:flex;gap:6px;align-items:center;cursor:pointer;font-size:.79rem"><input type="checkbox" id="mfNew"'+(m&&m.isNew?' checked':'')+'> New Release</label>'+
-      '<label style="display:flex;gap:6px;align-items:center;cursor:pointer;font-size:.79rem"><input type="checkbox" id="mfFeat"'+(m&&m.featured?' checked':'')+'> Hero Banner</label>'+
-    '</div>'+
-    '</div>'+
-    '<div class="fa-row">'+
-      '<button class="a2btn a2btn-red" onclick="aSave()">'+(m?'💾 Update Movie':'➕ Add Movie')+'</button>'+
-      (m?'<button class="a2btn" onclick="aCancelEdit()">✕ Cancel</button>':'')+
-    '</div>';
-}
-
-function aEdit(id){
-  api('getMovie',{id:id},function(r){
-    if(!r.ok){toast(r.msg,'terr');return;}
-    editId=id;
-    document.getElementById('mfw').innerHTML=mFH(r.movie);
-    document.getElementById('mfw').scrollIntoView({behavior:'smooth'});
-  });
-}
-
-function aCancelEdit(){editId=null;document.getElementById('mfw').innerHTML=mFH(null);}
-
-function aSave(){
-  var d={
-    token:TOKEN,
-    name:document.getElementById('mfN').value.trim(),
-    year:document.getElementById('mfY').value,
-    type:document.getElementById('mfT').value,
-    category:document.getElementById('mfC').value,
-    cover:document.getElementById('mfCov').value.trim(),
-    videoURL:document.getElementById('mfVid').value.trim(),
-    downloadURL:document.getElementById('mfDl').value.trim(),
-    description:document.getElementById('mfDesc').value.trim(),
-    country:document.getElementById('mfCo').value.trim(),
-    rating:document.getElementById('mfRat').value.trim(),
-    season:document.getElementById('mfSeas').value.trim(),
-    episode:document.getElementById('mfEp').value.trim(),
-    isNew:document.getElementById('mfNew').checked,
-    featured:document.getElementById('mfFeat').checked
-  };
-  if(!d.name){toast('Name is required','terr');return;}
-  if(editId)d.id=editId;
-  api(editId?'updateMovie':'addMovie',d,function(r){
-    if(r.ok){toast(r.msg||'Saved!','tok');editId=null;aMovies();}
-    else toast(r.msg||'Could not save movie','terr');
-  });
-}
-
-function aDel(id,name){
-  if(!confirm('Delete "'+name+'"?'))return;
-  api('deleteMovie',{token:TOKEN,id:id},function(r){
-    if(r.ok){toast('Movie deleted','tok');aMovies();}else toast(r.msg,'terr');
-  });
-}
-
-/* ════════════════════════════ USERS ════════════════════════════ */
-function aUsers(){
-  api('getUsers',{token:TOKEN},function(r){
-    if(!r.ok){aErr(r.msg);return;}
-    var users=r.users||[];
-    var rows=users.map(function(u){
-      var st=u.status||'active';
-      return'<tr>'+'<td><strong>'+h(u.name)+'</strong></td>'+'<td style="color:var(--blue)">'+h(u.gmail)+'</td>'+'<td>'+h(u.country||'—')+'</td>'+'<td style="text-align:center">'+u.commentCount+'</td>'+'<td><span class="'+(st==='active'?'s-ok':'s-bl')+'">'+cap(st)+'</span></td>'+'<td>'+fmtDate(u.created)+'</td>'+'<td style="display:flex;gap:3px;padding:7px 11px">'+(st==='active'?'<button class="a2btn a2btn-red" onclick="aSetSt(\''+u.id+'\',\'blocked\')">Block</button>':'<button class="a2btn a2btn-gr" onclick="aSetSt(\''+u.id+'\',\'active\')">Unblock</button>')+'<button class="a2btn a2btn-red" onclick="aDelU(\''+u.id+'\',\''+h(u.name)+'\')">Delete</button>'+'</td></tr>';
-    }).join('');
-    document.getElementById('aBody').innerHTML='<div class="atw">'+'<div class="ath"><h3>👥 Users ('+users.length+')</h3></div>'+'<div style="overflow-x:auto">'+'<table class="dt"><thead><tr>'+'<th>Name</th><th>Gmail</th><th>Country</th><th>Comments</th><th>Status</th><th>Joined</th><th>Actions</th>'+'</tr></thead><tbody>'+rows+'</tbody></table>'+'</div>'+'</div>';
-  });
-}
-function aSetSt(id,st){
-  api('setUserStatus',{token:TOKEN,id:id,status:st},function(r){
-    if(r.ok){toast('Status updated','tok');aUsers();}else toast(r.msg,'terr');
-  });
-}
-function aDelU(id,nm){
-  if(!confirm('Permanently delete user "'+nm+'"?'))return;
-  api('deleteUser',{token:TOKEN,id:id},function(r){
-    if(r.ok){toast('User deleted','tok');aUsers();}else toast(r.msg,'terr');
-  });
-}
-
-/* ════════════════════════════ COMMENTS ════════════════════════════ */
-function aComments(){
-  api('getAllComments',{token:TOKEN},function(r){
-    if(!r.ok){aErr(r.msg);return;}
-    var list=r.comments||[];
-    var rows=list.map(function(c){
-      return'<tr>'+'<td>'+h(c.name||c.gmail)+'</td>'+'<td style="font-size:.7rem;color:var(--t2)">'+h(c.movieId)+'</td>'+'<td>'+h(c.emoji||'💬')+' '+h((c.comment||'').substring(0,60))+'</td>'+'<td style="font-size:.7rem">'+fmtDate(c.date)+'</td>'+'<td><button class="a2btn a2btn-red" onclick="aDelCmt(\''+c.id+'\')">Delete</button></td>'+'</tr>';
-    }).join('');
-    document.getElementById('aBody').innerHTML='<div class="atw">'+'<div class="ath"><h3>💬 All Comments ('+list.length+')</h3></div>'+'<div style="overflow-x:auto">'+'<table class="dt"><thead><tr>'+'<th>User</th><th>Movie ID</th><th>Comment</th><th>Date</th><th></th>'+'</tr></thead><tbody>'+rows+'</tbody></table>'+'</div>'+'</div>';
-  });
-}
-function aDelCmt(id){
-  if(!confirm('Delete this comment?'))return;
-  api('deleteComment',{token:TOKEN,id:id},function(r){
-    if(r.ok){toast('Deleted','tok');aComments();}else toast(r.msg,'terr');
-  });
-}
-
-/* ════════════════════════════ NOTIFICATIONS ════════════════════════════ */
-function aNotif(){
-  api('getNotifications',{gmail:''},function(r){
-    var list=(r.notifications||[]);
-    var rows=list.map(function(n){
-      return'<tr>'+'<td><strong>'+h(n.title)+'</strong></td>'+'<td>'+h((n.message||'').substring(0,55))+'…</td>'+'<td>'+cap(n.type)+'</td>'+'<td style="font-size:.7rem">'+fmtDate(n.date)+'</td>'+'<td><button class="a2btn a2btn-red" onclick="aDelNotif(\''+n.id+'\')">Delete</button></td>'+'</tr>';
-    }).join('');
-    document.getElementById('aBody').innerHTML='<div class="aform" style="margin-bottom:16px">'+'<h4>📤 Send Notification to All Users</h4>'+'<div class="fg-row"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">Title</label><input class="af" id="ntT" placeholder="e.g. New movies added!"></div>'+'<div class="fg-row" style="margin-top:9px"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">Message</label><textarea class="af" id="ntM" rows="3" placeholder="Your message to all users…"></textarea></div>'+'<div class="fg-row" style="margin-top:9px"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">Type</label>'+'<select class="af" id="ntTy" style="max-width:220px">'+'<option value="info">ℹ️ Info</option>'+'<option value="new">✨ New Content</option>'+'<option value="download">📱 App Download</option>'+'</select>'+'</div>'+'<div class="fa-row"><button class="a2btn a2btn-red" onclick="aSendNotif()">📤 Send to All Users</button></div>'+'</div>'+'<div class="atw">'+'<div class="ath"><h3>Sent Notifications ('+list.length+')</h3></div>'+'<div style="overflow-x:auto">'+'<table class="dt"><thead><tr><th>Title</th><th>Message</th><th>Type</th><th>Date</th><th></th></tr></thead>'+'<tbody>'+rows+'</tbody></table>'+'</div>'+'</div>';
-  });
-}
-function aSendNotif(){
-  var t=document.getElementById('ntT').value.trim();
-  var m=document.getElementById('ntM').value.trim();
-  var ty=document.getElementById('ntTy').value;
-  if(!t||!m){toast('Fill title and message','terr');return;}
-  api('addNotification',{token:TOKEN,title:t,message:m,type:ty},function(r){
-    if(r.ok){toast('Notification sent to all users! 🔔','tok');aNotif();}else toast(r.msg,'terr');
-  });
-}
-function aDelNotif(id){
-  if(!confirm('Delete notification?'))return;
-  api('deleteNotification',{token:TOKEN,id:id},function(r){
-    if(r.ok){toast('Deleted','tok');aNotif();}else toast(r.msg,'terr');
-  });
-}
-
-/* ════════════════════════════ SUGGESTIONS (Support Requests) ════════════════════════════ */
-function aSuggest(){
+/* ════════════════════════════ SUGGESTIONS ════════════════════════════ */
+function hmSuggest(){
   api('getSupportRequests',{token:TOKEN},function(r){
-    if(!r.ok){aErr(r.msg);return;}
+    if(!r.ok){hmErr(r.msg);return;}
     var list=r.requests||[];
     var open=list.filter(function(x){return x.status!=='resolved';});
     var resolved=list.filter(function(x){return x.status==='resolved';});
@@ -435,8 +162,8 @@ function aSuggest(){
             '<div style="font-size:.72rem;color:var(--t2);margin-top:3px">'+h(x.name)+' • <span style="color:var(--blue)">'+h(x.email)+'</span> • '+fmtDate(x.date)+'</div>'+
           '</div>'+
           '<div style="display:flex;gap:5px">'+
-            (isResolved?'':'<button class="a2btn a2btn-gr" onclick="aResolveReq(\''+x.id+'\')">✓ Resolve</button>')+
-            '<button class="a2btn a2btn-red" onclick="aDelReq(\''+x.id+'\')">Delete</button>'+
+            (isResolved?'':'<button class="a2btn a2btn-gr" onclick="hmResolveReq(\''+x.id+'\')">✓ Resolve</button>')+
+            '<button class="a2btn a2btn-red" onclick="hmDelReq(\''+x.id+'\')">Delete</button>'+
           '</div>'+
         '</div>'+
         '<p style="font-size:.8rem;color:var(--t2);margin-top:9px;line-height:1.5">'+h(x.message)+'</p>'+
@@ -444,88 +171,57 @@ function aSuggest(){
       '</div>';
     }
 
-    document.getElementById('aBody').innerHTML=
+    document.getElementById('hmBody').innerHTML=
       '<div class="aform" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px">'+
-        '<span class="live-badge" style="background:#fff3e0;color:#e65100;border-color:rgba(230,81,0,.25)">🟠 '+open.length+' open</span>'+
-        '<span class="live-badge">✅ '+resolved.length+' resolved</span>'+
-        '<button class="a2btn" onclick="aSuggest()">🔄 Refresh</button>'+
+        '<span class="live-badge badge-open">🟠 '+open.length+' open</span>'+
+        '<span class="live-badge badge-resolved">✅ '+resolved.length+' resolved</span>'+
+        '<button class="a2btn" onclick="hmSuggest()">🔄 Refresh</button>'+
       '</div>'+
       '<h4 style="margin-bottom:10px;font-size:.85rem">🟠 Open Requests ('+open.length+')</h4>'+
       (open.length?open.map(card).join(''):'<p style="font-size:.8rem;color:var(--t2);margin-bottom:16px">No open requests 🎉</p>')+
       (resolved.length?'<h4 style="margin:20px 0 10px;font-size:.85rem">✅ Resolved ('+resolved.length+')</h4>'+resolved.map(card).join(''):'');
   });
 }
-function aResolveReq(id){
+function hmResolveReq(id){
   api('resolveSupportRequest',{token:TOKEN,id:id},function(r){
-    if(r.ok){toast('Marked as resolved','tok');aSuggest();}else toast(r.msg,'terr');
+    if(r.ok){toast('Marked as resolved','tok');hmSuggest();}else toast(r.msg,'terr');
   });
 }
-function aDelReq(id){
+function hmDelReq(id){
   if(!confirm('Delete this request?'))return;
   api('deleteSupportRequest',{token:TOKEN,id:id},function(r){
-    if(r.ok){toast('Deleted','tok');aSuggest();}else toast(r.msg,'terr');
+    if(r.ok){toast('Deleted','tok');hmSuggest();}else toast(r.msg,'terr');
   });
 }
 
-/* ════════════════════════════ PAGES ════════════════════════════ */
-function aPages(){
+/* ════════════════════════════ ABOUT WEBSITE ════════════════════════════ */
+function hmAbout(){
   api('getPages',{},function(r){
     var pages=r.pages||{};
-    document.getElementById('aBody').innerHTML='<div class="aform">'+'<h4 style="margin-bottom:16px">📄 Edit Site Pages</h4>'+['contact','about','follow'].map(function(key){
-      var pg=pages[key]||{title:cap(key)+' Us',content:''};
-      return'<div style="margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid var(--brd)">'+'<p style="font-size:.8rem;font-weight:700;margin-bottom:10px;color:var(--red)">📌 '+cap(key)+' Page</p>'+'<div class="fg-row"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">Title</label><input class="af" id="pt-'+key+'" value="'+h(pg.title)+'" style="margin-top:3px"></div>'+'<div class="fg-row" style="margin-top:9px"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">Content</label><textarea class="af" id="pc-'+key+'" rows="4" placeholder="Page text…" style="margin-top:3px">'+h(pg.content)+'</textarea></div>'+'<button class="a2btn a2btn-red" style="margin-top:9px" onclick="aSavePage(\''+key+'\')">💾 Save '+cap(key)+' Page</button>'+'</div>';
-    }).join('')+'</div>';
+    var pg=pages['about']||{title:'About Us',content:''};
+    document.getElementById('hmBody').innerHTML=
+      '<div class="aform">'+
+        '<h3>📝 About Website</h3>'+
+        '<p style="font-size:.78rem;color:var(--t2);margin-bottom:16px">This text appears on the site\'s About page — describe what KEYTUBE is, what it offers, and anything else visitors should know.</p>'+
+        '<div class="fg-row"><label>Title</label><input class="af" id="abTitle" value="'+h(pg.title)+'"></div>'+
+        '<div class="fg-row"><label>Content</label><textarea class="af" id="abContent" rows="10" placeholder="Write about your website…">'+h(pg.content)+'</textarea></div>'+
+        '<button class="a2btn a2btn-red" onclick="hmSaveAbout()">💾 Save About Page</button>'+
+      '</div>';
   });
 }
-function aSavePage(key){
+function hmSaveAbout(){
   api('savePage',{
     token:TOKEN,
-    key:key,
-    title:document.getElementById('pt-'+key).value.trim(),
-    content:document.getElementById('pc-'+key).value.trim()
+    key:'about',
+    title:document.getElementById('abTitle').value.trim(),
+    content:document.getElementById('abContent').value.trim()
   },function(r){
-    if(r.ok)toast(r.msg||'Page saved','tok');else toast(r.msg,'terr');
-  });
-}
-
-/* ════════════════════════════ TRAFFIC ════════════════════════════ */
-function aTraffic(){
-  api('getTraffic',{token:TOKEN},function(r){
-    if(!r.ok){aErr(r.msg);return;}
-    var list=r.traffic||[];
-    var items=list.map(function(t){
-      return'<div class="tf">'+'<span class="tf-t">'+fmtDate(t.timestamp)+'</span>'+'<span class="tf-u">'+h(t.user)+'</span>'+'<span class="tf-a">'+h(t.action)+'</span>'+'<span style="color:var(--t2);font-size:.71rem">'+h(t.country||'—')+'</span>'+'<span style="color:var(--t3);font-size:.69rem">'+h(t.details||'')+'</span>'+'</div>';
-    }).join('');
-    document.getElementById('aBody').innerHTML='<div class="atw">'+'<div class="ath"><h3>📈 Traffic Log ('+list.length+' entries)</h3></div>'+'<div style="padding:0 14px 14px">'+(items||'<p style="padding:16px;color:var(--t2)">No traffic data yet.</p>')+'</div>'+'</div>';
-  });
-}
-
-/* ════════════════════════════ SETTINGS ════════════════════════════ */
-function aSettings(){
-  api('getSettings',{},function(r){
-    var s=r.settings||{};
-    document.getElementById('aBody').innerHTML='<div class="aform">'+'<h4 style="margin-bottom:16px">⚙️ Site Settings</h4>'+'<div class="fgrid">'+'<div class="fg-row"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">Site Name</label><input class="af" id="ss-n" value="'+h(s['site_name']||'KEYTUBE')+'" style="margin-top:3px"></div>'+'<div class="fg-row"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">New Admin Password (blank = keep)</label><input class="af" type="password" id="ss-p" placeholder="Leave blank to keep" style="margin-top:3px"></div>'+'<div class="fg-row full"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">Favicon URL</label><input class="af" id="ss-fav" value="'+h(s['favicon_url']||'')+'" placeholder="https://…/icon.png" style="margin-top:3px"></div>'+'<div class="fg-row full"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">Background Image URL</label><input class="af" id="ss-bg" value="'+h(s['background_url']||'')+'" placeholder="https://…/bg.jpg" style="margin-top:3px"></div>'+'<div class="fg-row full"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">📱 Mobile App Download URL</label><input class="af" id="ss-app" value="'+h(s['app_download_url']||'')+'" placeholder="https://…/keytube.apk" style="margin-top:3px"></div>'+'<div class="fg-row full"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">📢 Ads Top URL</label><input class="af" id="ss-at" value="'+h(s['ads_top']||'')+'" placeholder="https://advertiser.com" style="margin-top:3px"></div>'+'<div class="fg-row full"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">📢 Ads Middle URL</label><input class="af" id="ss-am" value="'+h(s['ads_middle']||'')+'" placeholder="https://advertiser.com" style="margin-top:3px"></div>'+'<div class="fg-row full"><label style="font-size:.68rem;color:var(--t2);font-weight:600;text-transform:uppercase">📢 Ads Bottom URL</label><input class="af" id="ss-ab" value="'+h(s['ads_bottom']||'')+'" placeholder="https://advertiser.com" style="margin-top:3px"></div>'+'</div>'+'<div class="fa-row" style="margin-top:13px">'+'<button class="a2btn a2btn-red" onclick="aSaveSettings()">💾 Save All Settings</button>'+'</div>'+'</div>';
-  });
-}
-function aSaveSettings(){
-  var sett={
-    site_name:document.getElementById('ss-n').value.trim(),
-    favicon_url:document.getElementById('ss-fav').value.trim(),
-    background_url:document.getElementById('ss-bg').value.trim(),
-    app_download_url:document.getElementById('ss-app').value.trim(),
-    ads_top:document.getElementById('ss-at').value.trim(),
-    ads_middle:document.getElementById('ss-am').value.trim(),
-    ads_bottom:document.getElementById('ss-ab').value.trim()
-  };
-  var np=document.getElementById('ss-p').value;
-  if(np)sett['admin_password']=np;
-  api('updateSettings',{token:TOKEN,settings:sett},function(r){
-    if(r.ok)toast(r.msg||'Settings saved!','tok');else toast(r.msg||'Error saving','terr');
+    if(r.ok)toast(r.msg||'About page saved','tok');else toast(r.msg,'terr');
   });
 }
 
 /* ════════════════════════════ HELPERS ════════════════════════════ */
-function aErr(msg){document.getElementById('aBody').innerHTML='<div class="aerr-box">❌ '+h(msg)+'</div>';}
+function hmErr(msg){document.getElementById('hmBody').innerHTML='<div class="aerr-box">❌ '+h(msg)+'</div>';}
 </script>
 
 </body>
