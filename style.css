@@ -331,64 +331,91 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   #appBanner{padding:9px 12px}
   #notifPanel{right:8px;width:calc(100vw - 16px)}
 
-  /* ── NAVBAR MOBILE - YAKOSOWE NEZA BY'AKAME ── */
-  #nav {
-    gap: 4px !important;              
-    padding: 0 8px !important;       
-    justify-content: space-between !important;
-  }
-  .logo {
-    gap: 2px !important;            
-    flex-shrink: 0 !important;      
-  }
-  .logo-t {
-    font-size: 13px !important;     
-  }
-  .kb {
-    width: 22px !important;         
-    height: 18px !important;
-    font-size: 11px !important;
-  }
+/* ── NAVBAR MOBILE - YAKOSOWE NEZA BY'AKAME ── */
+#nav {
+  gap: 4px !important;              
+  padding: 0 6px !important;       
+  justify-content: space-between !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.logo {
+  gap: 2px !important;            
+  flex-shrink: 0 !important;      
+}
+.logo-t {
+  font-size: 13px !important;     
+}
+.kb {
+  width: 22px !important;         
+  height: 18px !important;
+  font-size: 11px !important;
+}
+ 
+.nav-links {
+  display: flex !important; 
+  gap: 2px !important;
+  flex-shrink: 0 !important;      
+}
+.nl {
+  padding: 4px 5px !important;
+  font-size: .68rem !important;
+}
+
+/* SEARCH BAR MOBILE: Yaganyijwe max-width ngo isige space ihagije y'iburyo */
+.sbar {
+  flex: 1 !important;             
+  max-width: 105px !important;    
+  min-width: 45px !important;     
+  margin: 0 8px !important;       
+  padding: 0 !important;
+}
+.sbar input {
+  height: 28px !important;        
+  padding: 0 6px !important;      
+  font-size: .68rem !important;
+}
+.sbar button {
+  height: 28px !important;
+  width: 26px !important;         
+}
+
+/* NAV RIGHT MOBILE: Yakosorewe pointer-events n'umwanya ngo button zose zikande */
+.nav-r {
+  display: flex !important;       
+  align-items: center !important;
+  margin-left: auto !important;   
+  gap: 5px !important;            
+  flex-shrink: 0 !important;      
+  white-space: nowrap !important; 
   
-  .nav-links {
-    display: flex !important; 
-    gap: 2px !important;
-    flex-shrink: 0 !important;      
-  }
-  .nl {
-    padding: 4px 5px !important;
-    font-size: .68rem !important;
-  }
+  /* BIHATIRA IBIHISHWE BYOSE KUGARAGARA */
+  visibility: visible !important; 
+  opacity: 1 !important;          
+  pointer-events: auto !important; 
+}
 
-  /* SEARCH BAR MOBILE: Ifite margin ihamye iburyo n'ibumoso (margin: 0 10px), ikaguma rwagati neza kandi ntikore ku gice cy'ibirango cyangwa icyo kwinjira */
-  .sbar {
-    flex: 1 !important;             
-    max-width: 150px !important;    
-    min-width: 50px !important;     
-    margin: 0 10px !important;       /* Bituma isiga umwanya ufatika ku mpande zombi, ntizigera zikorana */
-    padding: 0 !important;
-  }
-  .sbar input {
-    height: 28px !important;        
-    padding: 0 6px !important;      
-    font-size: .68rem !important;
-  }
-  .sbar button {
-    height: 28px !important;
-    width: 26px !important;         
-  }
+/* BUTTONS (.nb): Zahawe style izisunika ngo zihore zigaragara neza */
+.nb {
+  height: 28px !important;        
+  padding: 0 6px !important;      
+  font-size: .65rem !important;   
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  /* Ibi birinda ko zihisha kiretse uzikozeho */
+  visibility: visible !important;
+  opacity: 1 !important;          
+  color: inherit !important;      
+}
+}
 
-  /* NAV RIGHT MOBILE */
-  .nav-r {
-    margin-left: 0 !important;    
-    gap: 3px !important;
-    flex-shrink: 0 !important;      
-  }
-  .nb {
-    height: 28px !important;        
-    padding: 0 5px !important;      
-    font-size: .66rem !important;   
-  }
+/* KURAHO IMPAMVU ZOSE ZATUMA ZIHISHA MURI CSS */
+.nav-r .hidden, .nav-r .nb.hidden {
+  display: inline-flex !important; 
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .hidden{display:none!important}
