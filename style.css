@@ -421,20 +421,23 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   pointer-events: none !important; 
 }
 
-/* ── BIHISHA ADMIN NAV BUTTON BURUNDU KURI SCREEN ── */
-/* Ibi bihatira ID yose n'ibimenyetso bya Admin kuzimira ariko JS ikomeza kuyibona mu background */
+/* ── 🛠️ AGAKOSOYE GAHAMYE: BIHISHA ADMIN NAV BUTTON BURUNDU ── */
+/* Niyo JavaScript yayisunika cyangwa yayikiza, iri bara rya CSS rirahita ruyizimya ku mbaraga */
 #admNavBtn, 
-button[id="admNavBtn"], 
 .nav-r #admNavBtn,
-#nav #admNavBtn {
+#nav #admNavBtn,
+button[onclick*="openAdmin"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
+  
+  /* Ibi ni inyogezo niyo display yagira ikibazo */
+  position: absolute !important;
+  left: -9999px !important;       /* Isunika button hanze kabisa ya screen ya telefone */
   width: 0 !important;
   height: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
-  position: absolute !important;
   pointer-events: none !important;
 }
 
