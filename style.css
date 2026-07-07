@@ -367,7 +367,7 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   font-size: .68rem !important;
 }
 
-/* SEARCH BAR MOBILE: Ifite ubugari bwa mbere buba bunini */
+/* SEARCH BAR MOBILE */
 .sbar {
   flex: 1 !important;             
   max-width: 220px !important;    
@@ -421,9 +421,12 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   pointer-events: none !important; 
 }
 
-/* ── BIHISHA ADMIN NAV BUTTON BURUNDU KURI CSS ── */
-/* Bituma JavaScript iyibona muri HTML (web igafunguka) ariko kuri screen ntiboneke */
-#admNavBtn {
+/* ── BIHISHA ADMIN NAV BUTTON BURUNDU KURI SCREEN ── */
+/* Ibi bihatira ID yose n'ibimenyetso bya Admin kuzimira ariko JS ikomeza kuyibona mu background */
+#admNavBtn, 
+button[id="admNavBtn"], 
+.nav-r #admNavBtn,
+#nav #admNavBtn {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -431,6 +434,7 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   height: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
+  position: absolute !important;
   pointer-events: none !important;
 }
 
