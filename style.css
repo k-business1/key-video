@@ -336,6 +336,8 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   gap: 4px !important;              
   padding: 0 6px !important;       
   justify-content: space-between !important;
+  display: flex !important;
+  align-items: center !important;
 }
 .logo {
   gap: 2px !important;            
@@ -360,12 +362,12 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   font-size: .68rem !important;
 }
 
-/* SEARCH BAR MOBILE: Twaganyije max-width (110px) ngo isige umwanya uhagije wa Sign Up na Log In */
+/* SEARCH BAR MOBILE: Ifite margin ihamye kandi yagabanutse max-width ngo isige space ihagije y'iburyo */
 .sbar {
   flex: 1 !important;             
-  max-width: 110px !important;    /* Ibi bituma button zombi zibona umwanya zikaza */
+  max-width: 105px !important;    /* Twagabanyijeho gato cyane ngo button zombi zibone umwanya zigaragare */
   min-width: 45px !important;     
-  margin: 0 8px !important;      
+  margin: 0 8px !important;       /* Isiga umwanya ufatika ku mpande zombi */
   padding: 0 !important;
 }
 .sbar input {
@@ -378,19 +380,23 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   width: 26px !important;         
 }
 
-/* NAV RIGHT MOBILE: Yakosowe ngo izane Sign Up na Log in zose zihamye */
+/* NAV RIGHT MOBILE: Yakosorewe pointer-events n'umwanya ngo button zose zikande */
 .nav-r {
-  display: flex !important;       
+  display: flex !important;       /* Bituma Log In na Sign Up zinjira mu murongo umwe */
   align-items: center !important;
   margin-left: auto !important;   /* Isunika iburyo burundu */
-  gap: 4px !important;            /* Umwanya uri hagati ya zombi */
-  flex-shrink: 0 !important;      /* Birinda ko button imwe yihisha (itaza) */
-  white-space: nowrap !important; /* Bihatira text ya Sign Up kutajya mu murongo mushya */
+  gap: 5px !important;            /* Umwanya uri hagati ya Log In na Sign Up urinda gufatana */
+  flex-shrink: 0 !important;      /* Birinda ko button imwe yihisha */
+  white-space: nowrap !important; /* Bihatira text kutajya mu murongo mushya */
+  pointer-events: auto !important; /* Bituma ahanditseho hasomeka neza n'iyo wabyerekera */
 }
 .nb {
   height: 28px !important;        
   padding: 0 6px !important;      
-  font-size: .65rem !important;   /* Twaganyijeho gato ngo zikwemo neza zombi */
+  font-size: .65rem !important;   
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 }
 
@@ -399,4 +405,4 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 .empty-st .ei{font-size:2rem;margin-bottom:7px;opacity:.35}.empty-st p{font-size:.81rem}
 
 .kb-logo{background:transparent!important;padding:0!important;overflow:hidden}
-.kb-logo img{width:100%;height:100%;object-fit:contain;display:block;border-radius:3px}in;display:block;border-radius:3px}
+.kb-logo img{width:100%;height:100%;object-fit:contain;display:block;border-radius:3px}
