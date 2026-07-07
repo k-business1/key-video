@@ -334,7 +334,7 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 /* ── NAVBAR MOBILE - YAKOSOWE NEZA BY'AKAME ── */
 #nav {
   gap: 4px !important;              
-  padding: 0 8px !important;       
+  padding: 0 6px !important;       
   justify-content: space-between !important;
 }
 .logo {
@@ -349,7 +349,7 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   height: 18px !important;
   font-size: 11px !important;
 }
-
+ 
 .nav-links {
   display: flex !important; 
   gap: 2px !important;
@@ -360,13 +360,12 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   font-size: .68rem !important;
 }
 
-/* SEARCH BAR MOBILE: Yakosorewe umwanya iburyo ngo ntiyegeke kuri log in button */
+/* SEARCH BAR MOBILE: Twaganyije max-width (110px) ngo isige umwanya uhagije wa Sign Up na Log In */
 .sbar {
   flex: 1 !important;             
-  max-width: 150px !important;    
-  min-width: 50px !important;     
-  margin: 0 6px 0 10px !important; /* Isiga 10px ibumoso (kuri logo) na 6px iburyo */
-  margin-right: 12px !important;   /* Agakereka gahamye kagenga umwanya ugabanya na log in */
+  max-width: 110px !important;    /* Ibi bituma button zombi zibona umwanya zikaza */
+  min-width: 45px !important;     
+  margin: 0 8px !important;      
   padding: 0 !important;
 }
 .sbar input {
@@ -379,17 +378,19 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   width: 26px !important;         
 }
 
-/* NAV RIGHT MOBILE: Hahinduwe margin-left ngo igume kwisunika iburyo isige kariya kanyanya */
+/* NAV RIGHT MOBILE: Yakosowe ngo izane Sign Up na Log in zose zihamye */
 .nav-r {
-  margin-left: auto !important;   /* Bimika iburyo neza bitayemerera kwitaba search bar */
-  padding-left: 4px !important;   /* Umwanya w'inyongezo urinda gufatana */
-  gap: 3px !important;
-  flex-shrink: 0 !important;      
+  display: flex !important;       
+  align-items: center !important;
+  margin-left: auto !important;   /* Isunika iburyo burundu */
+  gap: 4px !important;            /* Umwanya uri hagati ya zombi */
+  flex-shrink: 0 !important;      /* Birinda ko button imwe yihisha (itaza) */
+  white-space: nowrap !important; /* Bihatira text ya Sign Up kutajya mu murongo mushya */
 }
 .nb {
   height: 28px !important;        
-  padding: 0 5px !important;      
-  font-size: .66rem !important;   
+  padding: 0 6px !important;      
+  font-size: .65rem !important;   /* Twaganyijeho gato ngo zikwemo neza zombi */
 }
 }
 
@@ -398,4 +399,4 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 .empty-st .ei{font-size:2rem;margin-bottom:7px;opacity:.35}.empty-st p{font-size:.81rem}
 
 .kb-logo{background:transparent!important;padding:0!important;overflow:hidden}
-.kb-logo img{width:100%;height:100%;object-fit:contain;display:block;border-radius:3px}
+.kb-logo img{width:100%;height:100%;object-fit:contain;display:block;border-radius:3px}in;display:block;border-radius:3px}
