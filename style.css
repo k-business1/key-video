@@ -367,30 +367,30 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   font-size: .68rem !important;
 }
 
-/* SEARCH BAR MOBILE: Hano yahise ikorwa nini (220px) isanzwe */
+/* SEARCH BAR MOBILE: Ifite ubugari bwa mbere buba bunini */
 .sbar {
   flex: 1 !important;             
-  max-width: 220px !important;    /* Hano twayigize nini kurushaho ngo ibe nini (isanzwe) */
-  min-width: 120px !important;    /* Ubugari bwa mbere bugabanyije */
+  max-width: 220px !important;    
+  min-width: 120px !important;    
   margin: 0 10px !important;      
   padding: 0 !important;
   position: relative !important;
   z-index: 10 !important;
-  transition: all 0.3s ease !important; /* Bituma igihe yaguka bitungana neza */
+  transition: all 0.3s ease !important; 
 }
 
-/* IYO USER AYIKANZEMO (FOCUS): Ihita iba nini cyane ikaba ngari kurushaho */
+/* IYO USER AYIKANZEMO (FOCUS) */
 .sbar:focus-within {
-  max-width: 65vw !important;     /* Ikwirakwira mu kanyanya kose k'iburyo */
+  max-width: 65vw !important;     
   z-index: 30 !important;         
 }
 
 .sbar input {
-  height: 32px !important;        /* Kuri telefone, twabyibushyeho gato ngo ibe nini ihamye */
+  height: 32px !important;        
   padding: 0 30px 0 10px !important; 
-  font-size: .75rem !important;   /* Text yongerewe uburenganzira */
+  font-size: .75rem !important;   
   width: 100% !important;
-  border-radius: 20px !important; /* Bituma iba round nka ya yindi yo ku ifoto */
+  border-radius: 20px !important; 
 }
 .sbar button {
   position: absolute !important;
@@ -414,19 +414,24 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   transition: opacity 0.2s ease, visibility 0.2s ease !important;
 }
 
-/* IYO SEARCH BAR YAGUTSE (FOCUS), BUTTON Z'IBURYO ZIHITA ZIHISHWA BURUNDU */
+/* IYO SEARCH BAR YAGUTSE, SIGN IN NA SIGN UP ZIRIHISHA */
 #nav:has(.sbar:focus-within) .nav-r {
   opacity: 0 !important;          
   visibility: hidden !important;  
   pointer-events: none !important; 
 }
 
-/* GUKURAHO BUTTON YA ADMIN BURUNDU */
-.nav-r .admin, 
-.nav-r [class*="admin"], 
-.nav-r a[href*="admin"],
-#nav .admin {
-  display: none !important;       
+/* ── BIHISHA ADMIN NAV BUTTON BURUNDU KURI CSS ── */
+/* Bituma JavaScript iyibona muri HTML (web igafunguka) ariko kuri screen ntiboneke */
+#admNavBtn {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
 }
 
 .nb {
