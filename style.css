@@ -362,12 +362,12 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   font-size: .68rem !important;
 }
 
-/* SEARCH BAR MOBILE: Ifite margin ihamye kandi yagabanutse max-width ngo isige space ihagije y'iburyo */
+/* SEARCH BAR MOBILE: Yaganyijwe max-width ngo isige space ihagije y'iburyo */
 .sbar {
   flex: 1 !important;             
-  max-width: 105px !important;    /* Twagabanyijeho gato cyane ngo button zombi zibone umwanya zigaragare */
+  max-width: 105px !important;    
   min-width: 45px !important;     
-  margin: 0 8px !important;       /* Isiga umwanya ufatika ku mpande zombi */
+  margin: 0 8px !important;       
   padding: 0 !important;
 }
 .sbar input {
@@ -382,14 +382,20 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 
 /* NAV RIGHT MOBILE: Yakosorewe pointer-events n'umwanya ngo button zose zikande */
 .nav-r {
-  display: flex !important;       /* Bituma Log In na Sign Up zinjira mu murongo umwe */
+  display: flex !important;       
   align-items: center !important;
-  margin-left: auto !important;   /* Isunika iburyo burundu */
-  gap: 5px !important;            /* Umwanya uri hagati ya Log In na Sign Up urinda gufatana */
-  flex-shrink: 0 !important;      /* Birinda ko button imwe yihisha */
-  white-space: nowrap !important; /* Bihatira text kutajya mu murongo mushya */
-  pointer-events: auto !important; /* Bituma ahanditseho hasomeka neza n'iyo wabyerekera */
+  margin-left: auto !important;   
+  gap: 5px !important;            
+  flex-shrink: 0 !important;      
+  white-space: nowrap !important; 
+  
+  /* BIHATIRA IBIHISHWE BYOSE KUGARAGARA */
+  visibility: visible !important; 
+  opacity: 1 !important;          
+  pointer-events: auto !important; 
 }
+
+/* BUTTONS (.nb): Zahawe style izisunika ngo zihore zigaragara neza */
 .nb {
   height: 28px !important;        
   padding: 0 6px !important;      
@@ -397,7 +403,19 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  
+  /* Ibi birinda ko zihisha kiretse uzikozeho */
+  visibility: visible !important;
+  opacity: 1 !important;          /* Bituma ihora igaragara idahishe */
+  color: inherit !important;      /* Niba ibara ryarahindukaga, hano riraguma */
 }
+}
+
+/* KURAHO IMPAMVU ZOSE ZATUMA ZIHISHA MURI CSS */
+.nav-r .hidden, .nav-r .nb.hidden {
+  display: inline-flex !important; 
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .hidden{display:none!important}
