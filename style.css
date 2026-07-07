@@ -335,8 +335,8 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 #nav {
   display: flex !important;
   align-items: center !important;
-  gap: 4px !important;              
-  padding: 0 6px !important;       
+  gap: 6px !important;              
+  padding: 0 8px !important;       
   justify-content: space-between !important;
   position: relative !important;
 }
@@ -345,7 +345,7 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   align-items: center !important;
   gap: 2px !important;            
   flex-shrink: 0 !important;      
-  z-index: 10 !important; /* Birinda ko logo iherezwa inyuma na search bar */
+  z-index: 20 !important; 
 }
 .logo-t {
   font-size: 13px !important;     
@@ -360,41 +360,44 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   display: flex !important; 
   gap: 2px !important;
   flex-shrink: 0 !important;      
+  z-index: 20 !important; 
 }
 .nl {
   padding: 4px 5px !important;
   font-size: .68rem !important;
 }
 
-/* SEARCH BAR MOBILE: Ifite ubugari bwa mbere butabuza button kugaragara */
+/* SEARCH BAR MOBILE: Hano yahise ikorwa nini (220px) isanzwe */
 .sbar {
-  flex: 0 1 100px !important;     /* Itangira ifite 100px */
-  min-width: 50px !important;     
-  margin: 0 8px !important;      
+  flex: 1 !important;             
+  max-width: 220px !important;    /* Hano twayigize nini kurushaho ngo ibe nini (isanzwe) */
+  min-width: 120px !important;    /* Ubugari bwa mbere bugabanyije */
+  margin: 0 10px !important;      
   padding: 0 !important;
   position: relative !important;
-  z-index: 5 !important;
-  transition: flex 0.3s ease, max-width 0.3s ease !important; /* Inyeganyega neza */
+  z-index: 10 !important;
+  transition: all 0.3s ease !important; /* Bituma igihe yaguka bitungana neza */
 }
 
-/* IYO USER AYIKANZEMO (FOCUS): Iyagura ku mbaraga ikajya hejuru ya button ariko ntiyege kuri logo */
+/* IYO USER AYIKANZEMO (FOCUS): Ihita iba nini cyane ikaba ngari kurushaho */
 .sbar:focus-within {
-  flex: 1 !important;             /* Itwara umwanya wose ushoboka iburyo */
-  max-width: 70vw !important;     /* Ikuriramo kwaguka ariko igasiga logo */
-  z-index: 15 !important;         /* Iza hejuru ya .nav-r (button z'iburyo) */
+  max-width: 65vw !important;     /* Ikwirakwira mu kanyanya kose k'iburyo */
+  z-index: 30 !important;         
 }
 
 .sbar input {
-  height: 28px !important;        
-  padding: 0 24px 0 6px !important; 
-  font-size: .68rem !important;
+  height: 32px !important;        /* Kuri telefone, twabyibushyeho gato ngo ibe nini ihamye */
+  padding: 0 30px 0 10px !important; 
+  font-size: .75rem !important;   /* Text yongerewe uburenganzira */
   width: 100% !important;
+  border-radius: 20px !important; /* Bituma iba round nka ya yindi yo ku ifoto */
 }
 .sbar button {
   position: absolute !important;
-  right: 0 !important;
-  top: 0 !important;
-  height: 28px !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: 24px !important;
   width: 24px !important;    
   background: transparent !important;     
 }
@@ -404,21 +407,25 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   display: flex !important;       
   align-items: center !important;
   margin-left: auto !important;   
-  gap: 4px !important;            
+  gap: 5px !important;            
   flex-shrink: 0 !important;      
   white-space: nowrap !important; 
-  z-index: 1 !important;          /* Iba hasi iyo search bar yagutse */
-  transition: opacity 0.2s ease !important;
+  z-index: 5 !important;
+  transition: opacity 0.2s ease, visibility 0.2s ease !important;
 }
 
-/* IYO SEARCH BAR YAGUTSE, BUTTON ZIHITA ZIHISHWA NEZA */
+/* IYO SEARCH BAR YAGUTSE (FOCUS), BUTTON Z'IBURYO ZIHITA ZIHISHWA BURUNDU */
 #nav:has(.sbar:focus-within) .nav-r {
-  opacity: 0 !important;          /* Zihita zizimira mu buryo bwiza */
-  pointer-events: none !important; /* Birinda ko umuntu yazikandaho zitagaragara */
+  opacity: 0 !important;          
+  visibility: hidden !important;  
+  pointer-events: none !important; 
 }
 
-/* GUKURAHO ADMIN BUTTON */
-.nav-r .admin, .nav-r .admin-btn, [class*="admin"] {
+/* GUKURAHO BUTTON YA ADMIN BURUNDU */
+.nav-r .admin, 
+.nav-r [class*="admin"], 
+.nav-r a[href*="admin"],
+#nav .admin {
   display: none !important;       
 }
 
@@ -427,8 +434,8 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   align-items: center !important;
   justify-content: center !important;
   height: 28px !important;        
-  padding: 0 5px !important;      
-  font-size: .65rem !important;   
+  padding: 0 8px !important;      
+  font-size: .66rem !important;   
 }
 }
 
