@@ -1,10 +1,3 @@
-cat > /mnt/user-data/outputs/style.css << 'CSSEOF'
-/* ════════════════════════════════════════════════════════════════
-   KEYTUBE — Main Stylesheet (Responsive Enhanced Edition)
-   Colors, layout, and all features preserved exactly.
-   Improvements: better mobile nav, fullscreen video modal on phone,
-   3-dot menu blocker overlay on video player.
-════════════════════════════════════════════════════════════════ */
 
 :root{
   --w:#fff;--bg:#f9f9f9;--bg2:#f2f2f2;--brd:#e5e5e5;
