@@ -333,13 +333,15 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
 
 /* ── NAVBAR MOBILE - YAKOSOWE NEZA BY'AKAME ── */
 #nav {
-  gap: 4px !important;              
-  padding: 0 6px !important;       
-  justify-content: space-between !important;
   display: flex !important;
   align-items: center !important;
+  gap: 6px !important;              
+  padding: 0 8px !important;       
+  justify-content: space-between !important;
 }
 .logo {
+  display: flex !important;
+  align-items: center !important;
   gap: 2px !important;            
   flex-shrink: 0 !important;      
 }
@@ -362,60 +364,46 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:26px 22px 16p
   font-size: .68rem !important;
 }
 
-/* SEARCH BAR MOBILE: Yaganyijwe max-width ngo isige space ihagije y'iburyo */
+/* SEARCH BAR MOBILE: Agakosoye k'uburyo igarukira hafi idasongana na Sign In */
 .sbar {
   flex: 1 !important;             
-  max-width: 105px !important;    
-  min-width: 45px !important;     
-  margin: 0 8px !important;       
+  max-width: 130px !important;    /* Twagabanyije max-width ngo idasunikira Sign In inyuma */
+  min-width: 60px !important;     
+  margin: 0 10px !important;      /* Isiga umwanya uhagije hagati ya Logo na ziriya button */
   padding: 0 !important;
+  position: relative !important;
 }
 .sbar input {
   height: 28px !important;        
-  padding: 0 6px !important;      
+  padding: 0 30px 0 6px !important; /* Isiga umwanya w'akabuto k'ishakisha imbere */
   font-size: .68rem !important;
+  width: 100% !important;
 }
 .sbar button {
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
   height: 28px !important;
   width: 26px !important;         
 }
 
-/* NAV RIGHT MOBILE: Yakosorewe pointer-events n'umwanya ngo button zose zikande */
+/* NAV RIGHT MOBILE: Yakosorewe uburyo button zombi (Sign In na Sign Up) zijya mu murongo umwe neza */
 .nav-r {
-  display: flex !important;       
+  display: flex !important;       /* Bituma Sign In na Sign Up zinjira mu murongo zikurikiranye */
   align-items: center !important;
-  margin-left: auto !important;   
-  gap: 5px !important;            
+  margin-left: auto !important;   /* Isunika iburyo burundu ngo search bar itayigonga */
+  gap: 4px !important;            /* Umwanya uri hagati ya Sign In na Sign Up */
   flex-shrink: 0 !important;      
-  white-space: nowrap !important; 
-  
-  /* BIHATIRA IBIHISHWE BYOSE KUGARAGARA */
-  visibility: visible !important; 
-  opacity: 1 !important;          
-  pointer-events: auto !important; 
+  white-space: nowrap !important; /* Birinda ko amagambo akatika akajya munsi */
 }
-
-/* BUTTONS (.nb): Zahawe style izisunika ngo zihore zigaragara neza */
 .nb {
-  height: 28px !important;        
-  padding: 0 6px !important;      
-  font-size: .65rem !important;   
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  
-  /* Ibi birinda ko zihisha kiretse uzikozeho */
-  visibility: visible !important;
-  opacity: 1 !important;          
-  color: inherit !important;      
+  height: 28px !important;        
+  padding: 0 6px !important;      
+  font-size: .66rem !important;   
 }
-}
-
-/* KURAHO IMPAMVU ZOSE ZATUMA ZIHISHA MURI CSS */
-.nav-r .hidden, .nav-r .nb.hidden {
-  display: inline-flex !important; 
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
 .hidden{display:none!important}
