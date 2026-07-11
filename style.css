@@ -38,16 +38,40 @@ input,select,textarea{font-family:inherit}
 .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid var(--w);display:none}
 .notif-dot.on{display:block}
 
-/* ── KURI TEREFONI (MOBILE RESPONSIVE & STICKY) ── */
+/* ── KOSORA KURI TEREFONI (KUGUMISHAHO NAV BAR + NO SCROLLBAR) ── */
 @media (max-width: 768px) {
   #nav {
-    position: fixed !important; /* Ibi bituma navbar iguma hejuru idahungabana niyo user yamanuka */
+    position: fixed !important; /* Bituma nav bar itazongera kuzimira na gake umuntu amanuka */
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    padding: 0 10px; /* Ibi bituma ishyira bounds zikwiye kuri screen nto */
+    width: 100% !important;
     box-sizing: border-box;
-    overflow-x: auto; /* Bituma niba ibintu ari byinshi byikwiza neza (auto-resize) bitabyiganye */
+    display: flex !important;
+    flex-wrap: nowrap !important; /* Bikumira ko ibintu bimanuka munsi y'ibindi */
+    overflow-x: auto !important; /* Bituma user areba ibice byasaye akubise urutoki */
+    -webkit-overflow-scrolling: touch;
+    
+    /* Guhisha scroll bar burundu ngo itaza kwangiza isura */
+    scrollbar-width: none !important; /* Kuri Firefox */
+  }
+  
+  /* Guhisha scroll bar kuri Chrome, Safari, na Opera */
+  #nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Bikumira ko search bar igabanuka cyangwa ngo yegereze izindi button */
+  .sbar {
+    flex: 0 0 540px !important;
+    width: 540px !important;
+    min-width: 540px !important;
+    margin: 0 30px !important;
+  }
+
+  /* Bikumira ko logo, amapaji (links) n'iburyo bwishinyika */
+  .logo, .nav-links, .nav-r {
+    flex-shrink: 0 !important;
   }
 }
 /* ── DROPDOWNS ── */
