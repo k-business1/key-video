@@ -39,7 +39,6 @@
     <div class="notif-btn" id="notifBtn" onclick="toggleNotif()" style="display:none">🔔<div class="notif-dot" id="notifDot"></div></div>
     <button class="nb nb-out" id="siBtn" onclick="showAuth('login')">Sign in</button>
     <button class="nb nb-red" id="suBtn" onclick="showAuth('register')">Sign up</button>
-     <button class="nb" id="admNavBtn" style="display:none;font-size:.85rem" onclick="openAdmin()">⚙️ Admin</button>
     <div id="uChip" style="display:none;position:relative">
       <div class="av" id="avEl" onclick="toggleDrop()">U</div>
     </div>
@@ -53,7 +52,6 @@
   <div class="di" onclick="cd();showPlaylist()">📋 Playlist</div>
   <div class="di" onclick="cd();showProfile()">👤 Profile</div>
   <div class="ddiv"></div>
-  <div class="di" id="admDropI" style="display:none" onclick="cd();openAdmin()">⚙️ Admin Panel</div>
   <div class="di" style="color:var(--red)" onclick="logout()">🚪 Sign out</div>
 </div>
 <div id="appBanner">
@@ -160,7 +158,7 @@
     <div class="fc"><h4>Info</h4><a onclick="showPage('contact')">Contact Us</a><a onclick="showPage('about')">About Us</a><a onclick="showPage('follow')">Follow Us</a></div>
   </div>
   <div class="foot-bot">
-    <p>© <span class="yr" id="yrSpan" ondblclick="onDblYear()">2026</span> KEYTUBE. All rights reserved.</p>
+    <p>© <span class="yr" id="yrSpan">2026</span> KEYTUBE. All rights reserved.</p>
     <p>Available worldwide</p>
   </div>
 </footer>
@@ -207,29 +205,15 @@
     </div>
   </div>
 </div>
-<div class="ov" id="adminAuthOv" onclick="if(event.target===this)cOv('adminAuthOv')">
-  <div class="mbox">
-    <div class="mxbtn" onclick="cOv('adminAuthOv')">✕</div>
-    <div class="admin-auth-hd">
-      <div class="kb" style="background:#222">🔐</div>
-      <h2>Admin Access</h2><p>Enter your admin password</p>
-    </div>
-    <div class="aform">
-      <div class="fg"><label>Admin Password</label><input class="fi" id="adP" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminAuth()"></div>
-      <div class="aerr" id="adErr"></div>
-      <button class="abtn" style="background:#222" onclick="doAdminAuth()">Enter Admin Panel →</button>
-    </div>
-  </div>
-</div>
 <div class="ov" id="movOv" onclick="if(event.target===this)cMovie()">
   <div class="mbox">
     <div class="mxbtn" onclick="cMovie()">✕</div>
     <div id="vidWrap"></div>
     <div id="autoNextBanner">
       <div class="anb-top">
-        <span class="anb-icon">😂</span>
+        <span class="anb-icon" id="anIcon">▶</span>
         <div class="anb-info">
-          <div class="anb-label">Next Comedy · Auto-playing</div>
+          <div class="anb-label" id="anLabel">Next Up · Auto-playing</div>
           <div class="anb-name" id="anTitle">—</div>
           <div class="anb-pos" id="anPos"></div>
         </div>
@@ -262,6 +246,10 @@
         <div id="cmtFA"></div>
         <div id="cmtList"></div>
       </div>
+      <div class="mm-related hidden" id="mmRelatedWrap">
+        <h3 id="mmRelatedTitle">More like this</h3>
+        <div class="row-w" id="mmRelatedRow"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -271,8 +259,6 @@
     <div class="page-title" id="pageTit">Page</div>
     <div class="page-body" id="pageBody"></div>
   </div>
-
-  <div class="abody" id="abody"><div style="display:grid;place-items:center;padding:80px"><div class="spin"></div></div></div>
 </div>
 <script src="script.js"></script>
 </body>
