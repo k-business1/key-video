@@ -38,6 +38,18 @@ input,select,textarea{font-family:inherit}
 .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid var(--w);display:none}
 .notif-dot.on{display:block}
 
+/* ── KURI TEREFONI (MOBILE RESPONSIVE & STICKY) ── */
+@media (max-width: 768px) {
+  #nav {
+    position: fixed !important; /* Ibi bituma navbar iguma hejuru idahungabana niyo user yamanuka */
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 0 10px; /* Ibi bituma ishyira bounds zikwiye kuri screen nto */
+    box-sizing: border-box;
+    overflow-x: auto; /* Bituma niba ibintu ari byinshi byikwiza neza (auto-resize) bitabyiganye */
+  }
+}
 /* ── DROPDOWNS ── */
 #udrop{position:fixed;top:calc(var(--nav)+7px);right:14px;background:var(--w);border:1px solid var(--brd);border-radius:var(--r);min-width:190px;padding:6px 0;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.12);display:none}
 #udrop.open{display:block}
