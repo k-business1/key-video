@@ -1,7 +1,7 @@
 /* ════════════════════════════
    CONFIG
 ════════════════════════════ */
-var API   = 'https://script.google.com/macros/s/AKfycbxVdY-_WNOhxAEVqAMi2E1Q6R0KVBWnhq7EQGwNj21BWpbIOfi7phMt3y85qEhs9tXQ/exec';
+var API   = 'https://script.google.com/macros/s/AKfycbxbYUKZYwYRssm80AnP8kDj-8_ymsaFczKmecbchEntyhhr5-zqAIDYov-Nt7Ko0pDOMA/exec';
 var TOKEN = '';
 
 /* ════════════════════════════
