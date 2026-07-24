@@ -1,9 +1,4 @@
-// ================================================================
-// ENGINE 2 — Letter-by-Letter Database Matcher
-// Breaks the query down and compares it, letter for letter, against
-// every word in a supplied dictionary (e.g. movie titles), ranking
-// candidates and producing an auto-corrected query.
-// ================================================================
+<script>
 
 // Classic edit distance (insert / delete / substitute cost = 1)
 function engine2_levenshteinDistance(a, b) {
@@ -24,6 +19,7 @@ function engine2_levenshteinDistance(a, b) {
   }
   return dp[m][n];
 }
+  </script>
 
 // similarity score 0..1 (1 = identical)
 function engine2_similarityScore(a, b) {
