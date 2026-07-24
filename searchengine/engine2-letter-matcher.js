@@ -1,0 +1,58 @@
+// ================================================================
+// ENGINE 2 — Letter-by-Letter Database Matcher
+// Breaks the query down and compares it, letter for letter, against
+// every word in a supplied dictionary (e.g. movie titles), ranking
+// candidates and producing an auto-corrected query.
+// ================================================================
+
+// Classic edit distance (insert / delete / substitute cost = 1)
+function engine2_levenshteinDistance(a, b) {
+  a = String(a).toLowerCase(); b = String(b).toLowerCase();
+  var m = a.length, n = b.length;
+  var dp = [];
+  for (var i = 0; i <= m; i++) dp.push([i]);
+  for (var j = 0; j <= n; j++) dp[0][j] = j;
+  for (i = 1; i <= m; i++) {
+    for (j = 1; j <= n; j++) {
+      var cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost
+      );
+    }
+  }
+  return dp[m][n];
+}
+
+// similarity score 0..1 (1 = identical)
+function engine2_similarityScore(a, b) {
+  a = String(a).toLowerCase(); b = String(b).toLowerCase();
+  var dist = engine2_levenshteinDistance(a, b);
+  var maxLen = Math.max(a.length, b.length) || 1;
+  return 1 - (dist / maxLen);
+}
+
+// query: the raw text typed into the search bar
+// dictionaryWords: array of known-good words/titles to compare against
+function engine2_letterMatch(query, dictionaryWords) {
+  query = String(query || '').toLowerCase().trim();
+  if (!query) return { corrected: query, candidates: [] };
+
+  var scored = dictionaryWords
+    .map(function (word) { return { word: word, score: engine2_similarityScore(query, word) }; })
+    .sort(function (a, b) { return b.score - a.score; });
+
+  var top = scored.slice(0, 8).filter(function (c) { return c.score > 0.35; });
+  var corrected = top.length ? top[0].word : query;
+
+  return { corrected: corrected, candidates: top };
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    engine2_levenshteinDistance: engine2_levenshteinDistance,
+    engine2_similarityScore: engine2_similarityScore,
+    engine2_letterMatch: engine2_letterMatch
+  };
+}
