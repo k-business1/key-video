@@ -1,243 +1,306 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="rw">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Help Center</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-<style>
-:root{
-  --w:#fff;--bg:#f9f9f9;--bg2:#f2f2f2;--brd:#e5e5e5;--txt:#0f0f0f;--t2:#606060;--t3:#aaa;
-  --red:#ff0000;--r2:#cc0000;--blue:#065fd4;--green:#2ba640;--r:10px;--r2px:6px;
-}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif;}
-body{background:var(--bg);color:var(--txt);min-height:100vh;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEYTUBE - Help Center & Support</title>
+  <style>
+    :root {
+      --primary-color: #f5c518;
+      --bg-dark: #121212;
+      --card-bg: #1e1e1e;
+      --text-main: #ffffff;
+      --text-muted: #aaaaaa;
+      --border-color: #333333;
+      --accent-green: #28a745;
+    }
 
-header{
-  height:60px;background:var(--w);display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 10px rgba(0,0,0,.06);position:sticky;top:0;z-index:999;
-}
-.logo-title{font-family:'Bebas Neue';font-size:20px;letter-spacing:1px;color:var(--red);}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-.hero{background:var(--w);border-bottom:1px solid var(--brd);padding:40px 20px 34px;text-align:center;}
-.hero h1{font-family:'Bebas Neue';font-size:2.1rem;letter-spacing:1px;margin-bottom:8px;}
-.hero p{font-size:.9rem;color:var(--t2);margin-bottom:22px;}
-.hero-search{max-width:480px;margin:0 auto;}
-.hero-search input{
-  width:100%;padding:13px 16px;border:1.5px solid var(--brd);border-radius:24px;font-size:.9rem;outline:none;
-  background:var(--bg);transition:.15s;
-}
-.hero-search input:focus{border-color:var(--red);background:var(--w);}
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 20px;
+    }
 
-.container{max-width:900px;margin:auto;padding:30px 18px 60px;}
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-.section{margin-bottom:30px;}
-.section-title{font-size:1.05rem;font-weight:700;color:var(--red);margin-bottom:14px;}
+    header {
+      text-align: center;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 30px;
+    }
 
-.faq-item{background:var(--w);border:1px solid var(--brd);border-radius:var(--r2px);margin-bottom:10px;overflow:hidden;}
-.faq-q{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:.86rem;font-weight:600;transition:.15s;}
-.faq-q:hover{background:var(--bg);}
-.faq-q .arrow{font-size:.75rem;color:var(--t2);transition:transform .2s;flex-shrink:0;margin-left:12px;}
-.faq-item.open .faq-q .arrow{transform:rotate(180deg);}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;font-size:.82rem;color:var(--t2);line-height:1.6;}
-.faq-item.open .faq-a{max-height:400px;}
-.faq-a-inner{padding:0 16px 16px;}
-.faq-item.hidden{display:none;}
-.no-match{display:none;text-align:center;padding:30px;color:var(--t2);font-size:.85rem;}
-.no-match.show{display:block;}
+    header h1 {
+      color: var(--primary-color);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
 
-.contact-card{background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:24px;}
-.contact-card h3{font-size:1rem;margin-bottom:8px;}
-.contact-card p{font-size:.83rem;color:var(--t2);margin-bottom:18px;}
-.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
-.cf-input{width:100%;padding:11px 12px;border:1.5px solid var(--brd);border-radius:var(--r2px);font-size:.85rem;outline:none;background:var(--bg);font-family:'Roboto',sans-serif;transition:.15s;}
-.cf-input:focus{border-color:var(--red);background:var(--w);}
-@media(max-width:500px){.cf-row{grid-template-columns:1fr;}}
+    header p {
+      color: var(--text-muted);
+    }
 
-.contact-btn{display:inline-block;padding:11px 24px;background:var(--red);color:#fff;border-radius:var(--r2px);font-size:.85rem;font-weight:700;cursor:pointer;border:none;transition:.15s;}
-.contact-btn:hover{background:var(--r2);}
-.contact-btn:disabled{background:#e2a3a3;cursor:not-allowed;}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
 
-footer{text-align:center;padding:24px;font-size:.72rem;color:var(--t3);}
-@media(max-width:600px){.hero h1{font-size:1.6rem;}}
-</style>
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .card h3 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+
+    /* FAQ Section */
+    .faq-item {
+      margin-bottom: 15px;
+    }
+
+    .faq-item h4 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .faq-item p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Form Section */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      background: #2a2a2a;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    button.btn-submit {
+      background: var(--primary-color);
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    button.btn-submit:hover {
+      background: #e0b015;
+    }
+
+    .alert {
+      padding: 12px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: none;
+      font-size: 0.9rem;
+    }
+
+    .alert-success {
+      background: rgba(40, 167, 69, 0.2);
+      border: 1px solid var(--accent-green);
+      color: #5cdb95;
+    }
+
+    .alert-error {
+      background: rgba(220, 53, 69, 0.2);
+      border: 1px solid #dc3545;
+      color: #ff6b6b;
+    }
+  </style>
 </head>
 <body>
 
-<header><span class="logo-title">HELP CENTER</span></header>
-
-<div class="hero">
-  <h1>How can we help?</h1>
-  <p>Search for answers or browse topics below</p>
-  <div class="hero-search">
-    <input type="text" id="helpSearch" placeholder="Search help topics…">
-  </div>
-</div>
-
 <div class="container">
+  <header>
+    <h1>KEYTUBE Help Center</h1>
+    <p>Ukeneye ubufasha cyangwa ufite igitekerezo? Turi hano kugira ngo tukubwire n'uburyo twagufasha.</p>
+  </header>
 
-  <div class="section" id="aboutSection" style="display:none">
-    <div class="section-title" id="aboutTitle">About</div>
-    <div class="aform" style="background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:18px;font-size:.85rem;color:var(--t2);line-height:1.6" id="aboutContent"></div>
+  <div class="grid">
+    <!-- FAQ Column -->
+    <div class="card">
+      <h3>Ibibazo Bikunze Kubazwa (FAQ)</h3>
+
+      <div class="faq-item">
+        <h4>1. Ni gute nshobora kureba filime ntasabwa kwishyura?</h4>
+        <p>Filime zose ziri kuri KEYTUBE zirahari ku buntu. Zinezeze ureba cyangwa uzidownloadinga!</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>2. Nshobora gusaba filime ntabona ku rubuga?</h4>
+        <p>Yego! Koresha iforomu riri hano iruhande maze uhitemo icyo wifuza ko twakongeraho mu nsanganyamatsiko "saba Movie".</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>3. Nkora iki iyo video itari gukora (Loading Issue)?</h4>
+        <p>Banza ugenzure connection yawe ya internet, cyangwa ugerekeho refresh ku rupapuro. Iyo byanze, tubwire ukoresheje iyi form.</p>
+      </div>
+    </div>
+
+    <!-- Contact / Support Request Form -->
+    <div class="card">
+      <h3>Baza cyangwa Wohereze Ubusabe</h3>
+      
+      <div id="statusAlert" class="alert"></div>
+
+      <form id="supportForm">
+        <div class="form-group">
+          <label for="name">Izina Ryanyu</label>
+          <input type="text" id="name" required placeholder="Urugero: Eric Mugisha">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Yawe (Gmail)</label>
+          <input type="email" id="email" required placeholder="urugero@gmail.com">
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Impamvu / Inshingano</label>
+          <select id="subject" required>
+            <option value="">-- Hitamo Impamvu --</option>
+            <option value="Movie Request">Gusaba Filime Nshya</option>
+            <option value="Technical Issue">Problem kuri Video / App</option>
+            <option value="Account Issue">Ikibazo cy'Ikonti (Login)</option>
+            <option value="General Suggestion">Igitekerezo / Inyunganizi</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Ubutumwa Bwawe</label>
+          <textarea id="message" rows="4" required placeholder="Sobanura neza ikibazo cyangwa film wifuza..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Ohereza Ubutumwa</button>
+      </form>
+    </div>
   </div>
-
-  <div class="section">
-    <div class="section-title">❓ Frequently Asked Questions</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>How do I get started?</span><span class="arrow">▾</span></div>
-      <div class="faq-a"><div class="faq-a-inner">Browse the topics above or use the search bar to find what you need quickly.</div></div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>How long does support take to respond?</span><span class="arrow">▾</span></div>
-      <div class="faq-a"><div class="faq-a-inner">We typically respond within 24–48 hours after you submit a request below.</div></div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>I didn't find an answer to my question</span><span class="arrow">▾</span></div>
-      <div class="faq-a"><div class="faq-a-inner">Use the contact form below to send us your question directly — we'll get back to you.</div></div>
-    </div>
-  </div>
-
-  <div class="no-match" id="noMatch">No help topics match your search.</div>
-
-  <div class="contact-card">
-    <h3>Still need help?</h3>
-    <p>Can't find what you're looking for? Send us a message and we'll get back to you.</p>
-
-    <div class="cf-row">
-      <input type="text" id="cfName" class="cf-input" placeholder="Your name">
-      <input type="email" id="cfEmail" class="cf-input" placeholder="Your email">
-    </div>
-    <input type="text" id="cfSubject" class="cf-input" style="margin-bottom:10px" placeholder="Subject">
-    <textarea id="cfMessage" class="cf-input" rows="4" placeholder="Describe your issue…" style="margin-bottom:12px;resize:none"></textarea>
-
-    <div id="cfErr" style="font-size:.75rem;color:var(--red);min-height:14px;margin-bottom:6px"></div>
-    <button class="contact-btn" id="cfBtn" onclick="submitSupportRequest()">✉ Send Request</button>
-  </div>
-
 </div>
-
-<footer>© 2026 Help Center. All rights reserved.</footer>
 
 <script>
-/* ════════════════════════════ CONFIG ════════════════════════════
-   Paste the /exec URL from YOUR independent Apps Script deployment here.
-   This page does not depend on any other project. */
-var API_URL = "https://script.google.com/macros/s/AKfycbxR890lj04ubTRpt1Ef-u3p4pDiNjpcXoBz_xNpvZGpqjAeoNroqZ2lSUovUMaFZJIElA/exec";
+  document.getElementById('supportForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-/* ════════════════════════════ LOAD ABOUT CONTENT ════════════════════════════ */
-function loadAbout(){
-  fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify({ action: "getPages" })
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(res){
-    var pages = (res && res.pages) || {};
-    var about = pages["about"];
-    if(about && about.content){
-      document.getElementById("aboutTitle").textContent = about.title || "About";
-      document.getElementById("aboutContent").textContent = about.content;
-      document.getElementById("aboutSection").style.display = "block";
-    }
-  })
-  .catch(function(e){ console.error(e); });
-}
-loadAbout();
+    const submitBtn = document.getElementById('submitBtn');
+    const alertBox = document.getElementById('statusAlert');
 
-/* ════════════════════════════ CONTACT FORM ════════════════════════════ */
-function submitSupportRequest(){
-  var name = document.getElementById("cfName").value.trim();
-  var email = document.getElementById("cfEmail").value.trim();
-  var subject = document.getElementById("cfSubject").value.trim();
-  var message = document.getElementById("cfMessage").value.trim();
-  var err = document.getElementById("cfErr");
-  var btn = document.getElementById("cfBtn");
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
 
-  err.textContent = "";
-  if(!name || !email || !subject || !message){
-    err.textContent = "Please fill in all fields";
-    return;
-  }
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Biri koherezwa...';
+    alertBox.style.display = 'none';
 
-  var payload = {
-    action: "addSupportRequest",
-    name: name, email: email, subject: subject, message: message,
-    page: "help.html", userAgent: navigator.userAgent, date: new Date().toISOString()
-  };
+    // Payload ijyanye neza na "addSupportRequest" mu backend ya Code.gs
+    const payload = {
+      action: 'addSupportRequest',
+      name: name,
+      email: email,
+      subject: subject,
+      message: message,
+      page: 'Help Center',
+      userAgent: navigator.userAgent
+    };
 
-  btn.disabled = true;
-  btn.textContent = "Sending…";
+    // Niba urimo kumpuriza iyi form muri Google Apps Script
+    if (typeof google !== 'undefined' && google.script && google.script.run) {
+      google.script.run
+        .withSuccessHandler(function(response) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Ohereza Ubutumwa';
+          
+          alertBox.className = 'alert alert-success';
+          alertBox.innerText = 'Ubutumwa bwawe bwoherejwe neza! Murakoze.';
+          alertBox.style.display = 'block';
 
-  fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(payload)
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(res){
-    btn.disabled = false;
-    btn.textContent = "✉ Send Request";
-    if(res.ok){
-      showToast("✅ Request sent! We'll get back to you soon.");
-      document.getElementById("cfName").value = "";
-      document.getElementById("cfEmail").value = "";
-      document.getElementById("cfSubject").value = "";
-      document.getElementById("cfMessage").value = "";
+          document.getElementById('supportForm').reset();
+        })
+        .withFailureHandler(function(err) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Ohereza Ubutumwa';
+
+          alertBox.className = 'alert alert-error';
+          alertBox.innerText = 'Harimo ikosa mu kohereza: ' + err.message;
+          alertBox.style.display = 'block';
+        })
+        .handleAllActions(payload);
     } else {
-      err.textContent = res.msg || "Could not send request. Try again.";
+      // Niba ikoreshwa nk'urupapuro rwitegeka muri Web App request
+      fetch(window.location.href, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Ohereza Ubutumwa';
+
+        if (data.ok) {
+          alertBox.className = 'alert alert-success';
+          alertBox.innerText = 'Ubutumwa bwawe bwoherejwe neza! Murakoze.';
+          alertBox.style.display = 'block';
+          document.getElementById('supportForm').reset();
+        } else {
+          throw new Error(data.msg || 'Ikosa ryabonetse.');
+        }
+      })
+      .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Ohereza Ubutumwa';
+        
+        alertBox.className = 'alert alert-error';
+        alertBox.innerText = 'Ntidushoboye kohereza ubutumwa. Ongera ugerageze.';
+        alertBox.style.display = 'block';
+      });
     }
-  })
-  .catch(function(e){
-    btn.disabled = false;
-    btn.textContent = "✉ Send Request";
-    err.textContent = "Connection error. Please try again.";
-    console.error(e);
   });
-}
-
-function showToast(msg){
-  var t = document.createElement("div");
-  t.textContent = msg;
-  t.style.cssText = "position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;"
-    + "padding:12px 22px;border-radius:8px;font-size:.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);"
-    + "opacity:0;transition:.25s;";
-  document.body.appendChild(t);
-  requestAnimationFrame(function(){ t.style.opacity = "1"; });
-  setTimeout(function(){
-    t.style.opacity = "0";
-    setTimeout(function(){ t.remove(); }, 300);
-  }, 3200);
-}
-
-/* ════════════════════════════ FAQ TOGGLE + SEARCH ════════════════════════════ */
-function toggleFaq(el){
-  var item = el.parentElement;
-  var wasOpen = item.classList.contains("open");
-  document.querySelectorAll(".faq-item.open").forEach(function(i){
-    if(i !== item) i.classList.remove("open");
-  });
-  item.classList.toggle("open", !wasOpen);
-}
-
-document.getElementById("helpSearch").addEventListener("input", function(){
-  var query = this.value.trim().toLowerCase();
-  var items = document.querySelectorAll(".faq-item");
-  var visibleCount = 0;
-
-  items.forEach(function(item){
-    var text = item.textContent.toLowerCase();
-    var matches = !query || text.indexOf(query) !== -1;
-    item.classList.toggle("hidden", !matches);
-    if(matches) visibleCount++;
-  });
-
-  document.getElementById("noMatch").classList.toggle("show", query.length > 0 && visibleCount === 0);
-});
 </script>
 
 </body>
