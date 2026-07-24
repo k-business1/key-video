@@ -1,221 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="rw">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Help Manager</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-<style>
-:root{--w:#fff;--bg:#f9f9f9;--bg2:#f2f2f2;--brd:#e5e5e5;--txt:#0f0f0f;--t2:#606060;--t3:#aaa;
-  --red:#ff0000;--r2:#cc0000;--blue:#065fd4;--green:#2ba640;--r:8px;--r2px:4px;}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{min-height:100%;background:var(--bg);color:var(--txt);font-family:'Roboto',sans-serif}
-button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
-input,select,textarea{font-family:inherit}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg2)}
-::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
-
-#globalLoader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:2000}
-.spin{width:22px;height:22px;border:3px solid var(--bg2);border-top-color:var(--red);border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-
-#pbar{position:fixed;top:0;left:0;right:0;z-index:9999;height:3px;background:var(--red);width:0%;transition:width .3s;pointer-events:none}
-#pbar.done{opacity:0;transition:opacity .5s}
-
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--txt);color:#fff;border-radius:var(--r);padding:8px 18px;font-size:.8rem;font-weight:500;opacity:0;transition:.22s;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.15)}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#toast.tok{background:#2e7d32}
-#toast.terr{background:#d32f2f}
-
-.abar{height:50px;background:var(--w);border-bottom:1px solid var(--brd);display:flex;align-items:center;padding:0 16px;gap:7px;overflow-x:auto;flex-shrink:0}
-.abar-title{font-family:'Bebas Neue';font-size:1.1rem;color:var(--red);letter-spacing:1px;white-space:nowrap;margin-right:10px}
-.atb{padding:5px 11px;border-radius:var(--r);font-size:.76rem;font-weight:500;color:var(--t2);cursor:pointer;white-space:nowrap;transition:.15s;flex-shrink:0}
-.atb.act{background:rgba(255,0,0,.08);color:var(--red);font-weight:700}
-.abar-sp{flex:1;min-width:8px}
-
-.abody{max-width:900px;margin:0 auto;padding:20px}
-
-.aform{background:var(--w);border:1px solid var(--brd);border-radius:var(--r);padding:16px;margin-bottom:16px}
-.aform h3,.aform h4{font-size:.9rem;font-weight:700;margin-bottom:13px}
-.af{width:100%;border:1.5px solid var(--brd);border-radius:var(--r2px);padding:9px 11px;font-size:.83rem;color:var(--txt);outline:none;background:var(--w)}
-.af:focus{border-color:var(--blue)}
-.fg-row{margin-bottom:12px}
-.fg-row label{display:block;font-size:.68rem;font-weight:600;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
-
-.a2btn{padding:6px 14px;border-radius:var(--r2px);font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--brd);background:var(--bg2);transition:.15s}
-.a2btn:hover{background:var(--brd)}
-.a2btn-red{color:var(--red);border-color:rgba(255,0,0,.25);background:rgba(255,0,0,.06)}
-.a2btn-gr{color:var(--green);border-color:rgba(43,166,64,.25);background:rgba(43,166,64,.06)}
-
-.live-badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:4px 11px;font-size:.75rem;font-weight:700}
-.badge-open{background:#fff3e0;color:#e65100;border:1px solid rgba(230,81,0,.25)}
-.badge-resolved{background:#e8f5e9;color:var(--green);border:1px solid rgba(43,166,64,.25)}
-
-.s-ok{color:var(--green);font-weight:600}
-.s-bl{color:var(--red);font-weight:600}
-.spin-inline{width:22px;height:22px;border:3px solid var(--bg2);border-top-color:var(--red);border-radius:50%;animation:sp .7s linear infinite;margin:60px auto;display:block}
-
-.aerr-box{color:var(--red);padding:18px;font-size:.82rem}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEYTUBE - Admin Dashboard</title>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="admin-style.css">
 </head>
 <body>
 
-<div id="pbar"></div>
-<div id="toast"></div>
-<div id="globalLoader"><div class="spin"></div></div>
+  <div class="app-container">
+    
+    <!-- Header Area -->
+    <header class="app-header">
+      <div class="header-top">
+        <!-- Return / Back Button -->
+        <a href="../index.html" class="back-btn" title="Subira inyuma">
+          <i class="fa-solid fa-chevron-left"></i>
+        </a>
 
-<div class="abar">
-  <span class="abar-title">HELP MANAGER</span>
-  <button class="atb act" id="tab-suggest" onclick="hmTab('suggest')">🗨️ Suggestions</button>
-  <button class="atb"     id="tab-about"   onclick="hmTab('about')">📝 About Website</button>
-  <div class="abar-sp"></div>
-</div>
+        <!-- Logo iri hanze ya folder (../logo.png) -->
+        <a href="../index.html" class="brand-logo" title="Ahabanza">
+          <img src="../logo.png" alt="KEYTUBE Logo" id="appLogo">
+          <span class="logo-text">KEYTUBE</span>
+        </a>
 
-<div class="abody" id="hmBody"><div class="spin-inline"></div></div>
+        <div class="admin-badge">
+          <i class="fa-solid fa-shield-halved"></i> Admin
+        </div>
+      </div>
 
-<script>
-/* ════════════════════════════ CONFIG ════════════════════════════
-   Paste the /exec URL from YOUR independent Apps Script deployment
-   here — the SAME one used in standalone_help.html and standalone_Code.gs.
-   This page does not depend on any other project. */
-var API = "https://script.google.com/macros/s/AKfycbxR890lj04ubTRpt1Ef-u3p4pDiNjpcXoBz_xNpvZGpqjAeoNroqZ2lSUovUMaFZJIElA/exec";
-var TOKEN = '';
+      <div class="header-banner">
+        <div class="banner-text">
+          <h1>Admin Control</h1>
+          <p>Cunga ubusabe bw'abakoresha n'ubutumwa.</p>
+        </div>
+      </div>
+    </header>
 
-/* ════════════════════════════ UTILS ════════════════════════════ */
-function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function fmtDate(d){var dt=new Date(d);return isNaN(dt)?d:dt.toLocaleDateString();}
+    <!-- Main Content -->
+    <main class="main-content">
 
-function toast(msg,type){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.className='show'+(type?' '+type:'');
-  clearTimeout(t._t);t._t=setTimeout(function(){t.className='';},3000);
-}
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fa-solid fa-inbox icon-red"></i>
+          <div>
+            <h3 id="totalRequestsCount">0</h3>
+            <span>Ubutumwa Byose</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-bell icon-orange"></i>
+          <div>
+            <h3 id="pendingCount">0</h3>
+            <span>Ibitaragusubizwa</span>
+          </div>
+        </div>
+      </div>
 
-var pW=0,pT;
-function pStart(){pW=0;var e=document.getElementById('pbar');e.className='';e.style.width='0%';clearInterval(pT);pT=setInterval(function(){pW=Math.min(pW+Math.random()*8,88);e.style.width=pW+'%';},120);}
-function pDone(){clearInterval(pT);var e=document.getElementById('pbar');e.style.width='100%';setTimeout(function(){e.className='done';setTimeout(function(){e.style.width='0%';e.className='';},500);},280);}
+      <!-- Action Button -->
+      <div class="action-bar">
+        <button id="refreshBtn" class="btn-refresh">
+          <i class="fa-solid fa-arrows-rotate"></i> Bazana Ubutumwa Bushya
+        </button>
+      </div>
 
-function api(action,data,cb){
-  pStart();
-  fetch(API,{method:'POST',headers:{'Content-Type':'text/plain'},
-    body:JSON.stringify(Object.assign({},data||{},{action:action})),redirect:'follow'})
-  .then(function(r){return r.json();})
-  .then(function(res){pDone();if(cb)cb(res);})
-  .catch(function(e){pDone();toast('Connection error','terr');console.error(e);});
-}
+      <div id="adminAlert" class="alert"></div>
 
-/* ════════════════════════════ INIT (passwordless session) ════════════════════════════ */
-window.onload = function(){
-  var saved = sessionStorage.getItem('hm_token');
-  if(saved){
-    TOKEN = saved;
-    startPanel();
-    return;
-  }
-  api('openAdminSession', {}, function(r){
-    if(r.ok){
-      TOKEN = r.token;
-      sessionStorage.setItem('hm_token', TOKEN);
-      startPanel();
-    } else {
-      document.body.innerHTML = '<div class="aerr-box">❌ Could not open session: ' + h(r.msg || 'Unknown error') + '</div>';
-    }
-  });
-};
+      <!-- Content Table / Request List -->
+      <h2 class="section-title"><i class="fa-solid fa-list"></i> Ubusabe Bw'Abakoresha</h2>
+      
+      <div id="loadingSpinner" class="loading-box" style="display: none;">
+        <i class="fa-solid fa-spinner fa-spin"></i> Biri gukurura ubutumwa...
+      </div>
 
-function startPanel(){
-  var loader = document.getElementById('globalLoader');
-  if(loader) loader.remove();
-  hmTab('suggest');
-}
+      <div id="requestsList" class="requests-list">
+        <p class="empty-state">Kanda kuri "Bazana Ubutumwa Bushya" kugira ngo urebe ubwo abafana bohereje.</p>
+      </div>
 
-/* ════════════════════════════ TAB ROUTER ════════════════════════════ */
-function hmTab(tab){
-  document.querySelectorAll('.atb').forEach(function(b){b.classList.remove('act');});
-  var el=document.getElementById('tab-'+tab);if(el)el.classList.add('act');
-  document.getElementById('hmBody').innerHTML='<div class="spin-inline"></div>';
-  (tab==='suggest'?hmSuggest:hmAbout)();
-}
+    </main>
 
-/* ════════════════════════════ SUGGESTIONS ════════════════════════════ */
-function hmSuggest(){
-  api('getSupportRequests',{token:TOKEN},function(r){
-    if(!r.ok){hmErr(r.msg);return;}
-    var list=r.requests||[];
-    var open=list.filter(function(x){return x.status!=='resolved';});
-    var resolved=list.filter(function(x){return x.status==='resolved';});
+  </div>
 
-    function card(x){
-      var isResolved=x.status==='resolved';
-      return '<div class="aform" style="margin-bottom:12px;'+(isResolved?'opacity:.65':'')+'">'+
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">'+
-          '<div>'+
-            '<strong style="font-size:.86rem">'+h(x.subject)+'</strong> '+
-            '<span class="'+(isResolved?'s-ok':'s-bl')+'" style="font-size:.68rem;margin-left:6px">'+(isResolved?'Resolved':'Open')+'</span>'+
-            '<div style="font-size:.72rem;color:var(--t2);margin-top:3px">'+h(x.name)+' • <span style="color:var(--blue)">'+h(x.email)+'</span> • '+fmtDate(x.date)+'</div>'+
-          '</div>'+
-          '<div style="display:flex;gap:5px">'+
-            (isResolved?'':'<button class="a2btn a2btn-gr" onclick="hmResolveReq(\''+x.id+'\')">✓ Resolve</button>')+
-            '<button class="a2btn a2btn-red" onclick="hmDelReq(\''+x.id+'\')">Delete</button>'+
-          '</div>'+
-        '</div>'+
-        '<p style="font-size:.8rem;color:var(--t2);margin-top:9px;line-height:1.5">'+h(x.message)+'</p>'+
-        (x.page?'<div style="font-size:.68rem;color:var(--t3);margin-top:6px">From page: '+h(x.page)+'</div>':'')+
-      '</div>';
-    }
-
-    document.getElementById('hmBody').innerHTML=
-      '<div class="aform" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px">'+
-        '<span class="live-badge badge-open">🟠 '+open.length+' open</span>'+
-        '<span class="live-badge badge-resolved">✅ '+resolved.length+' resolved</span>'+
-        '<button class="a2btn" onclick="hmSuggest()">🔄 Refresh</button>'+
-      '</div>'+
-      '<h4 style="margin-bottom:10px;font-size:.85rem">🟠 Open Requests ('+open.length+')</h4>'+
-      (open.length?open.map(card).join(''):'<p style="font-size:.8rem;color:var(--t2);margin-bottom:16px">No open requests 🎉</p>')+
-      (resolved.length?'<h4 style="margin:20px 0 10px;font-size:.85rem">✅ Resolved ('+resolved.length+')</h4>'+resolved.map(card).join(''):'');
-  });
-}
-function hmResolveReq(id){
-  api('resolveSupportRequest',{token:TOKEN,id:id},function(r){
-    if(r.ok){toast('Marked as resolved','tok');hmSuggest();}else toast(r.msg,'terr');
-  });
-}
-function hmDelReq(id){
-  if(!confirm('Delete this request?'))return;
-  api('deleteSupportRequest',{token:TOKEN,id:id},function(r){
-    if(r.ok){toast('Deleted','tok');hmSuggest();}else toast(r.msg,'terr');
-  });
-}
-
-/* ════════════════════════════ ABOUT WEBSITE ════════════════════════════ */
-function hmAbout(){
-  api('getPages',{},function(r){
-    var pages=r.pages||{};
-    var pg=pages['about']||{title:'About Us',content:''};
-    document.getElementById('hmBody').innerHTML=
-      '<div class="aform">'+
-        '<h3>📝 About Website</h3>'+
-        '<p style="font-size:.78rem;color:var(--t2);margin-bottom:16px">This text appears on the public help page — describe what this website is, what it offers, and anything else visitors should know.</p>'+
-        '<div class="fg-row"><label>Title</label><input class="af" id="abTitle" value="'+h(pg.title)+'"></div>'+
-        '<div class="fg-row"><label>Content</label><textarea class="af" id="abContent" rows="10" placeholder="Write about your website…">'+h(pg.content)+'</textarea></div>'+
-        '<button class="a2btn a2btn-red" onclick="hmSaveAbout()">💾 Save About Page</button>'+
-      '</div>';
-  });
-}
-function hmSaveAbout(){
-  api('savePage',{
-    token:TOKEN,
-    key:'about',
-    title:document.getElementById('abTitle').value.trim(),
-    content:document.getElementById('abContent').value.trim()
-  },function(r){
-    if(r.ok)toast(r.msg||'About page saved','tok');else toast(r.msg,'terr');
-  });
-}
-
-/* ════════════════════════════ HELPERS ════════════════════════════ */
-function hmErr(msg){document.getElementById('hmBody').innerHTML='<div class="aerr-box">❌ '+h(msg)+'</div>';}
-</script>
-
+  <script src="admin-script.js"></script>
 </body>
 </html>
