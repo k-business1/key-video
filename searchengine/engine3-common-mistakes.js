@@ -1,0 +1,62 @@
+// ================================================================
+// ENGINE 3 — Common-Mistake Analyzer
+// Applies known typing-mistake patterns (doubled letters, dropped
+// letters, adjacent-key slips, swapped letters) and tests whether any
+// normalized variant of the query already exists in the dictionary.
+// ================================================================
+
+// Keyboard-adjacency map — models "fat-finger" key slips
+var ENGINE3_KEY_ADJACENCY = {
+  q: ['w','a'],       w: ['q','e','s'],   e: ['w','r','d'],   r: ['e','t','f'],
+  t: ['r','y','g'],   y: ['t','u','h'],   u: ['y','i','j'],   i: ['u','o','k'],
+  o: ['i','p','l'],   p: ['o','l'],       a: ['q','s','z'],   s: ['a','w','d','x'],
+  d: ['s','e','f','c'], f: ['d','r','g','v'], g: ['f','t','h','b'], h: ['g','y','j','n'],
+  j: ['h','u','k','m'], k: ['j','i','l'], l: ['k','o','p'],   z: ['a','s','x'],
+  x: ['z','s','d','c'], c: ['x','d','f','v'], v: ['c','f','g','b'], b: ['v','g','h','n'],
+  n: ['b','h','j','m'], m: ['n','j','k']
+};
+
+function engine3_commonMistakes(query, dictionaryWords) {
+  query = String(query || '').toLowerCase().trim();
+  var dictSet = {};
+  dictionaryWords.forEach(function (w) { dictSet[w] = true; });
+
+  var variants = [query];
+
+  // a) collapse doubled letters: "moovie" -> "movie"
+  variants.push(query.replace(/(.)\1+/g, '$1'));
+
+  // b) drop each single character once (missed-key omission)
+  for (var i = 0; i < query.length; i++) {
+    variants.push(query.slice(0, i) + query.slice(i + 1));
+  }
+
+  // c) swap each pair of adjacent letters (fat-finger transposition)
+  for (i = 0; i < query.length - 1; i++) {
+    var arr = query.split('');
+    var tmp = arr[i]; arr[i] = arr[i + 1]; arr[i + 1] = tmp;
+    variants.push(arr.join(''));
+  }
+
+  // d) replace each letter with its keyboard neighbours
+  for (i = 0; i < query.length; i++) {
+    var neighbours = ENGINE3_KEY_ADJACENCY[query[i]] || [];
+    neighbours.forEach(function (nb) {
+      variants.push(query.slice(0, i) + nb + query.slice(i + 1));
+    });
+  }
+
+  var hit = null;
+  for (i = 0; i < variants.length; i++) {
+    if (dictSet[variants[i]]) { hit = variants[i]; break; }
+  }
+
+  return { fixed: hit, triedVariants: variants.length };
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    ENGINE3_KEY_ADJACENCY: ENGINE3_KEY_ADJACENCY,
+    engine3_commonMistakes: engine3_commonMistakes
+  };
+}
