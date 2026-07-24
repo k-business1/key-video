@@ -1,28 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeyTube Downloads</title>
+
+    <!-- Website Icon -->
+    <link rel="icon" type="image/png" href="../logo.png">
+    <link rel="apple-touch-icon" href="../logo.png">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="card">
-    <img src="../logo.png" alt="KeyTube Logo" class="logo">
+<div class="container">
+    <div class="card">
 
-    <h1>KeyTube Downloads</h1>
+        <img src="../logo.png" alt="KeyTube Logo" class="logo">
 
-    <button onclick="downloadFile('keytube.apk')">
-        📱 Download Android APK
-    </button>
+        <h1>KeyTube Downloads</h1>
 
-    <button onclick="downloadFile('keytube.exe')">
-        💻 Download Windows EXE
-    </button>
+        <p class="description">
+            Download the latest version of KeyTube for your device.
+        </p>
 
-    <p id="message"></p>
+        <button onclick="downloadFile('keytube.apk')">
+            📱 Download for Android
+        </button>
+
+        <button onclick="downloadFile('keytube.exe')">
+            💻 Download for Windows
+        </button>
+
+        <p id="message"></p>
+
+    </div>
 </div>
 
 <script src="script.js"></script>
