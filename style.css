@@ -288,3 +288,16 @@ footer{background:var(--w);border-top:1px solid var(--brd);padding:20px 14px 14p
   body{max-width:520px;margin:0 auto}
   #hdr,#tabbar{max-width:520px;left:50%;transform:translateX(-50%)}
 }
+.upload-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e50914; /* Red button style */
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-family: sans-serif;
+  }
+  .upload-btn:hover {
+    background-color: #b81d24;
+  }
