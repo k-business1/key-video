@@ -1,9 +1,4 @@
-// ================================================================
-// ENGINE 4 — Current-Error Identifier
-// Compares the raw query against the best candidate found by
-// Engines 2/3 and classifies exactly what kind of mistake was made.
-// ================================================================
-
+<script>
 function engine4_identifyError(query, bestMatch) {
   query = String(query || '').toLowerCase();
   bestMatch = String(bestMatch || '').toLowerCase();
@@ -37,3 +32,4 @@ function engine4_identifyError(query, bestMatch) {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { engine4_identifyError: engine4_identifyError };
 }
+</script>
