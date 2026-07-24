@@ -1,0 +1,21 @@
+// ================================================================
+// ENGINE 1 — Zero-Result Detector
+// Looks at a search response ({exact:[...], similar:[...]}) coming
+// back from the server and flags a "0 exact / 0 similar" miss.
+// ================================================================
+
+function engine1_detectZeroResult(searchResult) {
+  var exactCount   = (searchResult && searchResult.exact)   ? searchResult.exact.length   : 0;
+  var similarCount = (searchResult && searchResult.similar) ? searchResult.similar.length : 0;
+
+  return {
+    isMiss: exactCount === 0 && similarCount === 0,
+    exactCount: exactCount,
+    similarCount: similarCount
+  };
+}
+
+// Export for use in the browser (search bar) and/or Node-style bundlers
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { engine1_detectZeroResult: engine1_detectZeroResult };
+}
