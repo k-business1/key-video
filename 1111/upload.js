@@ -1,5 +1,5 @@
 /* ════════ CONFIG ════════ */
-const API = "https://script.google.com/macros/s/AKfycbxbYUKZYwYRssm80AnP8kDj-8_ymsaFczKmecbchEntyhhr5-zqAIDYov-Nt7Ko0pDOMA/exec";
+const API = "https://https://script.google.com/macros/s/AKfycbxbYUKZYwYRssm80AnP8kDj-8_ymsaFczKmecbchEntyhhr5-zqAIDYov-Nt7Ko0pDOMA/exec";
 const CLOUD_NAME = "dajgyzx3c";
 const UPLOAD_PRESET = "keytube";
 const FOLDER = "keytube";
