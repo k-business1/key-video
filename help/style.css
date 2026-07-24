@@ -26,7 +26,7 @@ body {
 
 .app-container {
   width: 100%;
-  max-width: 480px; /* Clean mobile app viewport */
+  max-width: 480px;
   background: var(--bg-light);
   min-height: 100vh;
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
@@ -34,7 +34,7 @@ body {
   padding-bottom: 40px;
 }
 
-/* Header UI */
+/* Header */
 .app-header {
   background: #ffffff;
   padding: 15px 20px;
@@ -67,6 +67,9 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .brand-logo img {
@@ -103,7 +106,7 @@ body {
   font-size: 0.85rem;
 }
 
-/* Banner */
+/* Banner Area */
 .header-banner {
   display: flex;
   align-items: center;
@@ -139,7 +142,7 @@ body {
   border-radius: 50%;
 }
 
-/* Search input */
+/* Search Box */
 .search-box {
   position: relative;
 }
@@ -182,7 +185,6 @@ body {
   margin-bottom: 15px;
 }
 
-/* Topic Cards */
 .topics-list {
   display: flex;
   flex-direction: column;
@@ -241,7 +243,7 @@ body {
   font-size: 0.8rem;
 }
 
-/* Form Styling */
+/* Support Form Section */
 .support-section {
   background: #ffffff;
   padding: 20px;
