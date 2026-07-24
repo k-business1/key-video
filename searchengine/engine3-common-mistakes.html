@@ -1,11 +1,4 @@
-// ================================================================
-// ENGINE 3 — Common-Mistake Analyzer
-// Applies known typing-mistake patterns (doubled letters, dropped
-// letters, adjacent-key slips, swapped letters) and tests whether any
-// normalized variant of the query already exists in the dictionary.
-// ================================================================
-
-// Keyboard-adjacency map — models "fat-finger" key slips
+<script>
 var ENGINE3_KEY_ADJACENCY = {
   q: ['w','a'],       w: ['q','e','s'],   e: ['w','r','d'],   r: ['e','t','f'],
   t: ['r','y','g'],   y: ['t','u','h'],   u: ['y','i','j'],   i: ['u','o','k'],
@@ -60,3 +53,4 @@ if (typeof module !== 'undefined' && module.exports) {
     engine3_commonMistakes: engine3_commonMistakes
   };
 }
+</script>
