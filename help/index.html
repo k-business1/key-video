@@ -3,305 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KEYTUBE - Help Center & Support</title>
-  <style>
-    :root {
-      --primary-color: #f5c518;
-      --bg-dark: #121212;
-      --card-bg: #1e1e1e;
-      --text-main: #ffffff;
-      --text-muted: #aaaaaa;
-      --border-color: #333333;
-      --accent-green: #28a745;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      line-height: 1.6;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    header {
-      text-align: center;
-      padding: 30px 0;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 30px;
-    }
-
-    header h1 {
-      color: var(--primary-color);
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      color: var(--text-muted);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 20px;
-    }
-
-    .card h3 {
-      color: var(--primary-color);
-      margin-bottom: 15px;
-      font-size: 1.2rem;
-    }
-
-    /* FAQ Section */
-    .faq-item {
-      margin-bottom: 15px;
-    }
-
-    .faq-item h4 {
-      color: #fff;
-      font-size: 1rem;
-      margin-bottom: 5px;
-    }
-
-    .faq-item p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    /* Form Section */
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      width: 100%;
-      padding: 10px;
-      background: #2a2a2a;
-      border: 1px solid var(--border-color);
-      border-radius: 5px;
-      color: #fff;
-      font-size: 0.95rem;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--primary-color);
-    }
-
-    button.btn-submit {
-      background: var(--primary-color);
-      color: #000;
-      border: none;
-      padding: 12px 20px;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-      transition: background 0.2s;
-    }
-
-    button.btn-submit:hover {
-      background: #e0b015;
-    }
-
-    .alert {
-      padding: 12px;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      display: none;
-      font-size: 0.9rem;
-    }
-
-    .alert-success {
-      background: rgba(40, 167, 69, 0.2);
-      border: 1px solid var(--accent-green);
-      color: #5cdb95;
-    }
-
-    .alert-error {
-      background: rgba(220, 53, 69, 0.2);
-      border: 1px solid #dc3545;
-      color: #ff6b6b;
-    }
-  </style>
+  <title>KEYTUBE - Help Center</title>
+  <!-- FontAwesome for UI Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-  <header>
-    <h1>KEYTUBE Help Center</h1>
-    <p>Ukeneye ubufasha cyangwa ufite igitekerezo? Turi hano kugira ngo tukubwire n'uburyo twagufasha.</p>
-  </header>
-
-  <div class="grid">
-    <!-- FAQ Column -->
-    <div class="card">
-      <h3>Ibibazo Bikunze Kubazwa (FAQ)</h3>
-
-      <div class="faq-item">
-        <h4>1. Ni gute nshobora kureba filime ntasabwa kwishyura?</h4>
-        <p>Filime zose ziri kuri KEYTUBE zirahari ku buntu. Zinezeze ureba cyangwa uzidownloadinga!</p>
+  <div class="app-container">
+    
+    <!-- Header Area -->
+    <header class="app-header">
+      <div class="header-top">
+        <a href="index.html" class="back-btn" title="Return to Web">
+          <i class="fa-solid fa-chevron-left"></i>
+        </a>
+        <div class="brand-logo">
+          <img src="logo.png" alt="KEYTUBE Logo" id="appLogo">
+          <span class="logo-text">KEYTUBE</span>
+        </div>
+        <div class="header-actions">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <i class="fa-regular fa-bell"></i>
+          <div class="user-avatar">R</div>
+        </div>
       </div>
 
-      <div class="faq-item">
-        <h4>2. Nshobora gusaba filime ntabona ku rubuga?</h4>
-        <p>Yego! Koresha iforomu riri hano iruhande maze uhitemo icyo wifuza ko twakongeraho mu nsanganyamatsiko "saba Movie".</p>
+      <div class="header-banner">
+        <div class="banner-text">
+          <h1>Help Center</h1>
+          <p>We're here to help you enjoy KEYTUBE.</p>
+        </div>
+        <div class="banner-icon">
+          <!-- Floating Lifebuoy Illustration / Badge -->
+          <div class="lifebuoy">
+            <i class="fa-solid fa-life-ring"></i>
+            <span class="help-badge"><i class="fa-solid fa-circle-question"></i></span>
+          </div>
+        </div>
       </div>
 
-      <div class="faq-item">
-        <h4>3. Nkora iki iyo video itari gukora (Loading Issue)?</h4>
-        <p>Banza ugenzure connection yawe ya internet, cyangwa ugerekeho refresh ku rupapuro. Iyo byanze, tubwire ukoresheje iyi form.</p>
+      <!-- Search Box -->
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Search for help topics...">
       </div>
-    </div>
+    </header>
 
-    <!-- Contact / Support Request Form -->
-    <div class="card">
-      <h3>Baza cyangwa Wohereze Ubusabe</h3>
+    <!-- Main Content -->
+    <main class="main-content">
       
-      <div id="statusAlert" class="alert"></div>
+      <h2 class="section-title">Browse Help Topics</h2>
 
-      <form id="supportForm">
-        <div class="form-group">
-          <label for="name">Izina Ryanyu</label>
-          <input type="text" id="name" required placeholder="Urugero: Eric Mugisha">
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email Yawe (Gmail)</label>
-          <input type="email" id="email" required placeholder="urugero@gmail.com">
-        </div>
-
-        <div class="form-group">
-          <label for="subject">Impamvu / Inshingano</label>
-          <select id="subject" required>
-            <option value="">-- Hitamo Impamvu --</option>
-            <option value="Movie Request">Gusaba Filime Nshya</option>
-            <option value="Technical Issue">Problem kuri Video / App</option>
-            <option value="Account Issue">Ikibazo cy'Ikonti (Login)</option>
-            <option value="General Suggestion">Igitekerezo / Inyunganizi</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="message">Ubutumwa Bwawe</label>
-          <textarea id="message" rows="4" required placeholder="Sobanura neza ikibazo cyangwa film wifuza..."></textarea>
-        </div>
-
-        <button type="submit" class="btn-submit" id="submitBtn">Ohereza Ubutumwa</button>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script>
-  document.getElementById('supportForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const submitBtn = document.getElementById('submitBtn');
-    const alertBox = document.getElementById('statusAlert');
-
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
-
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Biri koherezwa...';
-    alertBox.style.display = 'none';
-
-    // Payload ijyanye neza na "addSupportRequest" mu backend ya Code.gs
-    const payload = {
-      action: 'addSupportRequest',
-      name: name,
-      email: email,
-      subject: subject,
-      message: message,
-      page: 'Help Center',
-      userAgent: navigator.userAgent
-    };
-
-    // Niba urimo kumpuriza iyi form muri Google Apps Script
-    if (typeof google !== 'undefined' && google.script && google.script.run) {
-      google.script.run
-        .withSuccessHandler(function(response) {
-          submitBtn.disabled = false;
-          submitBtn.innerText = 'Ohereza Ubutumwa';
-          
-          alertBox.className = 'alert alert-success';
-          alertBox.innerText = 'Ubutumwa bwawe bwoherejwe neza! Murakoze.';
-          alertBox.style.display = 'block';
-
-          document.getElementById('supportForm').reset();
-        })
-        .withFailureHandler(function(err) {
-          submitBtn.disabled = false;
-          submitBtn.innerText = 'Ohereza Ubutumwa';
-
-          alertBox.className = 'alert alert-error';
-          alertBox.innerText = 'Harimo ikosa mu kohereza: ' + err.message;
-          alertBox.style.display = 'block';
-        })
-        .handleAllActions(payload);
-    } else {
-      // Niba ikoreshwa nk'urupapuro rwitegeka muri Web App request
-      fetch(window.location.href, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(data => {
-        submitBtn.disabled = false;
-        submitBtn.innerText = 'Ohereza Ubutumwa';
-
-        if (data.ok) {
-          alertBox.className = 'alert alert-success';
-          alertBox.innerText = 'Ubutumwa bwawe bwoherejwe neza! Murakoze.';
-          alertBox.style.display = 'block';
-          document.getElementById('supportForm').reset();
-        } else {
-          throw new Error(data.msg || 'Ikosa ryabonetse.');
-        }
-      })
-      .catch(err => {
-        submitBtn.disabled = false;
-        submitBtn.innerText = 'Ohereza Ubutumwa';
+      <div class="topics-list">
         
-        alertBox.className = 'alert alert-error';
-        alertBox.innerText = 'Ntidushoboye kohereza ubutumwa. Ongera ugerageze.';
-        alertBox.style.display = 'block';
-      });
-    }
-  });
-</script>
+        <div class="topic-card">
+          <div class="topic-icon red-bg"><i class="fa-solid fa-circle-play"></i></div>
+          <div class="topic-info">
+            <h3>Getting Started</h3>
+            <p>Learn the basics of KEYTUBE and get started.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </div>
 
+        <div class="topic-card">
+          <div class="topic-icon red-bg"><i class="fa-solid fa-user"></i></div>
+          <div class="topic-info">
+            <h3>Account & Profile</h3>
+            <p>Manage your account, profile and settings.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon red-bg"><i class="fa-solid fa-display"></i></div>
+          <div class="topic-info">
+            <h3>Watching & Playlists</h3>
+            <p>How to watch, save, and manage playlists.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon red-bg"><i class="fa-solid fa-download"></i></div>
+          <div class="topic-info">
+            <h3>Downloads</h3>
+            <p>Download movies and watch offline.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon red-bg"><i class="fa-solid fa-comment-dots"></i></div>
+          <div class="topic-info">
+            <h3>Comments & Interactions</h3>
+            <p>How to comment, like and interact.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon red-bg"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="topic-info">
+            <h3>Privacy & Safety</h3>
+            <p>Learn about your privacy and safety.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon red-bg"><i class="fa-solid fa-credit-card"></i></div>
+          <div class="topic-info">
+            <h3>Payments & Subscriptions</h3>
+            <p>Manage payments, free trial and premium.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </div>
+
+        <div class="topic-card">
+          <div class="topic-icon red-bg"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="topic-info">
+            <h3>Troubleshooting</h3>
+            <p>Fix common issues and errors.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </div>
+
+      </div>
+
+      <!-- Need More Help & Form Section -->
+      <div class="support-section">
+        <h2 class="section-title">Need More Help?</h2>
+        <p class="section-sub">Can't find what you need? We're here for you.</p>
+
+        <div id="statusAlert" class="alert"></div>
+
+        <form id="supportForm" class="support-form">
+          <div class="form-group">
+            <label for="name">Izina Ryanyu</label>
+            <input type="text" id="name" required placeholder="Urugero: Eric Mugisha">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Yawe</label>
+            <input type="email" id="email" required placeholder="urugero@gmail.com">
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Impamvu / Inshingano</label>
+            <select id="subject" required>
+              <option value="">-- Hitamo Impamvu --</option>
+              <option value="Movie Request">Gusaba Filime Nshya</option>
+              <option value="Technical Issue">Problem kuri Video / App</option>
+              <option value="Account Issue">Ikibazo cy'Ikonti (Login)</option>
+              <option value="General Suggestion">Igitekerezo / Inyunganizi</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Ubutumwa Bwawe</label>
+            <textarea id="message" rows="4" required placeholder="Sobanura neza ikibazo cyangwa film wifuza..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="fa-solid fa-paper-plane"></i> Ohereza Ubutumwa
+          </button>
+        </form>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
