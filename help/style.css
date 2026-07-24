@@ -34,7 +34,7 @@ body {
   padding-bottom: 40px;
 }
 
-/* Header */
+/* Header UI */
 .app-header {
   background: #ffffff;
   padding: 15px 20px;
@@ -106,7 +106,7 @@ body {
   font-size: 0.85rem;
 }
 
-/* Banner Area */
+/* Header Banner */
 .header-banner {
   display: flex;
   align-items: center;
@@ -185,6 +185,7 @@ body {
   margin-bottom: 15px;
 }
 
+/* Topic Cards */
 .topics-list {
   display: flex;
   flex-direction: column;
@@ -243,7 +244,7 @@ body {
   font-size: 0.8rem;
 }
 
-/* Support Form Section */
+/* Form Styling */
 .support-section {
   background: #ffffff;
   padding: 20px;
