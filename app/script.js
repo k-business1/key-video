@@ -61,4 +61,7 @@ function downloadFile(fileName){
     });
 
 
+}function goBack(){
+    window.location.href = "../index.html";
 }
+
