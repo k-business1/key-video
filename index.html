@@ -226,8 +226,27 @@
     <div class="page-title" id="pageTit">Page</div>
     <div class="page-body" id="pageBody"></div>
   </div>
-</div>
-<script src="searchengine/searchb-bar-conector.js"></script>
+<!-- Agasanduku ko gushakisha -->
+  <input type="text" id="searchInput" placeholder="Shakisha hano...">
+
+  <!-- 1. GUHUZA INDEX NA SEARCH ENGINE DOCUMENTS (INCLUDES) -->
+  <?!= include('searchengine/engine1-zero-result-detector') ?>
+  <?!= include('searchengine/engine2-letter-matcher') ?>
+  <?!= include('searchengine/engine3-common-mistakes') ?>
+  <?!= include('searchengine/engine4-error-identifier') ?>
+  <?!= include('searchengine/search-bar-connector') ?>
+
+  <!-- 2. GUKORESHA SCRIPT URL NA CONNECTOR -->
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbYUKZYwYRssm80AnP8kDj-8_ymsaFczKmecbchEntyhhr5-zqAIDYov-Nt7Ko0pDOMA/exec';
+    const bar = document.getElementById('searchInput');
+
+    attachSmartSearchBar(bar, SCRIPT_URL, {
+      onCorrected: function(info) {
+        console.log(info.original + ' -> ' + info.corrected + ' (' + info.errorType + ')');
+      }
+    });
+  </script>
 <script src="app.js"></script>
 <script src="home.js"></script>
 </body>
