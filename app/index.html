@@ -1,43 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KeyTube Downloads</title>
 
-    <!-- Website Icon -->
-    <link rel="icon" type="image/png" href="../logo.png">
-    <link rel="apple-touch-icon" href="../logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>KeyTube Download</title>
+
+<link rel="icon" type="image/png" href="../logo.png">
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
+
 <body>
 
+
 <div class="container">
+
+
     <div class="card">
 
-        <img src="../logo.png" alt="KeyTube Logo" class="logo">
 
-        <h1>KeyTube Downloads</h1>
+        <img src="../logo.png" class="logo" alt="KeyTube">
 
-        <p class="description">
-            Download the latest version of KeyTube for your device.
+
+        <h1>KeyTube</h1>
+
+        <p class="subtitle">
+            Download KeyTube App
         </p>
 
-        <button onclick="downloadFile('keytube.apk')">
-            📱 Download for Android
-        </button>
 
-        <button onclick="downloadFile('keytube.exe')">
-            💻 Download for Windows
-        </button>
+
+        <div class="download-card">
+
+            <div class="icon">
+                📱
+            </div>
+
+            <div>
+                <h2>Android App</h2>
+                <p>APK version</p>
+            </div>
+
+
+            <button onclick="downloadFile('keytube.apk')">
+                Download APK
+            </button>
+
+        </div>
+
+
+
+
+        <div class="download-card">
+
+
+            <div class="icon">
+                💻
+            </div>
+
+
+            <div>
+                <h2>Windows App</h2>
+                <p>EXE version</p>
+            </div>
+
+
+            <button onclick="downloadFile('keytube.exe')">
+                Download EXE
+            </button>
+
+
+        </div>
+
+
 
         <p id="message"></p>
 
+
+
     </div>
+
+
 </div>
 
+
+
 <script src="script.js"></script>
+
 
 </body>
 </html>
