@@ -1,0 +1,127 @@
+// ================================================================
+// SEARCH BAR CONNECTOR
+// Loads AFTER engine1, engine2, engine3, engine4 <script> tags.
+// Wires them together and auto-corrects the text INSIDE the search
+// bar itself when a typo is detected.
+//
+// HTML load order required:
+//   <script src="engine1-zero-result-detector.js"></script>
+//   <script src="engine2-letter-matcher.js"></script>
+//   <script src="engine3-common-mistakes.js"></script>
+//   <script src="engine4-error-identifier.js"></script>
+//   <script src="search-bar-connector.js"></script>
+// ================================================================
+
+// Fetch this once and cache it — array of movie titles + individual words
+var KEYTUBE_DICTIONARY_CACHE = null;
+
+async function loadKeytubeDictionary(scriptUrl) {
+  if (KEYTUBE_DICTIONARY_CACHE) return KEYTUBE_DICTIONARY_CACHE;
+
+  var res = await fetch(scriptUrl, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'getMovies', isLoggedIn: true })
+  });
+  var data = await res.json();
+
+  var words = {};
+  (data.movies || []).forEach(function (m) {
+    var lower = String(m.name || '').toLowerCase();
+    words[lower] = true;
+    lower.split(/\s+/).forEach(function (w) { if (w) words[w] = true; });
+  });
+
+  KEYTUBE_DICTIONARY_CACHE = Object.keys(words);
+  return KEYTUBE_DICTIONARY_CACHE;
+}
+
+// Runs all 4 engines against the current search bar value and, if a
+// typo is found, rewrites the input box with the corrected text.
+async function autoCorrectSearchBar(inputEl, scriptUrl, opts) {
+  opts = opts || {};
+  var rawQuery = inputEl.value;
+  if (!rawQuery || !rawQuery.trim()) return null;
+
+  // First try the real search, so we don't "correct" something that
+  // already returns results.
+  var searchRes = await fetch(scriptUrl, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'searchMovies', query: rawQuery, isLoggedIn: true })
+  });
+  var searchData = await searchRes.json();
+
+  var missCheck = engine1_detectZeroResult(searchData); // ENGINE 1
+  if (!missCheck.isMiss) {
+    return { corrected: false, exact: searchData.exact, similar: searchData.similar };
+  }
+
+  var dict = await loadKeytubeDictionary(scriptUrl);
+
+  var letterMatch = engine2_letterMatch(rawQuery, dict);      // ENGINE 2
+  var mistakeFix  = engine3_commonMistakes(rawQuery, dict);   // ENGINE 3
+  var bestGuess   = mistakeFix.fixed || letterMatch.corrected;
+  var errorInfo   = engine4_identifyError(rawQuery, bestGuess); // ENGINE 4
+
+  var normalizedOriginal = String(rawQuery).toLowerCase().trim();
+  var didCorrect = !!bestGuess && bestGuess !== normalizedOriginal;
+
+  if (didCorrect) {
+    // Auto-change the text sitting inside the search bar itself
+    inputEl.value = bestGuess;
+
+    if (typeof opts.onCorrected === 'function') {
+      opts.onCorrected({
+        original: rawQuery,
+        corrected: bestGuess,
+        errorType: errorInfo.type,
+        errorDetail: errorInfo.detail
+      });
+    }
+
+    var retryRes = await fetch(scriptUrl, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'searchMovies', query: bestGuess, isLoggedIn: true })
+    });
+    var retryData = await retryRes.json();
+
+    return {
+      corrected: true,
+      original: rawQuery,
+      suggestedQuery: bestGuess,
+      errorType: errorInfo.type,
+      errorDetail: errorInfo.detail,
+      exact: retryData.exact,
+      similar: retryData.similar
+    };
+  }
+
+  return { corrected: false, exact: searchData.exact, similar: searchData.similar };
+}
+
+// Convenience: attach directly to an <input> element with debounce
+function attachSmartSearchBar(inputEl, scriptUrl, opts) {
+  var timer = null;
+  inputEl.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      autoCorrectSearchBar(inputEl, scriptUrl, opts);
+    }, 450); // waits for the user to pause typing
+  });
+}
+
+// Example usage in your HTML page:
+//
+//   const bar = document.getElementById('searchInput');
+//   attachSmartSearchBar(bar, SCRIPT_URL, {
+//     onCorrected: function (info) {
+//       console.log('Corrected "' + info.original + '" -> "' + info.corrected + '"', info.errorType);
+//     }
+//   });
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    loadKeytubeDictionary: loadKeytubeDictionary,
+    autoCorrectSearchBar: autoCorrectSearchBar,
+    attachSmartSearchBar: attachSmartSearchBar
+  };
+}
