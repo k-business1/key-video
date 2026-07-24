@@ -1,0 +1,247 @@
+:root {
+  --primary-red: #e50914;
+  --bg-light: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-main: #111111;
+  --text-muted: #737373;
+  --border-color: #f0f0f0;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --accent-orange: #ff9800;
+  --accent-green: #28a745;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #f2f2f6;
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-light);
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  position: relative;
+  padding-bottom: 40px;
+}
+
+/* Header UI */
+.app-header {
+  background: #ffffff;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.back-btn {
+  color: #000;
+  font-size: 1.2rem;
+  text-decoration: none;
+  padding: 5px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-logo img {
+  height: 28px;
+  width: auto;
+}
+
+.logo-text {
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
+  color: #000;
+}
+
+.admin-badge {
+  background: #111;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.banner-text h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #000;
+}
+
+.banner-text p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Main Content */
+.main-content {
+  padding: 20px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #fff;
+  padding: 14px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card i {
+  font-size: 1.5rem;
+}
+
+.icon-red { color: var(--primary-red); }
+.icon-orange { color: var(--accent-orange); }
+
+.stat-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.stat-card span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.action-bar {
+  margin-bottom: 20px;
+}
+
+.btn-refresh {
+  width: 100%;
+  background: var(--primary-red);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Requests List UI */
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.request-item {
+  background: #fff;
+  padding: 14px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--primary-red);
+}
+
+.request-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.request-subject {
+  display: inline-block;
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.request-message {
+  font-size: 0.83rem;
+  color: #333;
+  line-height: 1.4;
+  background: #fafafa;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.request-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.btn-reply {
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.loading-box, .empty-state {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
