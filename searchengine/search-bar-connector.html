@@ -1,17 +1,5 @@
-// ================================================================
-// SEARCH BAR CONNECTOR
-// Loads AFTER engine1, engine2, engine3, engine4 <script> tags.
-// Wires them together and auto-corrects the text INSIDE the search
-// bar itself when a typo is detected.
-//
-// HTML load order required:
-//   <script src="engine1-zero-result-detector.js"></script>
-//   <script src="engine2-letter-matcher.js"></script>
-//   <script src="engine3-common-mistakes.js"></script>
-//   <script src="engine4-error-identifier.js"></script>
-//   <script src="search-bar-connector.js"></script>
-// ================================================================
 
+<script>
 // Fetch this once and cache it — array of movie titles + individual words
 var KEYTUBE_DICTIONARY_CACHE = null;
 
@@ -125,3 +113,4 @@ if (typeof module !== 'undefined' && module.exports) {
     attachSmartSearchBar: attachSmartSearchBar
   };
 }
+</script>
