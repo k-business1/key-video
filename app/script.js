@@ -1,34 +1,64 @@
-async function downloadFile(fileName) {
+function downloadFile(fileName){
 
-    const message = document.getElementById("message");
-    message.textContent = "";
 
-    try {
+    const message =
+    document.getElementById("message");
 
-        const response = await fetch(fileName, {
-            method: "HEAD"
-        });
 
-        if (response.ok) {
+    message.innerHTML="";
 
-            const link = document.createElement("a");
-            link.href = fileName;
-            link.download = fileName;
+
+    fetch(fileName, {
+        method:"HEAD"
+    })
+
+
+    .then(response=>{
+
+
+        if(response.ok){
+
+
+            let link =
+            document.createElement("a");
+
+
+            link.href=fileName;
+
+            link.download=fileName;
+
 
             document.body.appendChild(link);
+
+
             link.click();
-            document.body.removeChild(link);
 
-        } else {
 
-            message.textContent = fileName + " is absent.";
+            link.remove();
+
 
         }
 
-    } catch (error) {
+        else{
 
-        message.textContent = fileName + " is absent.";
 
-    }
+            message.innerHTML =
+            fileName + " is absent.";
+
+        }
+
+
+    })
+
+
+    .catch(()=>{
+
+
+        message.innerHTML =
+        fileName + " is absent.";
+
+
+    });
+
 
 }
