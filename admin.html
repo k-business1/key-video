@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEYTUBE - Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+
+  <!-- ── ACCESS GATE ──
+       If there's no valid admin session, this covers the whole page.
+       Entering the correct admin password authenticates and reveals
+       the dashboard beneath it; "Back to site" sends non-admins home. -->
+  <div id="gate" class="gate-overlay">
+    <div class="gate-card">
+      <img src="../logo.png" alt="KEYTUBE" class="gate-logo">
+      <h2>🔐 Admin Access Required</h2>
+      <p>Enter the admin password to view support requests.</p>
+      <div class="gate-fg">
+        <input id="gatePw" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doGateLogin()">
+      </div>
+      <div id="gateErr" class="gate-err"></div>
+      <button class="btn-refresh" id="gateBtn" onclick="doGateLogin()">→ Enter</button>
+      <a href="../index.html" class="gate-back">← Back to site</a>
+    </div>
+  </div>
+
+  <div class="app-container" id="dashboard" style="display:none">
+
+    <header class="app-header">
+      <div class="header-top">
+        <a href="../index.html" class="back-btn" title="Subira inyuma">
+          <i class="fa-solid fa-chevron-left"></i>
+        </a>
+        <a href="../index.html" class="brand-logo" title="Ahabanza">
+          <img src="../logo.png" alt="KEYTUBE Logo" id="appLogo">
+          <span class="logo-text">KEYTUBE</span>
+        </a>
+        <div class="admin-badge">
+          <i class="fa-solid fa-shield-halved"></i> Admin
+        </div>
+      </div>
+      <div class="header-banner">
+        <div class="banner-text">
+          <h1>Admin Control</h1>
+          <p>Cunga ubusabe bw'abakoresha n'ubutumwa.</p>
+        </div>
+        <div>
+          <button class="btn-logout" onclick="adminLogout()" title="Sign out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fa-solid fa-inbox icon-red"></i>
+          <div>
+            <h3 id="totalRequestsCount">0</h3>
+            <span>Ubutumwa Byose</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-bell icon-orange"></i>
+          <div>
+            <h3 id="pendingCount">0</h3>
+            <span>Ibitaragusubizwa</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button id="refreshBtn" class="btn-refresh">
+          <i class="fa-solid fa-arrows-rotate"></i> Bazana Ubutumwa Bushya
+        </button>
+      </div>
+
+      <div id="adminAlert" class="alert"></div>
+
+      <h2 class="section-title"><i class="fa-solid fa-list"></i> Ubusabe Bw'Abakoresha</h2>
+
+      <div id="loadingSpinner" class="loading-box" style="display: none;">
+        <i class="fa-solid fa-spinner fa-spin"></i> Biri gukurura ubutumwa...
+      </div>
+      <div id="requestsList" class="requests-list">
+        <p class="empty-state">Kanda kuri "Bazana Ubutumwa Bushya" kugira ngo urebe ubwo abafana bohereje.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="admin-script.js"></script>
+</body>
+</html>
